@@ -23,9 +23,8 @@ template <typename T>
 void BK<T>::recDelete(Node *parent)
 {
 	// traverse the tree and call delete all nodes recursively
-	while (parent->_edges.getSize() > 0)
+	for (const auto &edge : parent->_edges)
 	{
-		Node *edge = parent->_edges.pop();
 		recDelete(edge);
 	}
 	delete parent;
@@ -89,9 +88,8 @@ void BK<T>::recInsert(Node *parent, T *item)
 
 	// look for a child node with the same distance
 	bool found = false;
-	for (int i = 1; i <= parent->_edges.getSize(); i++)
+	for (const auto &edge : parent->_edges)
 	{
-		Node *edge = parent->_edges.at(i);
 		// child node found, look inside it
 		if (edge->parentDistance == distance)
 		{
@@ -105,45 +103,43 @@ void BK<T>::recInsert(Node *parent, T *item)
 	if (!found)
 	{
 		Node *newNode = new Node(item, distance);
-		parent->_edges.push(newNode);
+		parent->_edges.push_back(newNode);
 	}
 }
 
 template <typename T>
-List<T> BK<T>::search(T *query, int maxDistance) const
+bud::vector<T> BK<T>::search(T *query, int maxDistance) const
 {
 	// handle null root
 	if (root == NULL)
-		return List<T>();
+		return bud::vector<T>();
 	else
 		return recSearch(root, query, maxDistance);
 }
 
 template <typename T>
-List<T> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
+bud::vector<T> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
 {
-	List<T> results;
+	bud::vector<T> results;
 
 	// if the parent node fits our criteria, add to results and explore it's children
 	if (distanceFunction(parent->content, query) <= maxDistance && !parent->deleted)
-		results.push(parent->content);
+		results.push_back(parent->content);
 
 	// iterate over parent's children, explore only those with
 	// |child->parentDistance - maxDistance| <= maxDistance <= |child->parentDistance + maxDistance|
-	for (int i = 1; i <= parent->_edges.getSize(); i++)
+	for (const auto &edge : parent->_edges)
 	{
-		Node *edge = parent->_edges.at(i);
-
 		// if the child's parentDistance fits our criteria, call recSearch
 		if (abs(edge->parentDistance - maxDistance) <= maxDistance ||
 			maxDistance <= abs(edge->parentDistance + maxDistance))
 		{
 
-			List<T> temp_results = recSearch(edge, query, maxDistance);
+			bud::vector<T> temp_results = recSearch(edge, query, maxDistance);
 			// add it's results to ours
-			while (temp_results.getSize() > 0)
+			for (const auto &result : temp_results)
 			{
-				results.push(temp_results.pop());
+				results.push_back(result);
 			}
 		}
 	}
