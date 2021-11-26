@@ -8,7 +8,6 @@ namespace
 
 ErrorCode InitializeIndex()
 {
-
     return EC_SUCCESS;
 }
 

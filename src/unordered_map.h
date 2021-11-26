@@ -4,7 +4,7 @@
 #include <cstddef>
 
 #include "forward_list.h"
-#include "vector.h"
+#include "array.h"
 #include "../include/core.h"
 #include "pair.h"
 #include "util.h"
@@ -12,9 +12,7 @@
 namespace bud
 {
 
-const std::size_t DEFAULT_SIZE = 15;
-
-template <class Key, class T, class Hash>
+template <class Key, class T, class Hash, std::size_t Size>
 class unordered_map
 {
 public:
@@ -26,9 +24,7 @@ public:
 	using hasher = Hash;
 	using size_type = std::size_t;
 
-	explicit unordered_map(size_type size = DEFAULT_SIZE) : m_items(size) {}
-
-	unordered_map() = delete;
+	unordered_map() = default;
 	~unordered_map() = default;
 	unordered_map(const unordered_map& p) = delete;
 	unordered_map(unordered_map&& u) = delete;
@@ -72,13 +68,18 @@ public:
 		return pair<T*, bool>(return_value, true);
 	}
 
-	[[nodiscard]] size_type size() const { return m_size; }
+    size_type erase(const Key& key)
+    {
+
+    }
+
+    [[nodiscard]] size_type size() const { return m_size; }
 
 private:
-	size_type m_get_hash(key_type key) const { return m_hash_function(key) % m_items.size(); }
+	size_type m_get_hash(key_type key) const { return m_hash_function(key) % Size; }
 	size_type m_size = 0;
 
-	vector<forward_list<value_type>> m_items;
+	array<forward_list<value_type>, Size> m_items;
 	Hash m_hash_function;
 };
 

@@ -20,14 +20,18 @@ struct Result{
     QueryID*      m_query_ids;
 };
 
+struct Entry {
+    bud::string m_word;
+    bud::vector<bud::string> m_payload;
+}
 
 class implementation
 {
 public:
     implementation() = default;
     ~implementation() = default;
-    ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance){};
-    ErrorCode removeQuery(QueryID id){};
+    ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance){ return EC_SUCCESS; };
+    ErrorCode removeQuery(QueryID id){ return EC_SUCCESS; }
     ErrorCode getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids){
         if(m_res.size() ==0){
             return EC_NO_AVAIL_RES;
@@ -40,11 +44,9 @@ public:
         return EC_SUCCESS;
     }
 
-    
-
 private:
-    bud::unordered_map<bud::string, bud::vector<Query*>, HashFunction> *m_words_ht;
-    bud::unordered_map<QueryID, Query*, HashFunction> *m_queries_ht;
+    bud::unordered_map<bud::string, bud::vector<Query*>, HashFunction, 128> m_words_ht;
+    bud::unordered_map<QueryID, Query*, HashFunction, 128> m_queries_ht;
     bud::vector<Result> m_res;
 };
 
