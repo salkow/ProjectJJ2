@@ -10,6 +10,7 @@ class BK
 	{
 		Node(T *&item, int parentDistance);
 		T *content;
+		bool deleted;
 		List<Node> _edges;
 		int parentDistance; // distance of this node compared to it's parent node, root's distance
 							// is 0

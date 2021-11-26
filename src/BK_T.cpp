@@ -4,9 +4,10 @@
 #include <cassert>
 
 #include "BK_T.h"
+#include "vector.h"
 
 template <typename T>
-BK<T>::Node::Node(T *&content, int parentDistance) : content(content), parentDistance(parentDistance) {}
+BK<T>::Node::Node(T *&content, int parentDistance) : content(content), parentDistance(parentDistance), deleted(false) {}
 
 template <typename T>
 BK<T>::BK(int (*distanceFunction)(T *, T *)) : distanceFunction(distanceFunction), root(NULL) {}
@@ -33,14 +34,24 @@ void BK<T>::recDelete(Node *parent)
 template <typename T>
 typename BK<T>::Node *BK<T>::traverse(T *item)
 {
-	bool found = false;
-	Node *current = root;
-	while (!found)
+	bud::vector<Node *> lookList;
+	lookList.push_back(root);
+
+	while (lookList)
 	{
-		if (current != item)
+		Node *edge = lookList.back();
+		if (edge->content == item)
+			return edge;
+		else
 		{
+			lookList.pop_back();
+			for (int i = 1; i <= edge->_edges.getSize(); i++)
+			{
+				lookList.push_back(edge->_edges.at(i));
+			}
 		}
 	}
+	return NULL;
 }
 
 template <typename T>
@@ -49,6 +60,7 @@ void BK<T>::remove(T *item)
 	Node *n = traverse(item);
 
 	assert(n != NULL);
+	n->deleted = true;
 	// if (n == NULL) return;
 }
 
@@ -113,7 +125,7 @@ List<T> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
 	List<T> results;
 
 	// if the parent node fits our criteria, add to results and explore it's children
-	if (distanceFunction(parent->content, query) <= maxDistance)
+	if (distanceFunction(parent->content, query) <= maxDistance && !parent->deleted)
 		results.push(parent->content);
 
 	// iterate over parent's children, explore only those with
