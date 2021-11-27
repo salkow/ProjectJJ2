@@ -74,3 +74,23 @@ TEST_CASE("Test iterators to forward_list.", "[test_iterators_forward_list]")
 
 	REQUIRE(sum == 21);
 }
+
+TEST_CASE("Before begin forward_list", "[before_begin_forward_list]")
+{
+    forward_list<int> my_list;    
+
+	my_list.push_front(1);
+	my_list.push_front(2);
+	my_list.emplace_front(3);
+
+    auto it = my_list.before_begin();    
+    ++it;
+    REQUIRE(*it == 3);
+    ++it;
+    REQUIRE(*it == 2);
+    it++;
+    REQUIRE(*it == 1);
+    it++;
+    REQUIRE(it == my_list.end());
+}
+

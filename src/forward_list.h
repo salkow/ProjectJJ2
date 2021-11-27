@@ -40,12 +40,14 @@ public:
 
 	forward_list_iterator() = default;
 
-	explicit forward_list_iterator(node_pointer ptr) : m_ptr(ptr) {}
+	explicit forward_list_iterator(node_pointer ptr, bool before_begin = false) : m_ptr(ptr), m_before_begin(before_begin) {}
 
 	forward_list_iterator& operator++()
 	{
-		if (m_ptr != nullptr)
-			m_ptr = m_ptr->m_next.get();
+        if (m_before_begin) 
+            m_before_begin = false;
+        else
+            m_ptr = m_ptr->m_next.get();
 
 		return *this;
 	}
@@ -53,8 +55,7 @@ public:
 	forward_list_iterator operator++(int)
 	{
 		forward_list_iterator it(*this);
-		if (m_ptr != nullptr)
-			m_ptr = m_ptr->m_next;
+        ++*this;
 		return it;
 	}
 
@@ -84,15 +85,17 @@ public:
 
 	friend bool operator==(const forward_list_iterator& lhs, const forward_list_iterator& rhs)
 	{
-		return lhs.m_ptr == rhs.m_ptr;
+		return lhs.m_ptr == rhs.m_ptr && lhs.m_before_begin == rhs.m_before_begin;
 	}
+
 	friend bool operator!=(const forward_list_iterator& lhs, const forward_list_iterator& rhs)
 	{
-		return lhs.m_ptr != rhs.m_ptr;
+		return !(lhs == rhs);
 	}
 
 private:
 	node_pointer m_ptr = nullptr;
+    bool m_before_begin = false;
 };
 
 template <class T>
@@ -143,6 +146,9 @@ public:
 
 	[[nodiscard]] iterator begin() const noexcept { return iterator(m_head.get()); }
 	[[nodiscard]] const_iterator cbegin() const noexcept { return const_iterator(m_head.get()); }
+
+	[[nodiscard]] iterator before_begin() const noexcept { return iterator(m_head.get(), true); }
+	[[nodiscard]] const_iterator cbefore_begin() const noexcept { return const_iterator(m_head.get(), true); }
 
 	[[nodiscard]] iterator end() const noexcept { return iterator(); }
 	[[nodiscard]] const_iterator cend() const noexcept { return const_iterator(); }
