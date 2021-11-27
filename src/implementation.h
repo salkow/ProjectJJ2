@@ -23,7 +23,7 @@ struct Result{
 struct Entry {
     bud::string m_word;
     bud::vector<bud::string> m_payload;
-}
+};
 
 class implementation
 {

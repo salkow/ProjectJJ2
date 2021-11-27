@@ -70,7 +70,7 @@ public:
 
     size_type erase(const Key& key)
     {
-
+        return 0;
     }
 
     [[nodiscard]] size_type size() const { return m_size; }

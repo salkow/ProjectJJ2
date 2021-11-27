@@ -25,14 +25,13 @@ struct forward_list_node
 	T m_value;
 };
 
-template <typename T>
+template <typename T, bool Const = false>
 class forward_list_iterator
 {
 public:
 	using value_type = T;
-	using pointer = value_type*;
-	using reference = value_type&;
-	using const_reference = const value_type&;
+	using reference = typename std::conditional_t<Const, value_type const&, value_type&>;
+	using pointer = typename std::conditional_t<Const, value_type const*, value_type*>;
 	using iterator_category = std::forward_iterator_tag;
 	using difference_type = std::ptrdiff_t;
 
@@ -59,13 +58,38 @@ public:
 		return it;
 	}
 
-	reference operator*() { return m_ptr->m_value; }
+	template <bool Const_ = Const>
+	std::enable_if_t<Const_, reference> operator*() const
+    {
+        return m_ptr->m_value;
+    }
 
-	const_reference operator*() const { return m_ptr->m_value; }
+	template <bool Const_ = Const>
+	std::enable_if_t<!Const_, reference> operator*()
+    {
+        return m_ptr->m_value;
+    }
 
-	bool operator==(const forward_list_iterator& other) const { return m_ptr == other.m_ptr; }
+	template <bool Const_ = Const>
+	std::enable_if_t<Const_, pointer> operator->() const
+    {
+        return *(m_ptr->m_value);
+    }
 
-	bool operator!=(const forward_list_iterator& other) const { return m_ptr != other.m_ptr; }
+	template <bool Const_ = Const>
+	std::enable_if_t<!Const_, pointer> operator->()
+    {
+        return *(m_ptr->m_value);
+    }
+
+	friend bool operator==(const forward_list_iterator& lhs, const forward_list_iterator& rhs)
+	{
+		return lhs.m_ptr == rhs.m_ptr;
+	}
+	friend bool operator!=(const forward_list_iterator& lhs, const forward_list_iterator& rhs)
+	{
+		return lhs.m_ptr != rhs.m_ptr;
+	}
 
 private:
 	node_pointer m_ptr = nullptr;
@@ -79,6 +103,7 @@ class forward_list
 	using const_reference = const value_type&;
 	using node = forward_list_node<T>;
 	using iterator = forward_list_iterator<T>;
+	using const_iterator = forward_list_iterator<T, true>;
 
 public:
 	forward_list() = default;
@@ -114,20 +139,13 @@ public:
 	[[nodiscard]] bool empty() const noexcept { return !static_cast<bool>(m_head); }
 
 	[[nodiscard]] reference front() { return m_head->m_value; }
-
 	[[nodiscard]] const_reference front() const { return m_head->m_value; }
 
-	[[nodiscard]] iterator begin() noexcept { return iterator(m_head.get()); }
-
 	[[nodiscard]] iterator begin() const noexcept { return iterator(m_head.get()); }
-
-	[[nodiscard]] iterator cbegin() const noexcept { return iterator(m_head.get()); }
-
-	[[nodiscard]] iterator end() noexcept { return iterator(); }
+	[[nodiscard]] const_iterator cbegin() const noexcept { return const_iterator(m_head.get()); }
 
 	[[nodiscard]] iterator end() const noexcept { return iterator(); }
-
-	[[nodiscard]] iterator cend() const noexcept { return iterator(); }
+	[[nodiscard]] const_iterator cend() const noexcept { return const_iterator(); }
 
 private:
 	unique_ptr<node> m_head;
