@@ -10,11 +10,9 @@ TEST_CASE("Empty array", "[empty_array")
 	REQUIRE(arr.empty());
 	REQUIRE(arr.size() == 0);
 
-	REQUIRE(arr[100] == arr[200]);
-
 	REQUIRE(arr.begin() == arr.end());
 
-	REQUIRE(arr.front() == arr.back());
+	/* REQUIRE(arr.front() == arr.back()); */
 
 	REQUIRE(arr.data() == nullptr);
 }
