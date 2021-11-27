@@ -139,6 +139,11 @@ public:
 		return m_head->m_value;
 	}
 
+    void pop_front()
+    {
+        m_head = std::move(m_head->m_next);
+    }
+
 	[[nodiscard]] bool empty() const noexcept { return !static_cast<bool>(m_head); }
 
 	[[nodiscard]] reference front() { return m_head->m_value; }
@@ -154,7 +159,7 @@ public:
 	[[nodiscard]] const_iterator cend() const noexcept { return const_iterator(); }
 
 private:
-	unique_ptr<node> m_head;
+	unique_ptr<node> m_head = nullptr;
 };
 
 } // namespace bud

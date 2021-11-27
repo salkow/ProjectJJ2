@@ -1,8 +1,10 @@
 #include "../lib/include/catch2/catch.hpp"
 
 #include "../src/forward_list.h"
+#include "../src/my_string.h"
 
 using bud::forward_list;
+using bud::string;
 
 TEST_CASE("Check if a new forward_list is empty.", "[empty_forward_list]")
 {
@@ -92,5 +94,32 @@ TEST_CASE("Before begin forward_list", "[before_begin_forward_list]")
     REQUIRE(*it == 1);
     it++;
     REQUIRE(it == my_list.end());
+}
+
+TEST_CASE("Leak test forward_list", "[leak_test_forward_list]")
+{
+    forward_list<string> my_list;
+    
+    my_list.emplace_front("123");
+    my_list.push_front("456"); 
+
+    my_list.clear();
+
+    string x = "789";
+    my_list.emplace_front(x);
+    my_list.push_front(x);
+}
+
+TEST_CASE("pop_front forward_list", "[pop_front forward_list]")
+{
+    forward_list<string> my_list;
+
+    my_list.emplace_front(string("456"));
+    my_list.pop_front();
+
+    /* my_list.push_front(string("654")); */
+    /* my_list.emplace_front(string("321")); */
+
+    /* REQUIRE(my_list.front() == "321"); */
 }
 
