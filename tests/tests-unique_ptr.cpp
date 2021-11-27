@@ -129,3 +129,12 @@ TEST_CASE("make_unique", "[make_unique]")
 
 	REQUIRE(*x == 0);
 }
+
+TEST_CASE("null unique_ptr", "[null_unique_ptr]")
+{
+    unique_ptr<int> x(new int(3));  
+
+    unique_ptr<int> y = nullptr;
+
+    x = std::move(y);
+} 
