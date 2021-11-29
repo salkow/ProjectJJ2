@@ -7,10 +7,10 @@
 #include "vector.h"
 
 template <typename T>
-BK<T>::Node::Node(T *&content, int parentDistance) : content(content), parentDistance(parentDistance), deleted(false) {}
+BK<T>::Node::Node(T *&cont, int parDistance) : content(cont), parentDistance(parDistance), deleted(false) {}
 
 template <typename T>
-BK<T>::BK(int (*distanceFunction)(T *, T *)) : distanceFunction(distanceFunction), root(NULL) {}
+BK<T>::BK(int (*distanceFunc)(T *, T *)) : distanceFunction(distanceFunc), root(NULL) {}
 
 template <typename T>
 BK<T>::~BK()
