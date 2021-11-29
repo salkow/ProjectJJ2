@@ -31,11 +31,12 @@ TEST_CASE("Search some words on a BK tree", "[BK_search]")
 		tree.insert(&(words[i]));
 	}
 
-	bud::vector<bud::string> results;
+	bud::vector<bud::string *> results;
 
 	bud::string query1 = "hell";
 	results = tree.search(&query1, 0);
-	REQUIRE(results.back() == query1);
+	INFO("result is: " << *(results.back()) << " result should be: " << query1);
+	REQUIRE(results.back() == &(words[0]));
 
 	bud::string query2 = "hel1";
 	results = tree.search(&query2, 1);
