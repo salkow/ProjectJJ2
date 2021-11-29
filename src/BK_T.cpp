@@ -108,23 +108,23 @@ void BK<T>::recInsert(Node *parent, T *item)
 }
 
 template <typename T>
-bud::vector<T> BK<T>::search(T *query, int maxDistance) const
+bud::vector<T *> BK<T>::search(T *query, int maxDistance) const
 {
 	// handle null root
 	if (root == NULL)
-		return bud::vector<T>();
+		return bud::vector<T *>();
 	else
 		return recSearch(root, query, maxDistance);
 }
 
 template <typename T>
-bud::vector<T> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
+bud::vector<T *> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
 {
-	bud::vector<T> results;
+	bud::vector<T *> results;
 
 	// if the parent node fits our criteria, add to results and explore it's children
 	if (distanceFunction(parent->content, query) <= maxDistance && !parent->deleted)
-		results.push_back(*(parent->content));
+		results.push_back(parent->content);
 
 	// iterate over parent's children, explore only those with
 	// |child->parentDistance - maxDistance| <= maxDistance <= |child->parentDistance + maxDistance|
@@ -135,7 +135,7 @@ bud::vector<T> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
 			maxDistance <= abs(edge->parentDistance + maxDistance))
 		{
 
-			bud::vector<T> temp_results = recSearch(edge, query, maxDistance);
+			bud::vector<T *> temp_results = recSearch(edge, query, maxDistance);
 			// add it's results to ours
 			for (const auto &result : temp_results)
 			{
