@@ -110,7 +110,7 @@ TEST_CASE("Leak test forward_list", "[leak_test_forward_list]")
 	my_list.push_front(x);
 }
 
-TEST_CASE("pop_front forward_list", "[pop_front forward_list]")
+TEST_CASE("pop_front forward_list", "[pop_front_forward_list]")
 {
 	forward_list<string> my_list;
 
@@ -130,4 +130,28 @@ TEST_CASE("pop_front forward_list", "[pop_front forward_list]")
 	my_list.pop_front();
 
 	REQUIRE(my_list.empty());
+}
+
+TEST_CASE("emplace_after forward_list", "[emplace_after_forward_list]")
+{
+	forward_list<string> my_list;
+
+	my_list.emplace_front("123");
+	my_list.push_front("456");
+
+	my_list.emplace_after(my_list.cbegin(), string("789"));
+	my_list.insert_after(my_list.cbefore_begin(), "111");
+
+	REQUIRE(my_list.front() == "111");
+
+	auto it = my_list.begin();
+	++it;
+
+	REQUIRE(*it == "456");
+	++it;
+
+	REQUIRE(*it == "789");
+	it++;
+
+	REQUIRE(*it == "123");
 }

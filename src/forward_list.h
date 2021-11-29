@@ -19,7 +19,6 @@ struct forward_list_node
 	explicit forward_list_node(unique_ptr<forward_list_node>&& next, Args&&... value) :
 		m_next(std::move(next)), m_value(std::forward<Args>(value)...)
 	{
-		int x = 3;
 	}
 
 	unique_ptr<forward_list_node> m_next;
@@ -39,10 +38,21 @@ public:
 	using node = forward_list_node<T>;
 	using node_pointer = node*;
 
+	friend class forward_list_iterator<T, true>;
+
+	template <typename U>
+	friend class forward_list;
+
 	forward_list_iterator() = default;
 
 	explicit forward_list_iterator(node_pointer ptr, bool before_begin = false) :
 		m_ptr(ptr), m_before_begin(before_begin)
+	{
+	}
+
+	template <bool Const_ = Const, class = std::enable_if_t<Const_>>
+	forward_list_iterator(const forward_list_iterator<T, false>& rhs) :
+		m_ptr(rhs.m_ptr), m_before_begin(rhs.m_before_begin)
 	{
 	}
 
@@ -147,6 +157,29 @@ public:
 	{
 		unique_ptr tmp = std::move(m_head->m_next);
 		m_head = std::move(std::move(tmp));
+	}
+
+	iterator insert_after(const_iterator pos, const T& value) { return emplace_after(pos, value); }
+
+	iterator insert_after(const_iterator pos, T&& value)
+	{
+		return emplace_after(pos, std::move(value));
+	}
+
+	template <class... Args>
+	iterator emplace_after(const_iterator pos, Args&&... args)
+	{
+		if (pos.m_before_begin)
+		{
+			emplace_front(std::forward<Args>(args)...);
+			return begin();
+		}
+
+		pos.m_ptr->m_next =
+			make_unique<node>(std::move(pos.m_ptr->m_next), std::forward<Args>(args)...);
+
+		forward_list_iterator it(pos.m_ptr);
+		return ++it;
 	}
 
 	[[nodiscard]] bool empty() const noexcept { return !static_cast<bool>(m_head); }
