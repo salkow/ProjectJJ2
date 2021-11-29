@@ -10,10 +10,9 @@ class BK
 	{
 		Node(T *&item, int parentDistance);
 		T *content;
+		int parentDistance; // distance of this node compared to it's parent node, root's distance is 0
 		bool deleted;
 		bud::vector<Node *> _edges;
-		int parentDistance; // distance of this node compared to it's parent node, root's distance
-							// is 0
 	};
 
 	int (*distanceFunction)(T *, T *); // calculates the distance between two "T"s
