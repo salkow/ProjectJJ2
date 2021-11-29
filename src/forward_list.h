@@ -19,6 +19,7 @@ struct forward_list_node
 	explicit forward_list_node(unique_ptr<forward_list_node>&& next, Args&&... value) :
 		m_next(std::move(next)), m_value(std::forward<Args>(value)...)
 	{
+		int x = 3;
 	}
 
 	unique_ptr<forward_list_node> m_next;
@@ -40,14 +41,17 @@ public:
 
 	forward_list_iterator() = default;
 
-	explicit forward_list_iterator(node_pointer ptr, bool before_begin = false) : m_ptr(ptr), m_before_begin(before_begin) {}
+	explicit forward_list_iterator(node_pointer ptr, bool before_begin = false) :
+		m_ptr(ptr), m_before_begin(before_begin)
+	{
+	}
 
 	forward_list_iterator& operator++()
 	{
-        if (m_before_begin) 
-            m_before_begin = false;
-        else
-            m_ptr = m_ptr->m_next.get();
+		if (m_before_begin)
+			m_before_begin = false;
+		else
+			m_ptr = m_ptr->m_next.get();
 
 		return *this;
 	}
@@ -55,33 +59,33 @@ public:
 	forward_list_iterator operator++(int)
 	{
 		forward_list_iterator it(*this);
-        ++*this;
+		++*this;
 		return it;
 	}
 
 	template <bool Const_ = Const>
 	std::enable_if_t<Const_, reference> operator*() const
-    {
-        return m_ptr->m_value;
-    }
+	{
+		return m_ptr->m_value;
+	}
 
 	template <bool Const_ = Const>
 	std::enable_if_t<!Const_, reference> operator*()
-    {
-        return m_ptr->m_value;
-    }
+	{
+		return m_ptr->m_value;
+	}
 
 	template <bool Const_ = Const>
 	std::enable_if_t<Const_, pointer> operator->() const
-    {
-        return *(m_ptr->m_value);
-    }
+	{
+		return *(m_ptr->m_value);
+	}
 
 	template <bool Const_ = Const>
 	std::enable_if_t<!Const_, pointer> operator->()
-    {
-        return *(m_ptr->m_value);
-    }
+	{
+		return *(m_ptr->m_value);
+	}
 
 	friend bool operator==(const forward_list_iterator& lhs, const forward_list_iterator& rhs)
 	{
@@ -95,7 +99,7 @@ public:
 
 private:
 	node_pointer m_ptr = nullptr;
-    bool m_before_begin = false;
+	bool m_before_begin = false;
 };
 
 template <class T>
@@ -125,7 +129,7 @@ public:
 
 	forward_list& operator=(const forward_list& other) = delete;
 
-	void clear() noexcept { m_head = nullptr; }
+	void clear() noexcept { m_head.reset(); }
 
 	void push_front(const_reference item) { emplace_front(item); }
 
@@ -139,10 +143,11 @@ public:
 		return m_head->m_value;
 	}
 
-    void pop_front()
-    {
-        m_head = std::move(m_head->m_next);
-    }
+	void pop_front()
+	{
+		unique_ptr tmp = std::move(m_head->m_next);
+		m_head = std::move(std::move(tmp));
+	}
 
 	[[nodiscard]] bool empty() const noexcept { return !static_cast<bool>(m_head); }
 
@@ -153,7 +158,10 @@ public:
 	[[nodiscard]] const_iterator cbegin() const noexcept { return const_iterator(m_head.get()); }
 
 	[[nodiscard]] iterator before_begin() const noexcept { return iterator(m_head.get(), true); }
-	[[nodiscard]] const_iterator cbefore_begin() const noexcept { return const_iterator(m_head.get(), true); }
+	[[nodiscard]] const_iterator cbefore_begin() const noexcept
+	{
+		return const_iterator(m_head.get(), true);
+	}
 
 	[[nodiscard]] iterator end() const noexcept { return iterator(); }
 	[[nodiscard]] const_iterator cend() const noexcept { return const_iterator(); }

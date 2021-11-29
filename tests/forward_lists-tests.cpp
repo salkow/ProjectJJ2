@@ -79,47 +79,55 @@ TEST_CASE("Test iterators to forward_list.", "[test_iterators_forward_list]")
 
 TEST_CASE("Before begin forward_list", "[before_begin_forward_list]")
 {
-    forward_list<int> my_list;    
+	forward_list<int> my_list;
 
 	my_list.push_front(1);
 	my_list.push_front(2);
 	my_list.emplace_front(3);
 
-    auto it = my_list.before_begin();    
-    ++it;
-    REQUIRE(*it == 3);
-    ++it;
-    REQUIRE(*it == 2);
-    it++;
-    REQUIRE(*it == 1);
-    it++;
-    REQUIRE(it == my_list.end());
+	auto it = my_list.before_begin();
+	++it;
+	REQUIRE(*it == 3);
+	++it;
+	REQUIRE(*it == 2);
+	it++;
+	REQUIRE(*it == 1);
+	it++;
+	REQUIRE(it == my_list.end());
 }
 
 TEST_CASE("Leak test forward_list", "[leak_test_forward_list]")
 {
-    forward_list<string> my_list;
-    
-    my_list.emplace_front("123");
-    my_list.push_front("456"); 
+	forward_list<string> my_list;
 
-    my_list.clear();
+	my_list.emplace_front("123");
+	my_list.push_front("456");
 
-    string x = "789";
-    my_list.emplace_front(x);
-    my_list.push_front(x);
+	my_list.clear();
+
+	string x = "789";
+	my_list.emplace_front(x);
+	my_list.push_front(x);
 }
 
 TEST_CASE("pop_front forward_list", "[pop_front forward_list]")
 {
-    forward_list<string> my_list;
+	forward_list<string> my_list;
 
-    my_list.emplace_front(string("456"));
-    my_list.pop_front();
+	my_list.emplace_front(string("456"));
+	my_list.pop_front();
 
-    /* my_list.push_front(string("654")); */
-    /* my_list.emplace_front(string("321")); */
+	my_list.push_front(string("654"));
+	my_list.emplace_front(string("321"));
 
-    /* REQUIRE(my_list.front() == "321"); */
+	REQUIRE(my_list.front() == "321");
+	REQUIRE(*(++my_list.begin()) == "654");
+
+	my_list.pop_front();
+
+	REQUIRE(my_list.front() == "654");
+
+	my_list.pop_front();
+
+	REQUIRE(my_list.empty());
 }
-
