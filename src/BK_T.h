@@ -11,7 +11,7 @@ class BK
 		Node(T *&item, int parentDistance);
 		T *content;
 		bool deleted;
-		bud::vector<Node> _edges;
+		bud::vector<Node *> _edges;
 		int parentDistance; // distance of this node compared to it's parent node, root's distance
 							// is 0
 	};

@@ -124,7 +124,7 @@ bud::vector<T> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
 
 	// if the parent node fits our criteria, add to results and explore it's children
 	if (distanceFunction(parent->content, query) <= maxDistance && !parent->deleted)
-		results.push_back(parent->content);
+		results.push_back(*(parent->content));
 
 	// iterate over parent's children, explore only those with
 	// |child->parentDistance - maxDistance| <= maxDistance <= |child->parentDistance + maxDistance|

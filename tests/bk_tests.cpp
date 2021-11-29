@@ -9,7 +9,7 @@ static int distance(bud::string *a, bud::string *b)
 {
 	REQUIRE(a != NULL);
 	REQUIRE(b != NULL);
-	return (int)getEdit(*a, *b);
+	return int(getEdit(*a, *b));
 }
 
 TEST_CASE("Insert some words on a BK tree", "[BK_insert]")
