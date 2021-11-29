@@ -154,4 +154,36 @@ TEST_CASE("emplace_after forward_list", "[emplace_after_forward_list]")
 	it++;
 
 	REQUIRE(*it == "123");
+	it++;
+
+	REQUIRE(it == my_list.end());
+}
+
+TEST_CASE("erase_after forward_list", "erase_after_forward_list")
+{
+	forward_list<string> my_list;
+
+	my_list.emplace_front("123");
+	my_list.push_front("456");
+	my_list.push_front("789");
+
+	my_list.erase_after(my_list.cbegin());
+	REQUIRE(my_list.front() == "789");
+
+	auto it = my_list.begin();
+	++it;
+
+	REQUIRE(*it == "123");
+	++it;
+
+	REQUIRE(it == my_list.end());
+
+	my_list.erase_after(my_list.cbefore_begin());
+
+	REQUIRE(my_list.front() == "123");
+
+	it = my_list.begin();
+	++it;
+
+	REQUIRE(it == my_list.end());
 }

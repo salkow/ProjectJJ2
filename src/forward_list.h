@@ -182,6 +182,27 @@ public:
 		return ++it;
 	}
 
+	iterator erase_after(const_iterator pos)
+	{
+		if (pos.m_before_begin)
+		{
+			pop_front();
+			return begin();
+		}
+
+		if (pos.m_ptr && pos.m_ptr->m_next)
+		{
+			auto tmp = std::move(pos.m_ptr->m_next->m_next);
+
+			pos.m_ptr->m_next = std::move(tmp);
+
+			forward_list_iterator it(pos.m_ptr);
+			return ++it;
+		}
+
+		return end();
+	}
+
 	[[nodiscard]] bool empty() const noexcept { return !static_cast<bool>(m_head); }
 
 	[[nodiscard]] reference front() { return m_head->m_value; }
