@@ -20,6 +20,8 @@ TEST_CASE("Search for items in empty map.", "[search_in_empty_map]")
 	REQUIRE(my_map[231] == nullptr);
 	REQUIRE(my_map[2] == nullptr);
 	REQUIRE(my_map[3] == nullptr);
+
+	REQUIRE(my_map.empty());
 }
 
 TEST_CASE("Insert items to unordered_map.", "[insert_to_unordered_map]")
@@ -44,6 +46,8 @@ TEST_CASE("Insert items to unordered_map.", "[insert_to_unordered_map]")
 	REQUIRE(*my_map[5] == 'e');
 	REQUIRE(*my_map[6] == 'f');
 	REQUIRE(*my_map[7] == 'g');
+
+	REQUIRE(my_map.size() == 7);
 }
 
 TEST_CASE("Modify value inserted to unordered map.", "[modify_value_inserted_to_map]")
@@ -76,9 +80,12 @@ TEST_CASE("Store many items in one unordered map list.", "[multiple_items_one_un
 	REQUIRE(*my_map[99] == 'b');
 	REQUIRE(*my_map[18] == 'c');
 	REQUIRE(*my_map[60] == 'd');
+
+	REQUIRE(my_map.size() == 4);
 }
 
-TEST_CASE("Try to find non existing item.", "[find_non_existing_item]")
+TEST_CASE("Try to find non existing item in unordered_map.",
+		  "[find_non_existing_item_unordered_map]")
 {
 	unordered_map<std::size_t, char, test_hash_function, 2> my_map;
 
@@ -94,7 +101,7 @@ TEST_CASE("Try to find non existing item.", "[find_non_existing_item]")
 	REQUIRE(my_map[111] == nullptr);
 }
 
-TEST_CASE("Insert existing key.", "[insert_existing_key]")
+TEST_CASE("Insert existing key in unordered_map.", "[insert_existing_key_unordered_map]")
 {
 	unordered_map<std::size_t, char, test_hash_function, 2> my_map;
 
@@ -105,4 +112,47 @@ TEST_CASE("Insert existing key.", "[insert_existing_key]")
 	REQUIRE(return_value.second == false);
 
 	REQUIRE(*my_map[54] == 'a');
+}
+
+TEST_CASE("Erase element unordered_map", "[erase_element_unordered_map]")
+{
+	unordered_map<std::size_t, char, test_hash_function, 2> my_map;
+
+	REQUIRE(my_map.erase(54) == 0);
+	REQUIRE(my_map.erase(99) == 0);
+	REQUIRE(my_map.erase(18) == 0);
+	REQUIRE(my_map.erase(60) == 0);
+
+	my_map.insert(pair<const std::size_t, char>(54, 'a'));
+	my_map.insert(pair<const std::size_t, char>(99, 'b'));
+	my_map.insert(pair<const std::size_t, char>(18, 'c'));
+	my_map.insert(pair<const std::size_t, char>(60, 'd'));
+
+	REQUIRE(my_map.erase(54) == 1);
+	REQUIRE(my_map.size() == 3);
+
+	REQUIRE(*my_map[99] == 'b');
+	REQUIRE(*my_map[18] == 'c');
+	REQUIRE(*my_map[60] == 'd');
+
+	REQUIRE(my_map.erase(62) == 0);
+	REQUIRE(my_map.erase(61) == 0);
+	REQUIRE(my_map.size() == 3);
+
+	REQUIRE(my_map.erase(18) == 1);
+	REQUIRE(my_map.size() == 2);
+
+	REQUIRE(*my_map[99] == 'b');
+	REQUIRE(*my_map[60] == 'd');
+
+	REQUIRE(my_map.erase(60) == 1);
+	REQUIRE(my_map.size() == 1);
+
+	REQUIRE(my_map.erase(99) == 1);
+	REQUIRE(my_map.size() == 0);
+
+	REQUIRE(my_map.erase(54) == 0);
+	REQUIRE(my_map.erase(99) == 0);
+	REQUIRE(my_map.erase(18) == 0);
+	REQUIRE(my_map.erase(60) == 0);
 }

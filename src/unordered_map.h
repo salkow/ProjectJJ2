@@ -32,9 +32,6 @@ public:
 
 	T* operator[](const key_type& key) const
 	{
-		if (m_items.size() == 0)
-			return nullptr;
-
 		size_type index = m_get_hash(key);
 
 		for (auto& item : m_items[index])
@@ -48,10 +45,7 @@ public:
 
 	pair<T*, bool> insert(const_reference value)
 	{
-		size_type index = 0;
-
-		if (m_items.size() != 0)
-			index = m_get_hash(value.first);
+		size_type index = m_get_hash(value.first);
 
 		forward_list<value_type>* bucket_ptr = &(m_items[index]);
 
@@ -65,15 +59,43 @@ public:
 
 		++m_size;
 
-		return pair<T*, bool>(return_value, true);
+		return pair(return_value, true);
 	}
 
-    size_type erase(const Key& key)
-    {
-        return 0;
-    }
+	size_type erase(const Key& key)
+	{
+		size_type index = m_get_hash(key);
 
-    [[nodiscard]] size_type size() const { return m_size; }
+		forward_list<value_type>* bucket_ptr = &(m_items[index]);
+
+		auto prev_it = bucket_ptr->cbefore_begin();
+
+		for (auto it = bucket_ptr->begin(); it != bucket_ptr->end(); ++it)
+		{
+			if (compare_values(it->first, key))
+			{
+				// Used to check if we deleted an element of not.
+				auto is_last_it = prev_it;
+				++is_last_it;
+				++is_last_it;
+
+				auto return_it = bucket_ptr->erase_after(prev_it);
+
+				if (return_it == bucket_ptr->end() && is_last_it != bucket_ptr->end())
+					return 0;
+
+				--m_size;
+				return 1;
+			}
+
+			prev_it = it;
+		}
+
+		return 0;
+	}
+
+	[[nodiscard]] size_type size() const { return m_size; }
+	[[nodiscard]] size_type empty() const { return m_size == 0; }
 
 private:
 	size_type m_get_hash(key_type key) const { return m_hash_function(key) % Size; }
