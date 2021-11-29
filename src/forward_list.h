@@ -88,13 +88,13 @@ public:
 	template <bool Const_ = Const>
 	std::enable_if_t<Const_, pointer> operator->() const
 	{
-		return *(m_ptr->m_value);
+		return &m_ptr->m_value;
 	}
 
 	template <bool Const_ = Const>
 	std::enable_if_t<!Const_, pointer> operator->()
 	{
-		return *(m_ptr->m_value);
+		return &m_ptr->m_value;
 	}
 
 	friend bool operator==(const forward_list_iterator& lhs, const forward_list_iterator& rhs)
