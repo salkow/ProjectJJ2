@@ -10,12 +10,12 @@
 
 namespace bud
 {
-using size_type = std::size_t;
-constexpr std::size_t CAPACITY_INCREASE_FACTOR = 2;
 
 class string
 {
 public:
+	std::size_t CAPACITY_INCREASE_FACTOR = 2;
+	using size_type = std::size_t;
 	using value_type = char;
 	using iterator = random_access_iterator<value_type>;
 	using pointer = value_type*;
@@ -24,72 +24,43 @@ public:
 	using iterator_category = std::random_access_iterator_tag;
 	using difference_type = std::ptrdiff_t;
 
-	string() : m_elem(create_string(0)) {}
+	string();
 
-	string(size_type count, char ch) :
-		m_size(count), m_elem(create_string(count)), m_capacity(count)
-	{
-		memset(m_elem, ch, count);
-	}
+	string(size_type count, char ch);
 
-	string(const string& other) :
-		m_size(other.m_size), m_elem(create_string(other.m_size)), m_capacity(m_size)
-	{
-		std::memcpy(m_elem, other.m_elem, m_size);
-	}
+	string(const string& other);
 
-	string(string&& other) noexcept
-	{
-		m_size = std::exchange(other.m_size, 0);
-		m_elem = std::exchange(other.m_elem, nullptr);
-		m_capacity = std::exchange(other.m_capacity, 0);
-	}
+	string(string&& other) noexcept;
 
-	string(const char* other) :
-		m_size(strlen(other)), m_elem(create_string(m_size)), m_capacity(m_size)
-	{
-		std::memcpy(m_elem, other, m_size);
-	}
+	string(const char* other);
 
-	constexpr string(std::nullptr_t) = delete;
+	string(std::nullptr_t) = delete;
 
-	string& operator=(string other)
-	{
-		other.swap(*this);
-		return *this;
-	}
+	string& operator=(string other);
 
-	string& operator=(const char* other)
-	{
-		m_size = strlen(other);
-		fit(m_size);
-		std::memcpy(m_elem, other, m_size);
-		m_elem[m_size] = '\0';
+	string& operator=(const char* other);
 
-		return *this;
-	}
+	string& operator=(std::nullptr_t) = delete;
 
-	constexpr string& operator=(std::nullptr_t) = delete;
+	~string();
 
-	~string() { delete_string(); }
+	[[nodiscard]] bool empty() const;
 
-	[[nodiscard]] constexpr bool empty() const { return m_size == 0; }
+	[[nodiscard]] size_type size() const;
+	[[nodiscard]] size_type length() const;
 
-	[[nodiscard]] constexpr size_type size() const { return m_size; }
-	[[nodiscard]] constexpr size_type length() const { return m_size; }
+	[[nodiscard]] iterator begin() const noexcept;
 
-	[[nodiscard]] iterator begin() const noexcept { return iterator(m_elem); }
+	[[nodiscard]] iterator end() const noexcept;
 
-	[[nodiscard]] iterator end() const noexcept { return iterator(m_elem + m_size); }
+	[[nodiscard]] reference front() noexcept;
+	[[nodiscard]] const_reference front() const noexcept;
 
-	[[nodiscard]] constexpr reference front() noexcept { return m_elem[0]; }
-	[[nodiscard]] constexpr const_reference front() const noexcept { return m_elem[0]; }
+	[[nodiscard]] reference back() noexcept;
+	[[nodiscard]] const_reference back() const noexcept;
 
-	[[nodiscard]] constexpr reference back() noexcept { return m_elem[m_size - 1]; }
-	[[nodiscard]] constexpr const_reference back() const noexcept { return m_elem[m_size - 1]; }
-
-	[[nodiscard]] constexpr pointer data() noexcept { return m_elem; }
-	[[nodiscard]] constexpr pointer data() const noexcept { return m_elem; }
+	[[nodiscard]] pointer data() noexcept;
+	[[nodiscard]] pointer data() const noexcept;
 
 	void swap(string& other) noexcept
 	{
@@ -106,71 +77,33 @@ public:
 		other.m_capacity = size_tmp;
 	}
 
-	bool operator==(const string& other) const
-	{
-		if (m_size != other.m_size)
-			return false;
+	bool operator==(const string& other) const;
 
-		return !(std::memcmp(m_elem, other.m_elem, m_size));
-	}
+	bool operator==(const char* other) const;
 
-	bool operator==(const char* other) const { return !(std::strcmp(m_elem, other)); }
+	bool operator!=(const string& other) const;
+	bool operator!=(const char* other) const;
 
-	bool operator!=(const string& other) const { return !(*this == other); }
-	bool operator!=(const char* other) const { return !(this->m_elem == other); }
+	reference operator[](size_type pos) noexcept;
+	const_reference operator[](size_type pos) const noexcept;
 
-	constexpr reference operator[](size_type pos) noexcept { return m_elem[pos]; }
-	constexpr const_reference operator[](size_type pos) const noexcept { return m_elem[pos]; }
+	[[nodiscard]] reference at(size_type pos);
 
-	[[nodiscard]] constexpr reference at(size_type pos)
-	{
-		if (pos < m_size)
-			return m_elem[pos];
-
-		throw std::out_of_range("Index out of range");
-	}
-
-	[[nodiscard]] constexpr const_reference at(size_type pos) const
-	{
-		if (pos < m_size)
-			return m_elem[pos];
-
-		throw std::out_of_range("Index out of range");
-	}
+	[[nodiscard]] const_reference at(size_type pos) const;
 
 	friend void swap(string& first, string& second) noexcept { first.swap(second); }
 
-	constexpr void reserve(size_type new_cap)
-	{
-		if (m_capacity < new_cap)
-			reallocate(new_cap);
-	}
+	void reserve(size_type new_cap);
 
-	[[nodiscard]] constexpr size_type capacity() const { return m_capacity; }
+	[[nodiscard]] size_type capacity() const;
 
-	void clear() noexcept
-	{
-		m_elem[0] = '\0';
-		m_size = 0;
-	}
+	void clear() noexcept;
 
-	[[nodiscard]] const char* c_str() const { return m_elem; }
+	[[nodiscard]] const char* c_str() const;
 
-	void push_back(char ch)
-	{
-		if (m_size == m_capacity)
-			reallocate(get_increased_capacity());
+	void push_back(char ch);
 
-		m_elem[m_size] = ch;
-		m_size++;
-		m_elem[m_size] = '\0';
-	}
-
-	void pop_back()
-	{
-		m_elem[m_size - 1] = '\0';
-		m_size--;
-	}
+	void pop_back();
 
 	friend std::ostream& operator<<(std::ostream& os, const string& str)
 	{
@@ -179,41 +112,15 @@ public:
 	}
 
 private:
-	void reallocate(size_type new_cap)
-	{
-		auto* tmp_string = create_string(new_cap);
-		std::memcpy(tmp_string, m_elem, m_size);
+	void reallocate(size_type new_cap);
 
-		delete_string();
+	void fit(size_type new_cap);
 
-		m_elem = tmp_string;
-		m_elem[m_size] = '\0';
-		m_capacity = new_cap;
-	}
+	void delete_string();
 
-	void fit(size_type new_cap)
-	{
-		if (m_capacity < new_cap)
-		{
-			delete_string();
-			m_elem = create_string(new_cap);
-			m_capacity = new_cap;
-		}
-	}
+	[[nodiscard]] static char* create_string(size_type size);
 
-	void delete_string() { delete[] m_elem; }
-
-	[[nodiscard]] static char* create_string(size_type size)
-	{
-		auto* tmp = new char[size + 1];
-		tmp[size] = '\0';
-		return tmp;
-	}
-
-	[[nodiscard]] constexpr size_type get_increased_capacity() const
-	{
-		return m_capacity * CAPACITY_INCREASE_FACTOR + 1;
-	}
+	[[nodiscard]] size_type get_increased_capacity() const;
 
 	size_type m_size = 0;
 	char* m_elem;
