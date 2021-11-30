@@ -40,6 +40,25 @@ struct HashFunction
 	}
 
 	std::size_t operator()(int value) const { return static_cast<size_t>(value); }
+
+	std::size_t operator()(unsigned int value) const { return static_cast<size_t>(value); }
 };
+
+namespace bud
+{
+
+template <class InputIt, class T>
+InputIt find(InputIt first, InputIt last, const T& value)
+{
+	for (; first != last; ++first)
+	{
+		if (*first == value)
+			return first;
+	}
+
+	return last;
+}
+
+} // namespace bud
 
 #endif // UTIL_H
