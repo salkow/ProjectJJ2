@@ -165,6 +165,17 @@ public:
 		m_size = 0;
 	}
 
+	iterator erase(const_iterator pos)
+	{
+		auto offset = static_cast<size_t>(pos - begin());
+
+		move_items_in_block(offset, m_size - 1);
+
+		pop_back();
+
+		return begin() + offset;
+	}
+
 	[[nodiscard]] iterator begin() const noexcept { return iterator(m_elements); }
 	[[nodiscard]] const_iterator cbegin() const noexcept { return const_iterator(m_elements); }
 
@@ -218,6 +229,27 @@ private:
 		{
 			for (size_type i = 0; i < m_size; ++i)
 				new (&new_block[i]) T(m_elements[i]);
+		}
+	}
+
+	void move_items_in_block(size_type start, size_type end)
+	{
+		if constexpr (std::is_nothrow_move_constructible_v<T>)
+		{
+			for (size_type i = start; i < end; ++i)
+			{
+				m_elements[i].~T();
+				new (&m_elements[i]) T(std::move(m_elements[i + 1]));
+			}
+		}
+
+		else
+		{
+			for (size_type i = start; i < end; ++i)
+			{
+				m_elements[i].~T();
+				new (&m_elements[i]) T(m_elements[i + 1]);
+			}
 		}
 	}
 

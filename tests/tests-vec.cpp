@@ -1,6 +1,8 @@
 #include "../lib/include/catch2/catch.hpp"
 #include "../src/vector.h"
+#include "../src/my_string.h"
 
+using bud::string;
 using bud::vector;
 
 TEST_CASE("Check if a new vector is empty.", "[empty_vector]")
@@ -173,4 +175,42 @@ TEST_CASE("Copy vector")
 	vec_3 = vec_1;
 
 	REQUIRE(vec_1 == vec_3);
+}
+
+TEST_CASE("Erase element vector", "[erase_element_vector]")
+{
+	vector<bud::string> vec_1;
+	vec_1.emplace_back("1");
+	vec_1.emplace_back("2");
+	vec_1.emplace_back("3");
+
+	auto result_it = vec_1.erase(vec_1.begin() + 1);
+	REQUIRE(result_it == vec_1.begin() + 1);
+
+	REQUIRE(vec_1[0] == "1");
+	REQUIRE(vec_1[1] == "3");
+
+	REQUIRE(vec_1.size() == 2);
+
+	auto vec_2 = vec_1;
+
+	result_it = vec_1.erase(vec_1.begin());
+	REQUIRE(result_it == vec_1.begin());
+
+	REQUIRE(vec_1[0] == "3");
+
+	REQUIRE(vec_1.size() == 1);
+
+	result_it = vec_2.erase(vec_2.begin() + 1);
+	REQUIRE(result_it == vec_2.begin() + 1);
+
+	REQUIRE(vec_2[0] == "1");
+
+	REQUIRE(vec_2.size() == 1);
+
+	result_it = vec_1.erase(vec_1.begin());
+	REQUIRE(result_it == vec_1.begin());
+	REQUIRE(result_it == vec_1.end());
+
+	REQUIRE(vec_1.empty());
 }
