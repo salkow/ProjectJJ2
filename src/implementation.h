@@ -26,7 +26,9 @@ class implementation
 public:
     implementation() = default;
     ~implementation() = default;
-    ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance){};
+    ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance){
+                
+    };
     ErrorCode removeQuery(QueryID id){};
     ErrorCode getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids){
         if(m_res.size() ==0){
