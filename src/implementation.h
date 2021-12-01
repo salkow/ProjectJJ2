@@ -11,13 +11,14 @@
 class implementation
 {
 public:
-    implementation(){
-        m_edit_bk = new bkTree(MatchType::MT_EDIT_DIST);
-    };
+    implementation() = default;
     ~implementation() = default;
     ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance){
         auto* query = new Query(id, str, match_type, tolerance);
         if(match_type == MT_EDIT_DIST){
+            auto result = m_queries_ht->insert(bud::pair<const QueryID, Query*>(id, query));
+            if (!result.second)
+                return EC_FAIL;
             m_edit_bk->add(query, tolerance);
         }
         return EC_SUCCESS;
@@ -42,7 +43,8 @@ private:
     bud::unordered_map<QueryID, Query*, HashFunction> *m_queries_ht;
     bud::vector<Result> m_res;
 
-    bkTree *m_edit_bk;
+    bud::unique_ptr<bkTree> m_edit_bk = bud::make_unique<bkTree>(new bkTree(MatchType::MT_EDIT_DIST));
+
 };
 
 #endif // IMPL_H

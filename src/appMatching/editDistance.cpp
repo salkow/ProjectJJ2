@@ -42,14 +42,14 @@ unsigned long getEdit(string f, string s, unsigned int tolerance){//this functio
                         d[i][j] = d[i][j-1]+1;//insert case
                     }
                 }
-                if(d[i][j] >= tolerance){
-                    unsigned long fin = d[i][j];
-                    for(unsigned long k=0;k<b+1;k++){
-                        delete[] d[k];
-                    }
-                    delete[] d;
-                    return fin;
+            }
+            if(d[i][j] >= tolerance){
+                unsigned long fin = d[i][j];
+                for(unsigned long k=0;k<b+1;k++){
+                    delete[] d[k];
                 }
+                delete[] d;
+                return fin;
             }
         }
     }
