@@ -102,4 +102,4 @@ ErrorCode implementation::removeQuery(QueryID id)
 	delete *query;
 
 	return EC_SUCCESS;
-};
+}
