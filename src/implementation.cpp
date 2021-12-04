@@ -1,34 +1,60 @@
 #include "implementation.h"
+#include <cstring>
 
-Query::Query(QueryID id, const char* str, MatchType match_type, unsigned int tolerance) :
-	m_id(id), m_match_type(match_type), m_tolerance(tolerance)
+Query::Query(QueryID id, const char *str, MatchType match_type, unsigned int tolerance) : m_id(id), m_match_type(match_type), m_tolerance(tolerance)
 {
-	// TODO: Split str into words and add them to m_str.
-	// HINT: Replace ' ' with \0 and use the string constructor to get the word.
+	char *working_string = new char[strlen(str) + 1];
+	strcpy(working_string, str);
+
+	// char *cursor = working_string;
+	unsigned int pos = 0;
+
+	//replace all ' ' with '\0'
+	while (pos < strlen(working_string))
+	{
+		if (working_string[pos] == ' ')
+		{
+			working_string[pos] == '\0';
+			pos++;
+		}
+	}
+
+	//add to vector
+	pos = 0;
+	m_str.push_back(working_string);
+	while (pos < strlen(working_string))
+	{
+		if (working_string[pos++] == '\0')
+		{
+			m_str.push_back(working_string + pos);
+		}
+	}
+
+	delete[] working_string;
 }
 
-ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_type,
+ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_type,
 								   unsigned int tolerance)
 {
-	auto* query = new Query(id, str, match_type, tolerance);
+	auto *query = new Query(id, str, match_type, tolerance);
 
 	if (match_type == MT_EXACT_MATCH)
 	{
-		auto result = m_queries_ht.insert(bud::pair<const QueryID, Query*>(id, query));
+		auto result = m_queries_ht.insert(bud::pair<const QueryID, Query *>(id, query));
 		if (!result.second)
 			return EC_FAIL;
 
-		for (const auto& query_str : query->m_str)
+		for (const auto &query_str : query->m_str)
 		{
-			bud::vector<Query*>* queries_matching_string = m_words_ht[query_str];
+			bud::vector<Query *> *queries_matching_string = m_words_ht[query_str];
 
 			if (!queries_matching_string)
 			{
-				bud::vector<Query*> queries;
+				bud::vector<Query *> queries;
 				queries.emplace_back(query);
 
 				auto other_result =
-					m_words_ht.insert(bud::pair<const bud::string, bud::vector<Query*>>(
+					m_words_ht.insert(bud::pair<const bud::string, bud::vector<Query *>>(
 						query_str, std::move(queries)));
 
 				if (!other_result.second)
@@ -47,13 +73,13 @@ ErrorCode implementation::removeQuery(QueryID id)
 {
 	// assuming MT_EXACT_MATCH
 
-	Query** query = m_queries_ht[id];
+	Query **query = m_queries_ht[id];
 	if (!query)
 		return EC_FAIL;
 
-	for (const auto& query_word : (*query)->m_str)
+	for (const auto &query_word : (*query)->m_str)
 	{
-		bud::vector<Query*>* queries_with_that_word = m_words_ht[query_word];
+		bud::vector<Query *> *queries_with_that_word = m_words_ht[query_word];
 
 		if (!queries_with_that_word)
 			return EC_FAIL;
