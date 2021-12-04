@@ -8,28 +8,20 @@ Query::Query(QueryID id, const char *str, MatchType match_type, unsigned int tol
 	size_t orig_len = strlen(working_string);
 
 	// char *cursor = working_string;
-	unsigned int pos = 0;
+	unsigned int curs, start = curs = 0;
 
 	//replace all ' ' with '\0'
-	while (pos < orig_len)
+	while (curs < orig_len)
 	{
-		if (working_string[pos] == ' ')
+		if (working_string[curs] == ' ')
 		{
-			working_string[pos] = '\0';
+			working_string[curs] = '\0';
+			m_str.push_back(working_string + start);
+			start = curs + 1;
 		}
-		pos++;
+		curs++;
 	}
-
-	//add to vector
-	pos = 0;
-	m_str.push_back(working_string);
-	while (pos < orig_len)
-	{
-		if (working_string[pos++] == '\0')
-		{
-			m_str.push_back(working_string + pos);
-		}
-	}
+	m_str.push_back(working_string + start);
 
 	delete[] working_string;
 }
