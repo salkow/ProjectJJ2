@@ -5,16 +5,17 @@ Query::Query(QueryID id, const char *str, MatchType match_type, unsigned int tol
 {
 	char *working_string = new char[strlen(str) + 1];
 	strcpy(working_string, str);
+	size_t orig_len = strlen(working_string);
 
 	// char *cursor = working_string;
 	unsigned int pos = 0;
 
 	//replace all ' ' with '\0'
-	while (pos < strlen(working_string))
+	while (pos < orig_len)
 	{
 		if (working_string[pos] == ' ')
 		{
-			working_string[pos] == '\0';
+			working_string[pos] = '\0';
 		}
 		pos++;
 	}
@@ -22,7 +23,7 @@ Query::Query(QueryID id, const char *str, MatchType match_type, unsigned int tol
 	//add to vector
 	pos = 0;
 	m_str.push_back(working_string);
-	while (pos < strlen(working_string))
+	while (pos < orig_len)
 	{
 		if (working_string[pos++] == '\0')
 		{
