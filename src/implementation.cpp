@@ -15,8 +15,8 @@ Query::Query(QueryID id, const char *str, MatchType match_type, unsigned int tol
 		if (working_string[pos] == ' ')
 		{
 			working_string[pos] == '\0';
-			pos++;
 		}
+		pos++;
 	}
 
 	//add to vector
