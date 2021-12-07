@@ -32,8 +32,6 @@ public:
 	using value_type = T;
 	using reference = typename std::conditional_t<Const, value_type const&, value_type&>;
 	using pointer = typename std::conditional_t<Const, value_type const*, value_type*>;
-	using iterator_category = std::forward_iterator_tag;
-	using difference_type = std::ptrdiff_t;
 
 	using node = forward_list_node<T>;
 	using node_pointer = node*;
@@ -115,28 +113,21 @@ private:
 template <class T>
 class forward_list
 {
+public:
 	using value_type = T;
 	using reference = value_type&;
 	using const_reference = const value_type&;
 	using node = forward_list_node<T>;
 	using iterator = forward_list_iterator<T>;
 	using const_iterator = forward_list_iterator<T, true>;
+	using iterator_category = std::forward_iterator_tag;
 
-public:
 	forward_list() = default;
+	~forward_list() = default;
 
-	forward_list(forward_list&& other) noexcept : m_head(std::move(other.m_head)) {}
+	forward_list(forward_list&& other) noexcept = default;
 
 	forward_list(const forward_list& other) = delete;
-
-	~forward_list() { clear(); }
-
-	forward_list& operator=(forward_list&& other) noexcept
-	{
-		m_head = std::move(other.m_head);
-		return *this;
-	}
-
 	forward_list& operator=(const forward_list& other) = delete;
 
 	void clear() noexcept { m_head.reset(); }

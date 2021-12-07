@@ -17,42 +17,15 @@ template <typename T>
 	return *first == *second;
 }
 
-struct HashFunction
-{
-	std::size_t operator()(const bud::string& value) const
-	{
-		std::size_t sum = 0;
-
-		for (const auto I : value)
-			sum += static_cast<std::size_t>(I);
-
-		return sum;
-	}
-
-	std::size_t operator()(const bud::string* value) const
-	{
-		std::size_t sum = 0;
-
-		for (const auto I : *value)
-			sum += static_cast<std::size_t>(I);
-
-		return sum;
-	}
-
-	std::size_t operator()(int value) const { return static_cast<size_t>(value); }
-
-	std::size_t operator()(unsigned int value) const { return static_cast<size_t>(value); }
-};
-
 namespace bud
 {
 
-template <class InputIt, class T>
-InputIt find(InputIt first, InputIt last, const T& value)
+template <class InputIt, class UnaryPredicate>
+constexpr InputIt find_if(InputIt first, InputIt last, UnaryPredicate p)
 {
 	for (; first != last; ++first)
 	{
-		if (*first == value)
+		if (p(*first))
 			return first;
 	}
 

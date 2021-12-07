@@ -159,14 +159,12 @@ public:
 
 	friend random_access_iterator operator+(const random_access_iterator& it, size_type offset)
 	{
-		random_access_iterator new_it(it);
-		return new_it += offset;
+		return random_access_iterator(it.m_ptr + offset);
 	}
 
 	friend random_access_iterator operator-(const random_access_iterator& it, size_type offset)
 	{
-		random_access_iterator new_it(it);
-		return new_it -= offset;
+		return random_access_iterator(it.m_ptr - offset);
 	}
 
 	friend difference_type operator-(const random_access_iterator& lhs,

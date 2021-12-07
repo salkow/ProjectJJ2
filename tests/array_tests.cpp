@@ -96,9 +96,6 @@ TEST_CASE("Iterators array", "[iterators_array]")
 	REQUIRE(arr[2] == 6);
 
 	REQUIRE(arr.begin() < arr.end());
-
-	my_it = arr.begin();
-
 	REQUIRE(arr.begin() + 3 == arr.end());
 	REQUIRE(arr.begin() + 2 == arr.end() - 1);
 }

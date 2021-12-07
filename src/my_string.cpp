@@ -1,6 +1,6 @@
 #include "my_string.h"
 
-bud::string::string() : m_elem(create_string(0)) {}
+bud::string::string() : m_elem(create_string(STARTING_CAPACITY)) {}
 
 bud::string::string(bud::size_type count, char ch) :
 	m_size(count), m_elem(create_string(count)), m_capacity(count)

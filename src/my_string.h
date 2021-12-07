@@ -13,8 +13,10 @@ namespace bud
 
 class string
 {
+	constexpr static std::size_t CAPACITY_INCREASE_FACTOR = 2;
+	constexpr static std::size_t STARTING_CAPACITY = 0;
+
 public:
-	std::size_t CAPACITY_INCREASE_FACTOR = 2;
 	using size_type = std::size_t;
 	using value_type = char;
 	using iterator = random_access_iterator<value_type>;
@@ -124,7 +126,7 @@ private:
 
 	size_type m_size = 0;
 	char* m_elem;
-	size_type m_capacity = 0;
+	size_type m_capacity = STARTING_CAPACITY;
 };
 
 } // namespace bud

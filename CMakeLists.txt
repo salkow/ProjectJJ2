@@ -19,14 +19,6 @@ add_compile_options(
         "$<$<CONFIG:RELEASE>:-O3>"
 )
 
-find_program(CLANG_TIDY_EXISTS "clang-tidy")
-IF (CLANG_TIDY_EXISTS)
-    set(CMAKE_CXX_CLANG_TIDY
-            clang-tidy;
-            -header-filter=.*;
-            -use-color;)
-ENDIF ()
-
 file(GLOB_RECURSE SOURCES src/*.cpp)
 add_executable(${TARGET} ${SOURCES})
 

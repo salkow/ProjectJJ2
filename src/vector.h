@@ -13,7 +13,7 @@ namespace bud
 template <class T>
 class vector
 {
-	const std::size_t CAPACITY_INCREASE_FACTOR = 2;
+	constexpr static std::size_t CAPACITY_INCREASE_FACTOR = 2;
 
 public:
 	using value_type = T;

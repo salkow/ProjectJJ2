@@ -137,4 +137,6 @@ TEST_CASE("null unique_ptr", "[null_unique_ptr]")
     unique_ptr<int> y = nullptr;
 
     x = std::move(y);
-} 
+
+	REQUIRE(x == nullptr);
+}

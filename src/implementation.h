@@ -5,11 +5,15 @@
 #include "../include/core.h"
 #include "my_string.h"
 #include "unordered_map.h"
+#include "unordered_set.h"
 #include "util.h"
 
 struct Query
 {
 	Query(QueryID id, const char* str, MatchType match_type, unsigned int tolerance);
+
+	bool operator==(const Query& rhs) const { return m_id == rhs.m_id; }
+	bool operator!=(const Query& rhs) const { return m_id != rhs.m_id; }
 
 	QueryID m_id;
 	bud::vector<bud::string> m_str;
@@ -27,14 +31,14 @@ struct Result
 struct Entry
 {
 	bud::string m_word;
-	bud::vector<bud::string> m_payload;
+	bud::vector<Query*> m_payload;
 };
 
 class implementation
 {
 public:
 	implementation() = default;
-	~implementation() = default;
+	~implementation();
 	ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance);
 	ErrorCode removeQuery(QueryID id);
 	ErrorCode getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids)
@@ -52,9 +56,8 @@ public:
 	}
 
 private:
-	// TODO: Fix memory leak of Query*.
-	bud::unordered_map<bud::string, bud::vector<Query*>, HashFunction, 128> m_words_ht;
-	bud::unordered_map<QueryID, Query*, HashFunction, 128> m_queries_ht;
+	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
+	bud::unordered_map<QueryID, Query*> m_queries_ht;
 	bud::vector<Result> m_res;
 };
 
