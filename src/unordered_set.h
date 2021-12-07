@@ -142,7 +142,7 @@ private:
 		return pair(return_value, true);
 	}
 
-	void insert_after_rehash(const_reference&& value)
+	void insert_after_rehash(key_type&& value)
 	{
 		size_type index = m_get_hash(value);
 

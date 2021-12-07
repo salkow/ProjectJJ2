@@ -26,7 +26,8 @@ struct pair
 	}
 
 	template <class U1, class U2>
-	pair(pair<U1, U2>&& p) : first(std::forward<U1>(p.first)), second(std::forward<U2>(p.second))
+	pair(pair<U1, U2>&& p) noexcept :
+		first(std::forward<U1>(p.first)), second(std::forward<U2>(p.second))
 	{
 	}
 
