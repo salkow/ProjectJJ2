@@ -20,6 +20,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 cmake-build-debug/
+cmake-build-release/
 
 # Catch2
 DartConfiguration.tcl
@@ -32,3 +33,4 @@ run_tests_*
 .vscode
 build
 .cmake/
+/result.txt
