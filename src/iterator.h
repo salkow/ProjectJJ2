@@ -17,8 +17,15 @@ public:
 	using pointer = typename std::conditional_t<Const, value_type const*, value_type*>;
 	using difference_type = std::ptrdiff_t;
 
+	friend class my_iterator<T, true>;
+
 	my_iterator() = default;
 	explicit my_iterator(T* ptr) : m_ptr(ptr) {}
+
+	template <bool Const_ = Const, class = std::enable_if_t<Const_>>
+	my_iterator(const my_iterator<T, false>& rhs) : m_ptr(rhs.m_ptr)
+	{
+	}
 
 	my_iterator& operator++()
 	{
@@ -75,8 +82,15 @@ class forward_iterator : public my_iterator<T, Const>
 {
 public:
 	using pointer = typename my_iterator<T, Const>::pointer;
+	friend class forward_iterator<T, true>;
+
 	forward_iterator() = default;
 	explicit forward_iterator(T* ptr) : my_iterator<T, Const>(ptr) {}
+
+	template <bool Const_ = Const, class = std::enable_if_t<Const_>>
+	forward_iterator(const forward_iterator<T, false>& rhs) : my_iterator<T, Const_>(rhs.m_ptr)
+	{
+	}
 };
 
 template <typename T, bool Const = false>
@@ -87,8 +101,16 @@ public:
 	using reference = typename my_iterator<T, Const>::reference;
 	using difference_type = typename my_iterator<T, Const>::difference_type;
 
+	friend class random_access_iterator<T, true>;
+
 	random_access_iterator() = default;
 	explicit random_access_iterator(T* ptr) : forward_iterator<T, Const>(ptr) {}
+
+	template <bool Const_ = Const, class = std::enable_if_t<Const_>>
+	random_access_iterator(const random_access_iterator<T, false>& rhs) :
+		forward_iterator<T, Const_>(rhs.m_ptr)
+	{
+	}
 
 	random_access_iterator& operator--()
 	{
@@ -137,14 +159,12 @@ public:
 
 	friend random_access_iterator operator+(const random_access_iterator& it, size_type offset)
 	{
-		random_access_iterator new_it(it);
-		return new_it += offset;
+		return random_access_iterator(it.m_ptr + offset);
 	}
 
 	friend random_access_iterator operator-(const random_access_iterator& it, size_type offset)
 	{
-		random_access_iterator new_it(it);
-		return new_it -= offset;
+		return random_access_iterator(it.m_ptr - offset);
 	}
 
 	friend difference_type operator-(const random_access_iterator& lhs,
