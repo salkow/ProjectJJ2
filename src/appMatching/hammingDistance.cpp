@@ -15,3 +15,8 @@ unsigned long getHamming(string f, string s){//simply for each letter (since we 
     }
     return fin;
 }
+
+// static int Hdistance(bud::string *a, bud::string *b, unsigned int tolerance)
+// {
+// 	return int(getHamming(*a, *b, tolerance));
+// }

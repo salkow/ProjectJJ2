@@ -1,12 +1,12 @@
 #ifndef IMPL_H
 #define IMPL_H
 
-#include "bkTree.h"
-// #include "../include/core.h"
-// #include "my_string.h"
 #include "unique_ptr.h"
 #include "unordered_map.h"
 #include "util.h"
+#include "../src/BK_T.h"
+#include "appMatching/editDistance.h"
+
 
 class implementation
 {
@@ -16,14 +16,15 @@ public:
     ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance){
         auto* query = new Query(id, str, match_type, tolerance);
         if(match_type == MT_EDIT_DIST){
-            auto result = m_queries_ht->insert(bud::pair<const QueryID, Query*>(id, query));
-            if (!result.second)
-                return EC_FAIL;
-            m_edit_bk->add(query, tolerance);
+            // m_edit_bk->add(query, tolerance);
+            // m_edit_bk->insert(query[0].m_str, tolerance);
+            m_edit_bk->insert(&(query->m_str[0]));
         }
         return EC_SUCCESS;
     };
-    ErrorCode removeQuery(QueryID id){};
+    ErrorCode removeQuery(QueryID id){
+        return EC_SUCCESS;
+    };
     ErrorCode getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids){
         if(m_res.size() ==0){
             return EC_NO_AVAIL_RES;
@@ -43,7 +44,7 @@ private:
     bud::unordered_map<QueryID, Query*, HashFunction> *m_queries_ht;
     bud::vector<Result> m_res;
 
-    bud::unique_ptr<bkTree> m_edit_bk = bud::make_unique<bkTree>(new bkTree(MatchType::MT_EDIT_DIST));
+    bud::unique_ptr<BK<bud::string>> m_edit_bk = bud::make_unique<BK<bud::string>>(BK(&Edistance));
 
 };
 

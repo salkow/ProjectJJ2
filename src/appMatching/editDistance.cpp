@@ -43,7 +43,7 @@ unsigned long getEdit(string f, string s, unsigned int tolerance){//this functio
                     }
                 }
             }
-            if(d[i][j] >= tolerance){
+            if(tolerance != 0 && d[i][j] >= tolerance){
                 unsigned long fin = d[i][j];
                 for(unsigned long k=0;k<b+1;k++){
                     delete[] d[k];

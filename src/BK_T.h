@@ -15,25 +15,25 @@ class BK
 		bud::vector<Node *> _edges;
 	};
 
-	int (*distanceFunction)(T *, T *); // calculates the distance between two "T"s
+	int (*distanceFunction)(T *, T *, unsigned int); // calculates the distance between two "T"s
 	Node *root;
 	void recInsert(Node *parent, T *item); // inserts a "T" into a tree recusrsively
 	void recDelete(Node *);				   // recursively delete all nodes, used in the destructor
-	bud::vector<T *> recSearch(Node *parent, T *query,
-							   int maxDistance) const; // recursively searches the tree for words that
-													   // have <= maxDistance to the given query
+	// bud::vector<T *> recSearch(Node *parent, T *query,
+	// 						   int maxDistance) const; // recursively searches the tree for words that
+	// 												   // have <= maxDistance to the given query
 	Node *traverse(T *);							   // traverses the tree and returns a pointer if the
 													   // given item is found on it, NULL if not.
 
 public:
 	BK(int (*distanceFunction)(T *,
-							   T *)); // the distance function finds the distance between two "T"s
+							   T *, unsigned int)); // the distance function finds the distance between two "T"s
 	~BK();
 
 	void insert(T *); // inserts a "T" into the tree
-	bud::vector<T *> search(T *query,
-							int maxDistance) const; // searches the tree for words that
-													// have <= maxDistance to the given query
+	// bud::vector<T *> search(T *query,
+	// 						int maxDistance) const; // searches the tree for words that
+	// 												// have <= maxDistance to the given query
 	void remove(T *);								//removes the given item from the tree
 };
 

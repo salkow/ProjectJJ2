@@ -10,7 +10,7 @@ template <typename T>
 BK<T>::Node::Node(T *&cont, int parDistance) : content(cont), parentDistance(parDistance), deleted(false) {}
 
 template <typename T>
-BK<T>::BK(int (*distanceFunc)(T *, T *)) : distanceFunction(distanceFunc), root(NULL) {}
+BK<T>::BK(int (*distanceFunc)(T *, T *, unsigned int)) : distanceFunction(distanceFunc), root(NULL) {}
 
 template <typename T>
 BK<T>::~BK()
@@ -84,7 +84,7 @@ template <typename T>
 void BK<T>::recInsert(Node *parent, T *item)
 {
 	// calculate distance of node-to-insert vs parent
-	int distance = distanceFunction(parent->content, item);
+	int distance = distanceFunction(parent->content, item, 0);
 
 	// look for a child node with the same distance
 	bool found = false;
@@ -107,43 +107,43 @@ void BK<T>::recInsert(Node *parent, T *item)
 	}
 }
 
-template <typename T>
-bud::vector<T *> BK<T>::search(T *query, int maxDistance) const
-{
-	// handle null root
-	if (root == NULL)
-		return bud::vector<T *>();
-	else
-		return recSearch(root, query, maxDistance);
-}
+// template <typename T>
+// bud::vector<T *> BK<T>::search(T *query, int maxDistance) const
+// {
+// 	// handle null root
+// 	if (root == NULL)
+// 		return bud::vector<T *>();
+// 	else
+// 		return recSearch(root, query, maxDistance);
+// }
 
-template <typename T>
-bud::vector<T *> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
-{
-	bud::vector<T *> results;
+// template <typename T>
+// bud::vector<T *> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
+// {
+// 	bud::vector<T *> results;
 
-	// if the parent node fits our criteria, add to results and explore it's children
-	if (distanceFunction(parent->content, query) <= maxDistance && !parent->deleted)
-		results.push_back(parent->content);
+// 	// if the parent node fits our criteria, add to results and explore it's children
+// 	if (distanceFunction(parent->content, query) <= maxDistance && !parent->deleted)
+// 		results.push_back(parent->content);
 
-	// iterate over parent's children, explore only those with
-	// |child->parentDistance - maxDistance| <= maxDistance <= |child->parentDistance + maxDistance|
-	for (const auto &edge : parent->_edges)
-	{
-		// if the child's parentDistance fits our criteria, call recSearch
-		if (abs(edge->parentDistance - maxDistance) <= maxDistance ||
-			maxDistance <= abs(edge->parentDistance + maxDistance))
-		{
+// 	// iterate over parent's children, explore only those with
+// 	// |child->parentDistance - maxDistance| <= maxDistance <= |child->parentDistance + maxDistance|
+// 	for (const auto &edge : parent->_edges)
+// 	{
+// 		// if the child's parentDistance fits our criteria, call recSearch
+// 		if (abs(edge->parentDistance - maxDistance) <= maxDistance ||
+// 			maxDistance <= abs(edge->parentDistance + maxDistance))
+// 		{
 
-			bud::vector<T *> temp_results = recSearch(edge, query, maxDistance);
-			// add it's results to ours
-			for (const auto &result : temp_results)
-			{
-				results.push_back(result);
-			}
-		}
-	}
-	return results;
-}
+// 			bud::vector<T *> temp_results = recSearch(edge, query, maxDistance);
+// 			// add it's results to ours
+// 			for (const auto &result : temp_results)
+// 			{
+// 				results.push_back(result);
+// 			}
+// 		}
+// 	}
+// 	return results;
+// }
 
 #endif
