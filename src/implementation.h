@@ -6,6 +6,9 @@
 #include "unordered_set.h"
 #include "util.h"
 
+#include "BK_T.h"
+#include "appMatching/editDistance.h"
+
 struct Query
 {
 	Query(QueryID id, const char* str, MatchType match_type, unsigned int tolerance);
@@ -57,6 +60,8 @@ private:
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
 	bud::unordered_map<QueryID, Query*> m_queries_ht;
 	bud::vector<Result> m_res;
+
+	bud::unique_ptr<BK<bud::string>> m_edit_bk = bud::make_unique<BK<bud::string>>(BK(&Edistance));
 };
 
 #endif // IMPL_H
