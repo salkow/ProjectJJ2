@@ -4,7 +4,6 @@
 #include <cstddef>
 
 #include "my_string.h"
-#include "vector.h"
 
 template <typename T>
 [[nodiscard]] bool compare_values(const T &first, const T &second)
