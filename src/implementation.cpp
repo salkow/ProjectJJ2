@@ -1,10 +1,10 @@
 #include "implementation.h"
-#include "stringBreaker.h"
+#include "string_breaker.h"
 #include <cstring>
 
 Query::Query(QueryID id, const char *str, MatchType match_type, unsigned int tolerance) : m_id(id), m_match_type(match_type), m_tolerance(tolerance)
 {
-	m_str = stringBreaker(str);
+	m_str = string_breaker(str);
 }
 
 ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_type, unsigned int tolerance)

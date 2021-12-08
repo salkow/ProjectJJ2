@@ -1,12 +1,6 @@
-#ifndef _STRING_BREAKER_H_
-#define _STRING_BREAKER_H_
+#include "string_breaker.h"
 
-#include "my_string.h"
-#include "vector.h"
-
-bud::vector<bud::string> stringBreaker(const char *input);
-
-bud::vector<bud::string> stringBreaker(const char *input)
+bud::vector<bud::string> string_breaker(const char *input)
 {
 	char *working_string = new char[strlen(input) + 1];
 	strcpy(working_string, input);
@@ -33,5 +27,3 @@ bud::vector<bud::string> stringBreaker(const char *input)
 
 	return output;
 }
-
-#endif
