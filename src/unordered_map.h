@@ -36,11 +36,11 @@ public:
 		reserve_buckets();
 	}
 
-	unordered_map(unordered_map&& u) noexcept :
-		m_size(std::exchange(u.m_size, 0)), m_buckets(std::move(u.m_buckets)),
-		m_hash_function(u.hash_function)
-	{
-	}
+	unordered_map(unordered_map&& u) noexcept = default;
+	~unordered_map() = default;
+
+	unordered_map(const unordered_map& p) = delete;
+	unordered_map& operator=(const unordered_map& u) = delete;
 
 	unordered_map& operator=(unordered_map&& u) noexcept
 	{
@@ -49,11 +49,7 @@ public:
 		m_hash_function = u.m_hash_function;
 
 		return *this;
-	}
-
-	~unordered_map() = default;
-	unordered_map(const unordered_map& p) = delete;
-	unordered_map& operator=(const unordered_map& u) = delete;
+		}
 
 	T* operator[](const key_type& key) const
 	{
@@ -72,13 +68,13 @@ public:
 	}
 
 	template <class... Args>
-	pair<T*, bool> try_emplace(const Key& key, Args&&... args)
+	pair<T*, bool> try_emplace(const key_type& key, Args&&... args)
 	{
 		return x_try_emplace(key, std::forward<Args>(args)...);
 	}
 
 	template <class... Args>
-	pair<T*, bool> try_emplace(Key&& key, Args&&... args)
+	pair<T*, bool> try_emplace(key_type&& key, Args&&... args)
 	{
 		return x_try_emplace(std::move(key), std::forward<Args>(args)...);
 	}
@@ -170,7 +166,10 @@ private:
 			bucket.reserve(DEFAULT_ITEMS_PER_BUCKET);
 	}
 
-	size_type m_get_hash(key_type key) const { return m_hash_function(key) % m_buckets.size(); }
+	size_type m_get_hash(const key_type& key) const
+	{
+		return m_hash_function(key) % m_buckets.size();
+	}
 	size_type m_size = 0;
 
 	vector<vector<value_type>> m_buckets;

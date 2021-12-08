@@ -27,7 +27,7 @@ public:
 	using value_type = key_type;
 	using pointer = key_type*;
 	using reference = key_type&;
-	using const_reference = const key_type&;
+	using const_reference = reference;
 	using hasher = Hash;
 	using size_type = std::size_t;
 
@@ -38,14 +38,10 @@ public:
 	}
 
 	~unordered_set() = default;
+	unordered_set(unordered_set&& u) noexcept = default;
+
 	unordered_set(const unordered_set& p) = delete;
 	unordered_set& operator=(const unordered_set& u) = delete;
-
-	unordered_set(unordered_set&& u) noexcept :
-		m_size(std::exchange(u.m_size, 0)), m_buckets(std::move(u.m_buckets)),
-		m_hash_function(u.m_hash_function)
-	{
-	}
 
 	unordered_set& operator=(unordered_set&& u) noexcept
 	{
@@ -56,7 +52,7 @@ public:
 		return *this;
 	}
 
-	pointer operator[](const key_type& key) const
+	pointer operator[](const_reference key) const
 	{
 		size_type index = m_get_hash(key);
 
@@ -71,10 +67,10 @@ public:
 		return &(*it);
 	}
 
-	pair<pointer, bool> insert(const Key& key) { return x_insert(key); }
+	pair<pointer, bool> insert(const_reference key) { return x_insert(key); }
 	pair<pointer, bool> insert(Key&& key) { return x_insert(std::move(key)); }
 
-	size_type erase(const key_type& key)
+	size_type erase(const_reference key)
 	{
 		size_type index = m_get_hash(key);
 
@@ -157,7 +153,10 @@ private:
 			bucket.reserve(DEFAULT_ITEMS_PER_BUCKET);
 	}
 
-	size_type m_get_hash(key_type key) const { return m_hash_function(key) % m_buckets.size(); }
+	size_type m_get_hash(const_reference key) const
+	{
+		return m_hash_function(key) % m_buckets.size();
+	}
 
 	size_type m_size = 0;
 	vector<vector<Key>> m_buckets;
