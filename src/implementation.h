@@ -56,12 +56,12 @@ public:
 		return EC_SUCCESS;
 	}
 
+	bud::unique_ptr<BK<bud::string>> m_edit_bk = bud::make_unique<BK<bud::string>>(BK(&Edistance));//TODO: make private
 private:
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
 	bud::unordered_map<QueryID, Query*> m_queries_ht;
 	bud::vector<Result> m_res;
 
-	bud::unique_ptr<BK<bud::string>> m_edit_bk = bud::make_unique<BK<bud::string>>(BK(&Edistance));
 };
 
 #endif // IMPL_H
