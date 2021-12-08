@@ -1,33 +1,13 @@
 #include "implementation.h"
+#include "stringBreaker.h"
 #include <cstring>
 
 Query::Query(QueryID id, const char *str, MatchType match_type, unsigned int tolerance) : m_id(id), m_match_type(match_type), m_tolerance(tolerance)
 {
-	char *working_string = new char[strlen(str) + 1];
-	strcpy(working_string, str);
-	size_t orig_len = strlen(working_string);
-
-	// char *cursor = working_string;
-	unsigned int curs, start = curs = 0;
-
-	//replace all ' ' with '\0'
-	while (curs < orig_len)
-	{
-		if (working_string[curs] == ' ')
-		{
-			working_string[curs] = '\0';
-			m_str.push_back(working_string + start);
-			start = curs + 1;
-		}
-		curs++;
-	}
-	m_str.push_back(working_string + start);
-
-	delete[] working_string;
+	m_str = stringBreaker(str);
 }
 
-ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_type,
-								   unsigned int tolerance)
+ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_type, unsigned int tolerance)
 {
 	auto *query = new Query(id, str, match_type, tolerance);
 

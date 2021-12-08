@@ -4,22 +4,23 @@
 #include <cstddef>
 
 #include "my_string.h"
+#include "vector.h"
 
 template <typename T>
-[[nodiscard]] bool compare_values(const T& first, const T& second)
+[[nodiscard]] bool compare_values(const T &first, const T &second)
 {
 	return first == second;
 }
 
 template <typename T>
-[[nodiscard]] bool compare_values(T* first, T* second)
+[[nodiscard]] bool compare_values(T *first, T *second)
 {
 	return *first == *second;
 }
 
 struct HashFunction
 {
-	std::size_t operator()(const bud::string& value) const
+	std::size_t operator()(const bud::string &value) const
 	{
 		std::size_t sum = 0;
 
@@ -29,7 +30,7 @@ struct HashFunction
 		return sum;
 	}
 
-	std::size_t operator()(const bud::string* value) const
+	std::size_t operator()(const bud::string *value) const
 	{
 		std::size_t sum = 0;
 
@@ -47,17 +48,17 @@ struct HashFunction
 namespace bud
 {
 
-template <class InputIt, class T>
-InputIt find(InputIt first, InputIt last, const T& value)
-{
-	for (; first != last; ++first)
+	template <class InputIt, class T>
+	InputIt find(InputIt first, InputIt last, const T &value)
 	{
-		if (*first == value)
-			return first;
-	}
+		for (; first != last; ++first)
+		{
+			if (*first == value)
+				return first;
+		}
 
-	return last;
-}
+		return last;
+	}
 
 } // namespace bud
 
