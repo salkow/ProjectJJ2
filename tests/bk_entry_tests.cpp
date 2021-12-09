@@ -12,7 +12,7 @@ static int distance(Entry *a, Entry *b, unsigned int max_t)
 
 TEST_CASE("BK Entry get", "[bk_entry_get]")
 {
-	Entry a("hello", bud::vector<int>());
+	Entry a("hello", bud::unordered_set<Query *>());
 	BK_Entry b(&distance);
 	b.insert(&a);
 

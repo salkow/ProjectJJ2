@@ -5,25 +5,19 @@
 using bud::string;
 using bud::unordered_set;
 
-Query::Query(QueryID id, const char* str, MatchType match_type, unsigned int tolerance) :
-	m_id(id), m_match_type(match_type), m_tolerance(tolerance)
-{
-	m_str = string_breaker(str);
-}
-
 implementation::~implementation()
 {
-	for (auto& list : m_queries_ht.data())
+	for (auto &list : m_queries_ht.data())
 	{
-		for (auto& query_pair : list)
+		for (auto &query_pair : list)
 			delete query_pair.second;
 	}
 }
 
-ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_type,
+ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_type,
 								   unsigned int tolerance)
 {
-	auto* query = new Query(id, str, match_type, tolerance);
+	auto *query = new Query(id, str, match_type, tolerance);
 
 	auto result = m_queries_ht.try_emplace(id, query);
 	if (!result.second)
@@ -31,15 +25,15 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 
 	if (match_type == MT_EXACT_MATCH)
 	{
-		for (auto& bucket : (query)->m_str.data())
+		for (auto &bucket : (query)->m_str.data())
 		{
-			for (auto& query_str : bucket)
+			for (auto &query_str : bucket)
 			{
-				unordered_set<Query*>* matching_queries = m_words_ht[query_str];
+				unordered_set<Query *> *matching_queries = m_words_ht[query_str];
 
 				if (!matching_queries)
 				{
-					unordered_set<Query*> new_queries;
+					unordered_set<Query *> new_queries;
 					new_queries.insert(query);
 
 					auto other_result = m_words_ht.try_emplace(query_str, std::move(new_queries));
@@ -70,17 +64,17 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 
 ErrorCode implementation::removeQuery(QueryID id)
 {
-	Query** query = m_queries_ht[id];
+	Query **query = m_queries_ht[id];
 	if (!query)
 		return EC_FAIL;
 
 	if ((*query)->m_match_type == MT_EXACT_MATCH)
 	{
-		for (auto& bucket : (*query)->m_str.data())
+		for (auto &bucket : (*query)->m_str.data())
 		{
-			for (auto& query_word : bucket)
+			for (auto &query_word : bucket)
 			{
-				unordered_set<Query*>* queries_with_that_word = m_words_ht[query_word];
+				unordered_set<Query *> *queries_with_that_word = m_words_ht[query_word];
 				if (!queries_with_that_word)
 					return EC_FAIL;
 
@@ -101,16 +95,16 @@ ErrorCode implementation::removeQuery(QueryID id)
 	return EC_SUCCESS;
 }
 
-ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
+ErrorCode implementation::matchDocument(DocID doc_id, const char *doc_str)
 {
 	unordered_set<string> words = string_breaker(doc_str);
 
 	Result result;
 	result.m_doc_id = doc_id;
 
-	for (auto& bucket : words.data())
+	for (auto &bucket : words.data())
 	{
-		for (auto& word : bucket)
+		for (auto &word : bucket)
 		{
 			// Search with EXACT MATCHING.
 
@@ -125,7 +119,7 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 	return EC_SUCCESS;
 }
 
-ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids)
+ErrorCode implementation::getNext(DocID *p_doc_id, unsigned int *p_num_res, QueryID **p_query_ids)
 {
 	if (m_res.size() == 0)
 		return EC_NO_AVAIL_RES;

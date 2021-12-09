@@ -4,9 +4,9 @@
 #include "BK_T.h"
 #include "pair.h"
 #include "my_string.h"
-#include "vector.h"
-
-using Entry = bud::pair<bud::string, bud::vector<int>>;
+#include "unordered_set.h"
+#include "query.h"
+#include "entry.h"
 
 class BK_Entry : public BK<Entry>
 {
