@@ -1,7 +1,7 @@
 #include "BK_Entry.h"
 
 BK_Entry::BK_Entry(int (*df)(Entry *,
-							 Entry *)) : BK(df) {}
+							 Entry *, unsigned int)) : BK(df) {}
 
 Entry *BK_Entry::get(bud::string q)
 {
