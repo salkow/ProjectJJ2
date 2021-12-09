@@ -16,7 +16,7 @@ struct Query
 	bool operator!=(const Query& rhs) const { return m_id != rhs.m_id; }
 
 	QueryID m_id;
-	bud::vector<bud::string> m_str;
+	bud::unordered_set<bud::string> m_str;
 	MatchType m_match_type;
 	unsigned int m_tolerance;
 };
@@ -54,6 +54,8 @@ public:
 		m_res.pop_back();
 		return EC_SUCCESS;
 	}
+
+	ErrorCode matchDocument(DocID doc_id, const char* doc_str);
 
 private:
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;

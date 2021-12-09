@@ -2,8 +2,8 @@
 #define _STRING_BREAKER_H_
 
 #include "my_string.h"
-#include "vector.h"
+#include "unordered_set.h"
 
-bud::vector<bud::string> string_breaker(const char *);
+bud::unordered_set<bud::string> string_breaker(const char*);
 
 #endif

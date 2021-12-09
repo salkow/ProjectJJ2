@@ -1,6 +1,7 @@
 #include "implementation.h"
 #include "string_breaker.h"
 
+using bud::string;
 using bud::unordered_set;
 
 Query::Query(QueryID id, const char* str, MatchType match_type, unsigned int tolerance) :
@@ -60,17 +61,20 @@ ErrorCode implementation::removeQuery(QueryID id)
 
 	if ((*query)->m_match_type == MT_EXACT_MATCH)
 	{
-		for (const auto& query_word : (*query)->m_str)
+		for (auto& bucket : (*query)->m_str.data())
 		{
-			unordered_set<Query*>* queries_with_that_word = m_words_ht[query_word];
-			if (!queries_with_that_word)
-				return EC_FAIL;
+			for (auto& query_word : bucket)
+			{
+				unordered_set<Query*>* queries_with_that_word = m_words_ht[query_word];
+				if (!queries_with_that_word)
+					return EC_FAIL;
 
-			if (queries_with_that_word->size() == 1)
-				m_words_ht.erase(query_word);
+				if (queries_with_that_word->size() == 1)
+					m_words_ht.erase(query_word);
 
-			else
-				queries_with_that_word->erase(*query);
+				else
+					queries_with_that_word->erase(*query);
+			}
 		}
 	}
 
@@ -80,4 +84,16 @@ ErrorCode implementation::removeQuery(QueryID id)
 	delete *query;
 
 	return EC_SUCCESS;
+}
+
+ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
+{
+	unordered_set<string> words = string_breaker(doc_str);
+
+	for (auto& bucket : words.data())
+	{
+		for (auto& word : bucket)
+		{
+		}
+	}
 }
