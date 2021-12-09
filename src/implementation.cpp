@@ -48,6 +48,12 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 			else
 				matching_queries->insert(query);
 		}
+	}else if(match_type == MT_EDIT_DIST){
+		for (auto& query_str : query->m_str){
+			if(m_edit_bk->insert(&(query_str)) == EC_FAIL){
+				return EC_FAIL;
+			}
+		}
 	}
 
 	return EC_SUCCESS;

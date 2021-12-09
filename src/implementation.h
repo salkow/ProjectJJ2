@@ -1,12 +1,13 @@
 #ifndef IMPL_H
 #define IMPL_H
 
-#include "vector.h"
-#include "../include/core.h"
-#include "my_string.h"
+#include "unique_ptr.h"
 #include "unordered_map.h"
 #include "unordered_set.h"
 #include "util.h"
+
+#include "BK_T.h"
+#include "appMatching/editDistance.h"
 
 struct Query
 {
@@ -57,10 +58,12 @@ public:
 
 	ErrorCode matchDocument(DocID doc_id, const char* doc_str);
 
+	bud::unique_ptr<BK<bud::string>> m_edit_bk = bud::make_unique<BK<bud::string>>(BK(&Edistance));//TODO: make private
 private:
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
 	bud::unordered_map<QueryID, Query*> m_queries_ht;
 	bud::vector<Result> m_res;
+
 };
 
 #endif // IMPL_H

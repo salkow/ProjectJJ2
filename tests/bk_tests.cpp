@@ -3,13 +3,13 @@
 #include "../src/BK_T.h"
 #include "../src/my_string.h"
 #include "../src/vector.h"
-#include "../src/editDistance.h"
+#include "../src/appMatching/editDistance.h"
 
-static int distance(bud::string *a, bud::string *b)
+static int distance(bud::string *a, bud::string *b, unsigned int tolerance)
 {
 	REQUIRE(a != NULL);
 	REQUIRE(b != NULL);
-	return int(getEdit(*a, *b));
+	return int(getEdit(*a, *b, tolerance));
 }
 
 TEST_CASE("Insert some words on a BK tree", "[BK_insert]")
@@ -35,6 +35,7 @@ TEST_CASE("Search some words on a BK tree", "[BK_search]")
 
 	bud::string query1 = "hell";
 	results = tree.search(&query1, 0);
+    std::cout << results.size() << std::endl;
 	INFO("result is: " << *(results.back()) << " result should be: " << query1);
 	REQUIRE(results.back() == &(words[0]));
 
