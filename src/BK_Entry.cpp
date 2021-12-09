@@ -5,6 +5,9 @@ BK_Entry::BK_Entry(int (*df)(Entry *,
 
 Entry *BK_Entry::get(bud::string q)
 {
+	if(root == nullptr){
+		return NULL;
+	}
 	bud::vector<Node *> lookList;
 	lookList.push_back(root);
 

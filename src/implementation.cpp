@@ -1,5 +1,9 @@
 #include "implementation.h"
+#include "entry.h"
+#include "my_string.h"
+#include "pair.h"
 #include "string_breaker.h"
+#include "unique_ptr.h"
 #include "unordered_set.h"
 
 using bud::string;
@@ -49,15 +53,25 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 	}
 	else if (match_type == MT_EDIT_DIST)
 	{
-		//		for (auto& query_str : query->m_str)
-		//		{
+		for (auto& bucket : (query)->m_str.data())
+		{
+			for (auto &query_str : bucket)
+			{
+				auto returned = m_edit_bk->get(query_str);
+				std::cout << "TEST" << std::endl;
+				if(returned != NULL){
+					returned->second.insert(query);
+				}else{
+					Entry tpp(query_str, bud::unordered_set<Query *>());
+					tpp.second.insert(query);
+					if(m_edit_bk->insert(&tpp) == EC_FAIL){
+						return EC_FAIL;
+					}
+				}
+			}
+		}
 
-		// if(m_edit_bk->insert(bud::pair(&(query_str), query)) == EC_FAIL){
-		// 	return EC_FAIL;
-		// }
 	}
-
-	//}
 
 	return EC_SUCCESS;
 }
