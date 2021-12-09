@@ -1,5 +1,6 @@
 #include "implementation.h"
 #include "string_breaker.h"
+#include "unordered_set.h"
 
 using bud::string;
 using bud::unordered_set;
@@ -50,9 +51,10 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 		}
 	}else if(match_type == MT_EDIT_DIST){
 		for (auto& query_str : query->m_str){
-			if(m_edit_bk->insert(&(query_str)) == EC_FAIL){
-				return EC_FAIL;
-			}
+
+			// if(m_edit_bk->insert(bud::pair(&(query_str), query)) == EC_FAIL){
+			// 	return EC_FAIL;
+			// }
 		}
 	}
 

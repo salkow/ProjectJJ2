@@ -1,6 +1,8 @@
 #ifndef IMPL_H
 #define IMPL_H
 
+#include "my_string.h"
+#include "pair.h"
 #include "unique_ptr.h"
 #include "unordered_map.h"
 #include "unordered_set.h"
@@ -8,6 +10,8 @@
 
 #include "BK_T.h"
 #include "appMatching/editDistance.h"
+
+using Entry = bud::pair<bud::string, bud::unordered_set<Query*>>;
 
 struct Query
 {
@@ -27,12 +31,6 @@ struct Result
 	DocID m_doc_id;
 	unsigned int m_num_res;
 	QueryID* m_query_ids;
-};
-
-struct Entry
-{
-	bud::string m_word;
-	bud::vector<Query*> m_payload;
 };
 
 class implementation
@@ -58,7 +56,8 @@ public:
 
 	ErrorCode matchDocument(DocID doc_id, const char* doc_str);
 
-	bud::unique_ptr<BK<bud::string>> m_edit_bk = bud::make_unique<BK<bud::string>>(BK(&Edistance));//TODO: make private
+
+	bud::unique_ptr<BK<Entry>> m_edit_bk = bud::make_unique<BK<Entry>>(BK(&Edistance));//TODO: make private
 private:
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
 	bud::unordered_map<QueryID, Query*> m_queries_ht;
