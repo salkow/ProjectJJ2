@@ -10,7 +10,7 @@ static int distance(Entry *a, Entry *b)
 	return int(getEdit(a->first, b->first));
 }
 
-TEST_CASE("t", "[asd]")
+TEST_CASE("BK Entry get", "[bk_entry_get]")
 {
 	Entry a("hello", bud::vector<int>());
 	BK_Entry b(&distance);
