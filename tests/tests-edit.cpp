@@ -5,7 +5,7 @@
 TEST_CASE("test", "[test]")
 {
 	implementation impl;
-	// auto result = impl.addQuery(1, "tesa is a test", MT_EDIT_DIST, 0);
+	auto result = impl.addQuery(1, "tesa is a test", MT_EDIT_DIST, 0);
 	bud::string t = "test";
 	bud::string p = "tesa";
 	// auto vec =impl.m_edit_bk->search(&t, 1);

@@ -58,13 +58,12 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 			for (auto &query_str : bucket)
 			{
 				auto returned = m_edit_bk->get(query_str);
-				std::cout << "TEST" << std::endl;
 				if(returned != NULL){
 					returned->second.insert(query);
 				}else{
-					Entry tpp(query_str, bud::unordered_set<Query *>());
-					tpp.second.insert(query);
-					if(m_edit_bk->insert(&tpp) == EC_FAIL){
+					Entry* tpp=new Entry(query_str, bud::unordered_set<Query *>());
+					tpp->second.insert(query);
+					if(m_edit_bk->insert(tpp) == EC_FAIL){
 						return EC_FAIL;
 					}
 				}

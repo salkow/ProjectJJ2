@@ -38,6 +38,7 @@ TEST_CASE("BK Entry two insert", "[bk_entry_two_insert]")
 
 	REQUIRE(b.get("hello") == &a);
 	b.insert(&ap);
-	REQUIRE(b.get("hellop") == &ap);
+	auto x= b.get("hellop");
+	REQUIRE(x == &ap);
 	REQUIRE(b.get("this does not exist in the BK") == NULL);
 }
