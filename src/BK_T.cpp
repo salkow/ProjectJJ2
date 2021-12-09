@@ -10,7 +10,7 @@ template <typename T>
 BK<T>::Node::Node(T *&cont, int parDistance) : content(cont), parentDistance(parDistance), deleted(false) {}
 
 template <typename T>
-BK<T>::BK(int (*distanceFunc)(T *, T *)) : distanceFunction(distanceFunc), root(NULL) {}
+BK<T>::BK(int (*distanceFunc)(T *, T *, unsigned int)) : distanceFunction(distanceFunc), root(NULL) {}
 
 template <typename T>
 BK<T>::~BK()
@@ -64,11 +64,11 @@ void BK<T>::remove(T *item)
 }
 
 template <typename T>
-void BK<T>::insert(T *item)
+ErrorCode BK<T>::insert(T *item)
 {
 	// item must not be a null pointer
 	if (item == NULL)
-		return;
+		return EC_FAIL;
 	// set root if not existent
 	if (root == NULL)
 	{
@@ -76,15 +76,18 @@ void BK<T>::insert(T *item)
 	}
 	else
 	{
-		recInsert(root, item); // recursively traverse the tree to find an empty spot
+		if(recInsert(root, item) == EC_FAIL){ // recursively traverse the tree to find an empty spot
+			return EC_FAIL;
+		}
 	}
+	return EC_SUCCESS;
 }
 
 template <typename T>
-void BK<T>::recInsert(Node *parent, T *item)
+ErrorCode BK<T>::recInsert(Node *parent, T *item)
 {
 	// calculate distance of node-to-insert vs parent
-	int distance = distanceFunction(parent->content, item);
+	int distance = distanceFunction(parent->content, item, 0);
 
 	// look for a child node with the same distance
 	bool found = false;
@@ -105,6 +108,7 @@ void BK<T>::recInsert(Node *parent, T *item)
 		Node *newNode = new Node(item, distance);
 		parent->_edges.push_back(newNode);
 	}
+	return EC_SUCCESS;
 }
 
 template <typename T>
@@ -123,7 +127,7 @@ bud::vector<T *> BK<T>::recSearch(Node *parent, T *query, int maxDistance) const
 	bud::vector<T *> results;
 
 	// if the parent node fits our criteria, add to results and explore it's children
-	if (distanceFunction(parent->content, query) <= maxDistance && !parent->deleted)
+	if (distanceFunction(parent->content, query, 0) <= maxDistance && !parent->deleted)
 		results.push_back(parent->content);
 
 	// iterate over parent's children, explore only those with

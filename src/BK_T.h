@@ -2,6 +2,7 @@
 #define _BK_T_
 
 #include "vector.h"
+#include "../include/core.h"
 
 template <typename T>
 class BK
@@ -15,9 +16,9 @@ class BK
 		bud::vector<Node *> _edges;
 	};
 
-	int (*distanceFunction)(T *, T *); // calculates the distance between two "T"s
+	int (*distanceFunction)(T *, T *, unsigned int); // calculates the distance between two "T"s
 	Node *root;
-	void recInsert(Node *parent, T *item); // inserts a "T" into a tree recusrsively
+	ErrorCode recInsert(Node *parent, T *item); // inserts a "T" into a tree recusrsively
 	void recDelete(Node *);				   // recursively delete all nodes, used in the destructor
 	bud::vector<T *> recSearch(Node *parent, T *query,
 							   int maxDistance) const; // recursively searches the tree for words that
@@ -27,10 +28,10 @@ class BK
 
 public:
 	BK(int (*distanceFunction)(T *,
-							   T *)); // the distance function finds the distance between two "T"s
+							   T *, unsigned int)); // the distance function finds the distance between two "T"s
 	~BK();
 
-	void insert(T *); // inserts a "T" into the tree
+	ErrorCode insert(T *); // inserts a "T" into the tree
 	bud::vector<T *> search(T *query,
 							int maxDistance) const; // searches the tree for words that
 													// have <= maxDistance to the given query
