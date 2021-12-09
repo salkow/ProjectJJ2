@@ -16,5 +16,7 @@ TEST_CASE("BK Entry get", "[bk_entry_get]")
 	BK_Entry b(&distance);
 	b.insert(&a);
 
-	REQUIRE(&a == b.get("hello"));
+	REQUIRE(b.get("hello") == &a);
+
+	REQUIRE(b.get("this does not exist in the BK") == NULL);
 }
