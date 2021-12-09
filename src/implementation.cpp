@@ -52,14 +52,18 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 					matching_queries->insert(query);
 			}
 		}
-	}else if(match_type == MT_EDIT_DIST){
-		for (auto& query_str : query->m_str){
-
-			// if(m_edit_bk->insert(bud::pair(&(query_str), query)) == EC_FAIL){
-			// 	return EC_FAIL;
-			// }
-		}
 	}
+	else if (match_type == MT_EDIT_DIST)
+	{
+		//		for (auto& query_str : query->m_str)
+		//		{
+
+		// if(m_edit_bk->insert(bud::pair(&(query_str), query)) == EC_FAIL){
+		// 	return EC_FAIL;
+		// }
+	}
+
+	//}
 
 	return EC_SUCCESS;
 }
@@ -130,9 +134,7 @@ ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, Quer
 	*p_doc_id = m_res.back().m_doc_id;
 	*p_num_res = static_cast<unsigned int>(m_res.back().m_query_ids.size());
 
-	p_query_ids = new QueryID(*p_num_res);
-
-	int *x = new int(3);
+	//	p_query_ids = new QueryID(*p_num_res);
 
 	//		*p_query_ids = m_res.back().m_query_ids;
 
