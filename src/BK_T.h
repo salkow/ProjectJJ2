@@ -6,6 +6,7 @@
 template <typename T>
 class BK
 {
+protected:
 	struct Node
 	{
 		Node(T *&item, int parentDistance);
