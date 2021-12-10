@@ -12,15 +12,15 @@ static int distance(bud::string *a, bud::string *b, unsigned int tolerance)
 	return int(getEdit(*a, *b, tolerance));
 }
 
-// TEST_CASE("Insert some words on a BK tree2", "[BK_insert2]")
-// {
-// 	BK<bud::string> tree(&distance);
-// 	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
-// 	for (int i = 0; i < 7; i++)
-// 	{
-// 		tree.insert(&(words[i]));
-// 	}
-// }
+TEST_CASE("Insert some words on a BK tree2", "[BK_insert2]")
+{
+	BK<bud::string> tree(&distance);
+	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
+	for (int i = 0; i < 7; i++)
+	{
+		tree.insert(new bud::string(words[i]));
+	}
+}
 
 // TEST_CASE("Search some words on a BK tree", "[BK_search]")
 // {
