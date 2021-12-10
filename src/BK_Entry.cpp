@@ -16,9 +16,9 @@ Entry *BK_Entry::get(bud::string q)
 		else
 		{
 			lookList.pop_back();
-			for (bud::size_type i = 1; i <= edge->_edges.size(); i++)
+			for (auto & newEdge : edge->_edges)
 			{
-				lookList.push_back(edge->_edges.at(i));
+				lookList.push_back(newEdge);
 			}
 		}
 	}

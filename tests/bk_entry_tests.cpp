@@ -13,10 +13,18 @@ static int distance(Entry *a, Entry *b, unsigned int max_t)
 TEST_CASE("BK Entry get", "[bk_entry_get]")
 {
 	Entry a("hello", bud::unordered_set<Query *>());
-	BK_Entry b(&distance);
-	b.insert(&a);
+	Entry b("heyy", bud::unordered_set<Query *>());
+	Entry c("hola", bud::unordered_set<Query *>());
+	BK_Entry tree(&distance);
+	//insert not in order
+	tree.insert(&b);
+	tree.insert(&a);
+	tree.insert(&c);
 
-	REQUIRE(b.get("hello") == &a);
+	REQUIRE(tree.get("hello") == &a);
+	REQUIRE(tree.get("heyy") == &b);
+	REQUIRE(tree.get("hola") == &c);
 
-	REQUIRE(b.get("this does not exist in the BK") == NULL);
+
+	REQUIRE(tree.get("this does not exist in the BK") == NULL);
 }
