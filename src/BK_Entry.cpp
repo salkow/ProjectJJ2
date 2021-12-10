@@ -7,7 +7,7 @@ Entry *BK_Entry::get(bud::string q)
 {
 	if (root == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	bud::vector<Node *> lookList;
 	lookList.push_back(root);

@@ -40,7 +40,7 @@ typename BK<T>::Node *BK<T>::traverse(T *item)
 	while (!lookList.empty())
 	{
 		Node *edge = lookList.back();
-		if (edge->content == item)
+		if(edge->content == item)
 			return edge;
 		else
 		{
