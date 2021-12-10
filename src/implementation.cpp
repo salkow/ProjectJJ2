@@ -63,7 +63,6 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 				}else{
 					Entry* tpp = new Entry(query_str, bud::unordered_set<Query *>()); //TODO: leak
 					tpp->second.insert(query);
-
 					if(m_edit_bk->insert(tpp) == EC_FAIL){
 						return EC_FAIL;
 					}
