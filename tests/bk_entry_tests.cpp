@@ -11,34 +11,34 @@ static int distance(Entry *a, Entry *b, unsigned int max_t)
 	return int(getEdit(a->first, b->first, max_t));
 }
 
-TEST_CASE("BK Entry get from empty", "[bk_entry_get_empty]")
-{
-	BK_Entry b(&distance);
+// TEST_CASE("BK Entry get from empty", "[bk_entry_get_empty]")
+// {
+// 	BK_Entry b(&distance);
 
-	REQUIRE(b.get("hello") == NULL);
-}
+// 	REQUIRE(b.get("hello") == NULL);
+// }
 
-TEST_CASE("BK Entry get", "[bk_entry_get]")
-{
-	Entry a("hello", bud::unordered_set<Query *>());
-	BK_Entry b(&distance);
-	b.insert(&a);
+// TEST_CASE("BK Entry get", "[bk_entry_get]")
+// {
+// 	Entry a("hello", bud::unordered_set<Query *>());
+// 	BK_Entry b(&distance);
+// 	b.insert(&a);
 
-	REQUIRE(b.get("hello") == &a);
+// 	REQUIRE(b.get("hello") == &a);
 
-	REQUIRE(b.get("this does not exist in the BK") == NULL);
-}
+// 	REQUIRE(b.get("this does not exist in the BK") == NULL);
+// }
 
-TEST_CASE("BK Entry two insert", "[bk_entry_two_insert]")
-{
-	Entry a("hello", bud::unordered_set<Query *>());
-	Entry ap("hellop", bud::unordered_set<Query *>());
-	BK_Entry b(&distance);
-	b.insert(&a);
+// TEST_CASE("BK Entry two insert", "[bk_entry_two_insert]")
+// {
+// 	Entry a("hello", bud::unordered_set<Query *>());
+// 	Entry ap("hellop", bud::unordered_set<Query *>());
+// 	BK_Entry b(&distance);
+// 	b.insert(&a);
 
-	REQUIRE(b.get("hello") == &a);
-	b.insert(&ap);
-	auto x= b.get("hellop");
-	REQUIRE(x == &ap);
-	REQUIRE(b.get("this does not exist in the BK") == NULL);
-}
+// 	REQUIRE(b.get("hello") == &a);
+// 	b.insert(&ap);
+// 	auto x= b.get("hellop");
+// 	REQUIRE(x == &ap);
+// 	REQUIRE(b.get("this does not exist in the BK") == NULL);
+// }

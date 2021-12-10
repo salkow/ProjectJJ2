@@ -27,6 +27,7 @@ void BK<T>::recDelete(Node *parent)
 	{
 		recDelete(edge);
 	}
+	delete parent->content;
 	delete parent;
 }
 

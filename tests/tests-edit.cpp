@@ -12,5 +12,5 @@ TEST_CASE("test", "[test]")
 	// REQUIRE(vec.size() == 2);
 	// REQUIRE(bud::find_if(vec.begin(), vec.end(), [&](bud::string* str1){ return *str1 == t; }) != vec.end());
 	// REQUIRE(bud::find_if(vec.begin(), vec.end(), [&](bud::string* str1){ return *str1 == p; }) != vec.end());
-	// REQUIRE(result == EC_SUCCESS);
+	REQUIRE(result == EC_SUCCESS);
 }
