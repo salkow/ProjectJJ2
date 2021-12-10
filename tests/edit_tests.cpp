@@ -18,7 +18,7 @@ TEST_CASE("Insert some words on a BK tree2", "[BK_insert2]")
 	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
 	for (int i = 0; i < 7; i++)
 	{
-		tree.insert(&(words[i]));
+		tree.insert(new bud::string(words[i]));
 	}
 }
 

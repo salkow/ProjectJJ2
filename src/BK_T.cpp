@@ -27,6 +27,7 @@ void BK<T>::recDelete(Node *parent)
 	{
 		recDelete(edge);
 	}
+	delete parent->content;
 	delete parent;
 }
 
@@ -76,7 +77,8 @@ ErrorCode BK<T>::insert(T *item)
 	}
 	else
 	{
-		if(recInsert(root, item) == EC_FAIL){ // recursively traverse the tree to find an empty spot
+		if (recInsert(root, item) == EC_FAIL)
+		{ // recursively traverse the tree to find an empty spot
 			return EC_FAIL;
 		}
 	}

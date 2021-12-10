@@ -13,18 +13,18 @@ static int distance(Entry *a, Entry *b, unsigned int max_t)
 
 TEST_CASE("BK Entry get", "[bk_entry_get]")
 {
-	Entry a("hello", bud::unordered_set<Query *>());
-	Entry b("heyy", bud::unordered_set<Query *>());
-	Entry c("hola", bud::unordered_set<Query *>());
+	Entry *a = new Entry("hello", bud::unordered_set<Query *>());
+	Entry *b = new Entry("heyy", bud::unordered_set<Query *>());
+	Entry *c = new Entry("hola", bud::unordered_set<Query *>());
 	BK_Entry tree(&distance);
 	//insert not in order
-	tree.insert(&b);
-	tree.insert(&a);
-	tree.insert(&c);
+	tree.insert(b);
+	tree.insert(a);
+	tree.insert(c);
 
-	REQUIRE(tree.get("hello") == &a);
-	REQUIRE(tree.get("heyy") == &b);
-	REQUIRE(tree.get("hola") == &c);
+	REQUIRE(tree.get("hello") == a);
+	REQUIRE(tree.get("heyy") == b);
+	REQUIRE(tree.get("hola") == c);
 
 	REQUIRE(tree.get("this does not exist in the BK") == NULL);
 }
@@ -74,9 +74,4 @@ TEST_CASE("BK Entry search", "[bk_entry_search]")
 	REQUIRE(results.at(4).second == 2);
 	REQUIRE(results.at(5).first == entries.at(6)); //melt
 	REQUIRE(results.at(5).second == 2);
-
-	for (auto &entry : entries)
-	{
-		delete entry;
-	}
 }
