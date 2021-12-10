@@ -11,34 +11,67 @@ static int distance(Entry *a, Entry *b, unsigned int max_t)
 	return int(getEdit(a->first, b->first, max_t));
 }
 
-// TEST_CASE("BK Entry get from empty", "[bk_entry_get_empty]")
-// {
-// 	BK_Entry b(&distance);
+TEST_CASE("BK Entry get", "[bk_entry_get]")
+{
+	Entry *a = new Entry("hello", bud::unordered_set<Query *>());
+	Entry *b = new Entry("heyy", bud::unordered_set<Query *>());
+	Entry *c = new Entry("hola", bud::unordered_set<Query *>());
+	BK_Entry tree(&distance);
+	//insert not in order
+	tree.insert(b);
+	tree.insert(a);
+	tree.insert(c);
 
-// 	REQUIRE(b.get("hello") == NULL);
-// }
+	REQUIRE(tree.get("hello") == a);
+	REQUIRE(tree.get("heyy") == b);
+	REQUIRE(tree.get("hola") == c);
 
-// TEST_CASE("BK Entry get", "[bk_entry_get]")
-// {
-// 	Entry a("hello", bud::unordered_set<Query *>());
-// 	BK_Entry b(&distance);
-// 	b.insert(&a);
+	REQUIRE(tree.get("this does not exist in the BK") == NULL);
+}
 
-// 	REQUIRE(b.get("hello") == &a);
+TEST_CASE("BK Entry search", "[bk_entry_search]")
+{
+	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
+	bud::vector<Entry *> entries;
+	BK_Entry tree(&distance);
 
-// 	REQUIRE(b.get("this does not exist in the BK") == NULL);
-// }
+	//create entries and add to tree
+	for (int i = 0; i < 7; i++)
+	{
+		Entry *entry = new Entry(words[i], bud::unordered_set<Query *>());
+		entries.push_back(entry);
+		tree.insert(entry);
+	}
 
-// TEST_CASE("BK Entry two insert", "[bk_entry_two_insert]")
-// {
-// 	Entry a("hello", bud::unordered_set<Query *>());
-// 	Entry ap("hellop", bud::unordered_set<Query *>());
-// 	BK_Entry b(&distance);
-// 	b.insert(&a);
+	bud::vector<bud::pair<Entry *, int>> results = tree.search("hell", 0);
 
-// 	REQUIRE(b.get("hello") == &a);
-// 	b.insert(&ap);
-// 	auto x= b.get("hellop");
-// 	REQUIRE(x == &ap);
-// 	REQUIRE(b.get("this does not exist in the BK") == NULL);
-// }
+	REQUIRE(results.size() == 1);
+	REQUIRE(results.at(0).first == entries.at(0));
+
+	results = tree.search("hell", 1);
+
+	REQUIRE(results.size() == 3);
+
+	REQUIRE(results.at(0).first == entries.at(0)); //hell
+	REQUIRE(results.at(0).second == 0);
+	REQUIRE(results.at(1).first == entries.at(1)); //help
+	REQUIRE(results.at(1).second == 1);
+	REQUIRE(results.at(2).first == entries.at(4)); //fell
+	REQUIRE(results.at(2).second == 1);
+
+	results = tree.search("hell", 2);
+
+	REQUIRE(results.size() == 6);
+	REQUIRE(results.at(0).first == entries.at(0)); //hell
+	REQUIRE(results.at(0).second == 0);
+	REQUIRE(results.at(1).first == entries.at(1)); //help
+	REQUIRE(results.at(1).second == 1);
+	REQUIRE(results.at(2).first == entries.at(4)); //fell
+	REQUIRE(results.at(2).second == 1);
+	REQUIRE(results.at(3).first == entries.at(2)); //fall
+	REQUIRE(results.at(3).second == 2);
+	REQUIRE(results.at(4).first == entries.at(3)); //felt
+	REQUIRE(results.at(4).second == 2);
+	REQUIRE(results.at(5).first == entries.at(6)); //melt
+	REQUIRE(results.at(5).second == 2);
+}
