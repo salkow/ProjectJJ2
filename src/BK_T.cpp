@@ -37,7 +37,7 @@ typename BK<T>::Node *BK<T>::traverse(T *item)
 	bud::vector<Node *> lookList;
 	lookList.push_back(root);
 
-	while (lookList)
+	while (!lookList.empty())
 	{
 		Node *edge = lookList.back();
 		if (edge->content == item)
@@ -45,7 +45,7 @@ typename BK<T>::Node *BK<T>::traverse(T *item)
 		else
 		{
 			lookList.pop_back();
-			for (int i = 1; i <= edge->_edges.getSize(); i++)
+			for (auto i = 0; i < edge->_edges.size(); i++)
 			{
 				lookList.push_back(edge->_edges.at(i));
 			}

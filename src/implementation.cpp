@@ -3,7 +3,6 @@
 #include "my_string.h"
 #include "pair.h"
 #include "string_breaker.h"
-#include "unique_ptr.h"
 #include "unordered_set.h"
 
 using bud::string;
@@ -58,10 +57,10 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 			for (auto &query_str : bucket)
 			{
 				auto returned = m_edit_bk->get(query_str);
-				if(returned != NULL){
+				if(returned != nullptr){
 					returned->second.insert(query);
 				}else{
-					Entry* tpp = new Entry(query_str, bud::unordered_set<Query *>()); //TODO: leak
+					auto tpp = new Entry(query_str, bud::unordered_set<Query *>());
 					tpp->second.insert(query);
 					if(m_edit_bk->insert(tpp) == EC_FAIL){
 						return EC_FAIL;
@@ -69,9 +68,7 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 				}
 			}
 		}
-
 	}
-
 	return EC_SUCCESS;
 }
 
@@ -81,12 +78,9 @@ ErrorCode implementation::removeQuery(QueryID id)
 	if (!query)
 		return EC_FAIL;
 
-	if ((*query)->m_match_type == MT_EXACT_MATCH)
-	{
-		for (auto &bucket : (*query)->m_str.data())
-		{
-			for (auto &query_word : bucket)
-			{
+	if ((*query)->m_match_type == MT_EXACT_MATCH) {
+		for (auto &bucket: (*query)->m_str.data()) {
+			for (auto &query_word: bucket) {
 				unordered_set<Query *> *queries_with_that_word = m_words_ht[query_word];
 				if (!queries_with_that_word)
 					return EC_FAIL;
@@ -96,6 +90,18 @@ ErrorCode implementation::removeQuery(QueryID id)
 
 				else
 					queries_with_that_word->erase(*query);
+			}
+		}
+	}else if((*query)->m_match_type == MT_EDIT_DIST){
+		for (auto &bucket: (*query)->m_str.data()) {
+			for (auto &query_str: bucket) {
+				auto returned = m_edit_bk->get(query_str);
+				if(returned != nullptr) {
+					returned->second.erase((*query));
+					if (returned->second.size() == 0) {
+						m_edit_bk->remove(returned);
+					}
+				}
 			}
 		}
 	}
