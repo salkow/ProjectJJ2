@@ -5,7 +5,7 @@
 #include "../src/vector.h"
 #include "../src/appMatching/editDistance.h"
 
-static int distance(bud::string *a, bud::string *b, unsigned int tolerance)
+static int distance(bud::string* a, bud::string* b, unsigned int tolerance)
 {
 	REQUIRE(a != NULL);
 	REQUIRE(b != NULL);
@@ -26,19 +26,19 @@ TEST_CASE("Search some words on a BK tree", "[BK_search]")
 {
 	BK<bud::string> tree(&distance);
 	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
-	bud::vector<bud::string *> w;
+	bud::vector<bud::string*> w;
 	for (int i = 0; i < 7; i++)
 	{
-		bud::string *tmp = new bud::string(words[i]);
+		bud::string* tmp = new bud::string(words[i]);
 		w.push_back(tmp);
 		tree.insert(tmp);
 	}
 
-	bud::vector<bud::string *> results;
+	bud::vector<bud::string*> results;
 
 	bud::string query1 = "hell";
 	results = tree.search(&query1, 0);
-	std::cout << results.size() << std::endl;
+	//	std::cout << results.size() << std::endl;
 	INFO("result is: " << *(results.back()) << " result should be: " << query1);
 	REQUIRE(results.back() == w[0]);
 
