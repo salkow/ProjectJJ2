@@ -14,6 +14,108 @@
 namespace bud
 {
 
+template <typename Key, bool Const = false>
+class unordered_set_iterator
+{
+	using vec_iter = typename vector<Key>::iterator;
+	using bucket_iter = typename vector<vector<Key>>::iterator;
+
+public:
+	using value_type = Key;
+	using reference = typename std::conditional_t<Const, value_type const&, value_type&>;
+	using pointer = typename std::conditional_t<Const, value_type const*, value_type*>;
+
+	unordered_set_iterator() = default;
+	unordered_set_iterator(const vector<vector<value_type>>* buckets, const bucket_iter& pos) :
+		m_buckets(buckets), m_bucket_it(pos), m_vec_it(m_buckets->begin()->begin())
+	{
+		if (m_bucket_it == m_buckets->end())
+			return;
+
+		if (m_vec_it != m_buckets->begin()->end())
+			return;
+
+		set_next_it();
+	}
+
+	template <bool Const_ = Const, class = std::enable_if_t<Const_>>
+	unordered_set_iterator(const unordered_set_iterator<value_type, false>& rhs) :
+		m_buckets(rhs.m_buckets), m_bucket_it(rhs.m_bucket_it), m_vec_it(rhs.m_vec_it)
+	{
+	}
+
+	unordered_set_iterator operator++()
+	{
+		++m_vec_it;
+		return set_next_it();
+	};
+
+	unordered_set_iterator operator++(int)
+	{
+		unordered_set_iterator it(*this);
+		++*this;
+		return it;
+	}
+
+	template <bool Const_ = Const>
+	std::enable_if_t<Const_, reference> operator*() const
+	{
+		return *m_vec_it;
+	}
+
+	template <bool Const_ = Const>
+	std::enable_if_t<!Const_, reference> operator*()
+	{
+		return *m_vec_it;
+	}
+
+	template <bool Const_ = Const>
+	std::enable_if_t<Const_, pointer> operator->() const
+	{
+		return m_vec_it;
+	}
+
+	template <bool Const_ = Const>
+	std::enable_if_t<!Const_, pointer> operator->()
+	{
+		return m_vec_it;
+	}
+
+	friend bool operator==(const unordered_set_iterator& lhs, const unordered_set_iterator& rhs)
+	{
+		return lhs.m_buckets == rhs.m_buckets && lhs.m_bucket_it == rhs.m_bucket_it;
+	}
+
+	friend bool operator!=(const unordered_set_iterator& lhs, const unordered_set_iterator& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+private:
+	unordered_set_iterator set_next_it()
+	{
+		while (true)
+		{
+			if (m_vec_it == m_bucket_it->end())
+			{
+				++m_bucket_it;
+
+				if (m_bucket_it == m_buckets->end())
+					return *this;
+
+				m_vec_it = m_bucket_it->begin();
+			}
+
+			else
+				return *this;
+		}
+	}
+
+	const vector<vector<value_type>>* m_buckets;
+	bucket_iter m_bucket_it;
+	vec_iter m_vec_it;
+};
+
 template <class Key, class Hash = hash<Key>>
 class unordered_set
 {
@@ -30,6 +132,8 @@ public:
 	using const_reference = reference;
 	using hasher = Hash;
 	using size_type = std::size_t;
+	using iterator = unordered_set_iterator<Key>;
+	using const_iterator = unordered_set_iterator<Key, true>;
 
 	explicit unordered_set(size_type bucket_count = DEFAULT_SIZE, const Hash& hash = Hash()) :
 		m_buckets(vector<vector<Key>>(bucket_count)), m_hash_function(hash)
@@ -107,6 +211,23 @@ public:
 	[[nodiscard]] size_type bucket_count() const { return m_buckets.size(); }
 	[[nodiscard]] size_type empty() const { return m_size == 0; }
 	[[nodiscard]] float load_factor() const { return m_size / m_buckets.size(); }
+
+	[[nodiscard]] iterator begin() const noexcept
+	{
+		return iterator(&m_buckets, m_buckets.begin());
+	}
+
+	[[nodiscard]] const_iterator cbegin() const noexcept
+	{
+		return const_iterator(&m_buckets, m_buckets.begin());
+	}
+
+	[[nodiscard]] iterator end() const noexcept { return iterator(&m_buckets, m_buckets.end()); }
+
+	[[nodiscard]] const_iterator cend() const noexcept
+	{
+		return const_iterator(&m_buckets, m_buckets.end());
+	}
 
 	[[nodiscard]] vector<vector<Key>>& data() { return m_buckets; }
 

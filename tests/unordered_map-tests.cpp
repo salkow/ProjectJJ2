@@ -233,3 +233,35 @@ TEST_CASE("unordered_map class key", "[unordered_map_class_key]")
 	REQUIRE(*my_map["f"] == 6);
 	REQUIRE(*my_map["g"] == 7);
 }
+
+TEST_CASE("unordered_map iterators", "[unordered_map_iterators]")
+{
+	unordered_map<int, char> my_map(7);
+
+	for (const auto& bucket : my_map.data())
+		REQUIRE(bucket.begin() == bucket.end());
+
+	my_map.try_emplace(1, '1');
+	my_map.try_emplace(2, '2');
+	my_map.try_emplace(3, '3');
+	my_map.try_emplace(4, '4');
+	my_map.try_emplace(5, '5');
+	my_map.try_emplace(6, '6');
+
+	REQUIRE(my_map.size() == 6);
+
+	for (char i = 1; i < 7; i++)
+	{
+		pair<int, char> value;
+		value.first = i;
+		value.second = '0' + i;
+
+		auto check_if_equal_pair = [&value](const pair<const int, char> pair_to_check)
+		{ return pair_to_check.first == value.first && pair_to_check.second == value.second; };
+
+		REQUIRE(bud::find_if(my_map.begin(), my_map.end(), check_if_equal_pair) != my_map.end());
+	}
+
+	unordered_map<int, char> my_other_set;
+	REQUIRE(my_other_set.begin() == my_other_set.end());
+}
