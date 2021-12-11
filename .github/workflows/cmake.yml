@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ exact-distance ]
+    branches: [ main ]
   pull_request:
-    branches: [ exact-distance ]
+    branches: [ main ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
