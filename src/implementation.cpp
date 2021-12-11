@@ -108,27 +108,42 @@ ErrorCode implementation::removeQuery(QueryID id)
 	return EC_SUCCESS;
 }
 
+bool implementation::searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries){
+	bud::vector<bud::pair<Entry *, int>> editCurr= m_edit_bk->search(word, 3);
+	bool t = false;
+	for(auto& temp : editCurr){
+		for(auto& tempQuery : temp.first->second){
+			if(tempQuery->m_tolerance <= unsigned(temp.second)){
+				t = true;
+				queries.insert(tempQuery->m_id);
+			}
+		}
+	}
+	return t;
+}
+
 ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 {
 	unordered_set<string> words = string_breaker(doc_str);
 
-	Result result;
-	result.m_doc_id = doc_id;
-
+	Result res;
+	res.m_doc_id = doc_id;
 	for (auto& word : words)
 	{
+		bool a = false;
 		// Search with EXACT MATCHING.
 
 		// Search with HAMMING DISTANCE.
 
 		// Search with EDIT DISTANCE.
-
-		result.m_query_ids.insert(1);
+		a |= searchFilter(word, res.m_query_ids);
+		if(!a){
+			break;
+		}
 	}
-
+	m_res.emplace_back(std::move(res));
 	return EC_SUCCESS;
 }
-
 ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids)
 {
 	if (m_res.size() == 0)

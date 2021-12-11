@@ -34,6 +34,6 @@ private:
 	bud::unordered_map<bud::string, bud::unordered_set<Query *>> m_words_ht;
 	bud::unordered_map<QueryID, Query *> m_queries_ht;
 	bud::vector<Result> m_res;
+	bool searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries);
 };
-
 #endif // IMPL_H

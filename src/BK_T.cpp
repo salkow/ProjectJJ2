@@ -45,7 +45,7 @@ typename BK<T>::Node *BK<T>::traverse(T *item)
 		else
 		{
 			lookList.pop_back();
-			for (auto i = 0; i < edge->_edges.size(); i++)
+			for (unsigned int i = 0; i < edge->_edges.size(); i++)
 			{
 				lookList.push_back(edge->_edges.at(i));
 			}
