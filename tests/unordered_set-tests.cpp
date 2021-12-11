@@ -216,3 +216,46 @@ TEST_CASE("unordered_set class key", "[unordered_set_class_key]")
 	REQUIRE(*my_set["f"] == "f");
 	REQUIRE(*my_set["g"] == "g");
 }
+
+TEST_CASE("unordered_set iterators", "[unordered_set_iterators]")
+{
+	unordered_set<int> my_set(7);
+
+	for (const auto& bucket : my_set.data())
+		REQUIRE(bucket.begin() == bucket.end());
+
+	my_set.insert(1);
+	my_set.insert(2);
+	my_set.insert(3);
+	my_set.insert(4);
+	my_set.insert(5);
+	my_set.insert(6);
+
+	REQUIRE(my_set.size() == 6);
+
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 1) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 2) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 3) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 4) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 5) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 6) != my_set.end());
+
+	my_set.insert(7);
+	REQUIRE(my_set.size() == 7);
+
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 1) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 2) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 3) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 4) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 5) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 6) != my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 7) != my_set.end());
+
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 8) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 9) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 10) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 11) == my_set.end());
+
+	unordered_set<int> my_other_set;
+	REQUIRE(my_other_set.begin() == my_other_set.end());
+}

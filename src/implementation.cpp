@@ -11,11 +11,8 @@ Query::Query(QueryID id, const char* str, MatchType match_type, unsigned int tol
 
 implementation::~implementation()
 {
-	for (auto& list : m_queries_ht.data())
-	{
-		for (auto& query_pair : list)
-			delete query_pair.second;
-	}
+	for (auto& query_pair : m_queries_ht)
+		delete query_pair.second;
 }
 
 ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_type,
