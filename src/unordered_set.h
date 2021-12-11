@@ -207,6 +207,18 @@ public:
 		}
 	}
 
+	void merge(const unordered_set<Key, Hash>& other)
+	{
+		for (const auto& key : other)
+			insert(key);
+	}
+
+	void merge(unordered_set<Key, Hash>&& other)
+	{
+		for (auto&& key : other)
+			insert(std::forward<Key>(key));
+	}
+
 	[[nodiscard]] size_type size() const { return m_size; }
 	[[nodiscard]] size_type bucket_count() const { return m_buckets.size(); }
 	[[nodiscard]] size_type empty() const { return m_size == 0; }

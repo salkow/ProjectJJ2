@@ -259,3 +259,33 @@ TEST_CASE("unordered_set iterators", "[unordered_set_iterators]")
 	unordered_set<int> my_other_set;
 	REQUIRE(my_other_set.begin() == my_other_set.end());
 }
+
+TEST_CASE("Unordered_set merge", "[unordered_set_merge]")
+{
+	unordered_set<int> first_set;
+
+	first_set.insert(1);
+	first_set.insert(2);
+	first_set.insert(3);
+	first_set.insert(4);
+	first_set.insert(5);
+	first_set.insert(6);
+
+	unordered_set<int> second_set;
+
+	second_set.insert(7);
+	second_set.insert(8);
+	second_set.insert(9);
+
+	first_set.merge(std::move(second_set));
+
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 1) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 2) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 3) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 4) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 5) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 6) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 7) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 8) != first_set.end());
+	REQUIRE(bud::find(first_set.begin(), first_set.end(), 9) != first_set.end());
+}
