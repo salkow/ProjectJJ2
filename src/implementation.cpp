@@ -86,22 +86,37 @@ ErrorCode implementation::removeQuery(QueryID id)
 	return EC_SUCCESS;
 }
 
+bool implementation::searchForExactMatchingWord(const string& word,
+												unordered_set<QueryID>& queries) const
+{
+	const unordered_set<Query*>* matching_queries = m_words_ht[word];
+	if (!matching_queries)
+		return false;
+
+	for (const auto& query : *matching_queries)
+		queries.insert(query->m_id);
+
+	return true;
+}
+
 ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 {
+	if (!doc_str)
+		return EC_FAIL;
+
 	unordered_set<string> words = string_breaker(doc_str);
 
-	Result result;
-	result.m_doc_id = doc_id;
+	Result res;
+	res.m_doc_id = doc_id;
 
-	for (auto& word : words)
+	for (const auto& word : words)
 	{
-		// Search with EXACT MATCHING.
+		bool a = false;
 
-		// Search with HAMMING DISTANCE.
+		a |= searchForExactMatchingWord(word, res.m_query_ids);
 
-		// Search with EDIT DISTANCE.
-
-		result.m_query_ids.insert(1);
+		if (!a)
+			break;
 	}
 
 	return EC_SUCCESS;

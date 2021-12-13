@@ -24,17 +24,20 @@ class implementation
 public:
 	implementation() = default;
 	~implementation();
-	ErrorCode addQuery(QueryID id, const char *str, MatchType match_type, unsigned int tolerance);
+	ErrorCode addQuery(QueryID id, const char* str, MatchType match_type, unsigned int tolerance);
 	ErrorCode removeQuery(QueryID id);
-	ErrorCode getNext(DocID *p_doc_id, unsigned int *p_num_res, QueryID **p_query_ids);
-	ErrorCode matchDocument(DocID doc_id, const char *doc_str);
+	ErrorCode getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids);
+	ErrorCode matchDocument(DocID doc_id, const char* doc_str);
 
 	bud::unique_ptr<BK<bud::string>> m_edit_bk =
 		bud::make_unique<BK<bud::string>>(BK(&Edistance)); // TODO: make private
 
 private:
-	bud::unordered_map<bud::string, bud::unordered_set<Query *>> m_words_ht;
-	bud::unordered_map<QueryID, Query *> m_queries_ht;
+	bool searchForExactMatchingWord(const bud::string& word,
+									bud::unordered_set<QueryID>& queries) const;
+
+	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
+	bud::unordered_map<QueryID, Query*> m_queries_ht;
 	bud::vector<Result> m_res;
 };
 
