@@ -36,8 +36,6 @@ private:
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
 	bud::unordered_map<QueryID, Query*> m_queries_ht;
 	bud::unique_ptr<BK_Entry> m_edit_bk = bud::make_unique<BK_Entry>(BK_Entry(&Edistance));
-	bud::unordered_map<bud::string, bud::unordered_set<Query *>> m_words_ht;
-	bud::unordered_map<QueryID, Query *> m_queries_ht;
 	bud::vector<Result> m_res;
 	bool searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries);
 };
