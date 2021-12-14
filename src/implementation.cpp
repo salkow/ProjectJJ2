@@ -45,15 +45,19 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 	{
 		for (auto& bucket : (query)->m_str.data())
 		{
-			for (auto &query_str : bucket)
+			for (auto& query_str : bucket)
 			{
 				auto returned = m_edit_bk->get(query_str);
-				if(returned != nullptr){
+				if (returned != nullptr)
+				{
 					returned->second.insert(query);
-				}else{
-					auto tpp = new Entry(query_str, bud::unordered_set<Query *>());
+				}
+				else
+				{
+					auto tpp = new Entry(query_str, bud::unordered_set<Query*>());
 					tpp->second.insert(query);
-					if(m_edit_bk->insert(tpp) == EC_FAIL){
+					if (m_edit_bk->insert(tpp) == EC_FAIL)
+					{
 						return EC_FAIL;
 					}
 				}
@@ -86,13 +90,19 @@ ErrorCode implementation::removeQuery(QueryID id)
 			else
 				queries_with_that_word->erase(*query);
 		}
-	}else if((*query)->m_match_type == MT_EDIT_DIST){
-		for (auto &bucket: (*query)->m_str.data()) {
-			for (auto &query_str: bucket) {
+	}
+	else if ((*query)->m_match_type == MT_EDIT_DIST)
+	{
+		for (auto& bucket : (*query)->m_str.data())
+		{
+			for (auto& query_str : bucket)
+			{
 				auto returned = m_edit_bk->get(query_str);
-				if(returned != nullptr) {
+				if (returned != nullptr)
+				{
 					returned->second.erase((*query));
-					if (returned->second.size() == 0) {
+					if (returned->second.size() == 0)
+					{
 						m_edit_bk->remove(returned);
 					}
 				}
@@ -108,12 +118,16 @@ ErrorCode implementation::removeQuery(QueryID id)
 	return EC_SUCCESS;
 }
 
-bool implementation::searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries){
-	bud::vector<bud::pair<Entry *, int>> editCurr= m_edit_bk->search(word, 3);
+bool implementation::searchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries)
+{
+	bud::vector<bud::pair<Entry*, int>> editCurr = m_edit_bk->search(word, 3);
 	bool t = false;
-	for(auto& temp : editCurr){
-		for(auto& tempQuery : temp.first->second){
-			if(tempQuery->m_tolerance <= unsigned(temp.second)){
+	for (auto& temp : editCurr)
+	{
+		for (auto& tempQuery : temp.first->second)
+		{
+			if (tempQuery->m_tolerance <= unsigned(temp.second))
+			{
 				t = true;
 				queries.insert(tempQuery->m_id);
 			}
@@ -129,10 +143,19 @@ bool implementation::searchForExactMatchingWord(const string& word,
 	if (!matching_queries)
 		return false;
 
-	for (const auto& query : *matching_queries)
-		queries.insert(query->m_id);
+	for (auto& query : *matching_queries)
+	{
+		if (++query->exact_matching_matched_words_counter == query->m_str.size())
+			queries.insert(query->m_id);
+	}
 
 	return true;
+}
+
+void implementation::exact_matching_reset_matched_counter()
+{
+	for (auto& query : m_queries_ht)
+		query.second->exact_matching_matched_words_counter = 0;
 }
 
 ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
@@ -144,20 +167,24 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 
 	Result res;
 	res.m_doc_id = doc_id;
-	for (auto& word : words)
-	{
-		bool a = false;
-		// Search with EXACT MATCHING.
 
-		a |= searchForExactMatchingWord(word, res.m_query_ids);
+	for (const auto& word : words)
+	{
+		bool found = false;
+
+		found |= searchForExactMatchingWord(word, res.m_query_ids);
 
 		// Search with EDIT DISTANCE.
-		a |= searchFilter(word, res.m_query_ids);
-		if(!a){
+		found |= searchFilter(word, res.m_query_ids);
+
+		if (!found)
 			break;
-		}
 	}
+
 	m_res.emplace_back(std::move(res));
+
+	exact_matching_reset_matched_counter();
+
 	return EC_SUCCESS;
 }
 ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids)
@@ -171,6 +198,8 @@ ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, Quer
 	*p_num_res = static_cast<unsigned int>(last_result.m_query_ids.size());
 
 	*p_query_ids = static_cast<QueryID*>(malloc(sizeof(QueryID) * *p_num_res));
+
+	// TODO: We need to sort them.
 
 	int i = 0;
 	for (const auto& query_id : last_result.m_query_ids)

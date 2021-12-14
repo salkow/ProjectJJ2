@@ -1,10 +1,136 @@
 #include "../lib/include/catch2/catch.hpp"
 
 #include "../src/implementation.h"
+#include "../src/array.h"
 
-TEST_CASE("Add exact matching queries", "[add_exact_matching_queries]")
+TEST_CASE("No match exact matching queries", "[no_match_exact_matching_queries]")
 {
 	implementation impl;
 
-	impl.addQuery(0, "this is a query", MT_EXACT_MATCH, 1);
+	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
+
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
+			EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+
+	REQUIRE(impl.matchDocument(0, "the quick fox jumps over the lazy dog") == EC_SUCCESS);
+
+	DocID p_doc_id;
+	unsigned int p_num_res;
+	QueryID* p_query_ids;
+
+	REQUIRE(impl.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
+
+	REQUIRE(p_num_res == 0);
+
+	free(p_query_ids);
+}
+
+TEST_CASE("Match exact matching queries", "[match_exact_matching_queries]")
+{
+	implementation impl;
+
+	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
+
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
+			EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+
+	REQUIRE(impl.matchDocument(0, "this is a query third last") == EC_SUCCESS);
+
+	DocID p_doc_id;
+	unsigned int p_num_res;
+	QueryID* p_query_ids;
+
+	REQUIRE(impl.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
+
+	REQUIRE(p_num_res == 2);
+
+	REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 0U) != query_ids.end());
+	REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+
+	free(p_query_ids);
+}
+
+TEST_CASE("Delete exact matching queries", "[delete_exact_matching_queries]")
+{
+	implementation impl;
+
+	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
+
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
+			EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+
+	REQUIRE(impl.removeQuery(0) == EC_SUCCESS);
+
+	REQUIRE(impl.matchDocument(0, "this is a query third last") == EC_SUCCESS);
+
+	DocID p_doc_id;
+	unsigned int p_num_res;
+	QueryID* p_query_ids;
+
+	REQUIRE(impl.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
+
+	REQUIRE(p_num_res == 1);
+
+	REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+
+	free(p_query_ids);
+}
+
+TEST_CASE("Match multiple documents exact matching", "[match_multiple_documents_exact_matching]")
+{
+	implementation impl;
+
+	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
+
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
+			EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+
+	REQUIRE(impl.matchDocument(0, "this is a query third last") == EC_SUCCESS);
+
+	REQUIRE(impl.removeQuery(0) == EC_SUCCESS);
+
+	REQUIRE(impl.matchDocument(1, "this is a another query") == EC_SUCCESS);
+
+	DocID p_doc_id;
+	unsigned int p_num_res;
+	QueryID* p_query_ids;
+
+	for (int i = 0; i < 2; i++)
+	{
+		REQUIRE(impl.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
+
+		if (p_doc_id == 0)
+		{
+			REQUIRE(p_num_res == 2);
+
+			REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 0U) != query_ids.end());
+			REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+
+			free(p_query_ids);
+		}
+
+		else if (p_doc_id == 1)
+		{
+			REQUIRE(p_num_res == 1);
+
+			REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+
+			free(p_query_ids);
+		}
+
+		else
+			REQUIRE(false);
+	}
 }
