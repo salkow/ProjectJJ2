@@ -29,16 +29,16 @@ public:
 	ErrorCode getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids);
 	ErrorCode matchDocument(DocID doc_id, const char* doc_str);
 
-	bud::unique_ptr<BK<bud::string>> m_edit_bk =
-		bud::make_unique<BK<bud::string>>(BK(&Edistance)); // TODO: make private
-
 private:
 	bool searchForExactMatchingWord(const bud::string& word,
 									bud::unordered_set<QueryID>& queries) const;
 
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
 	bud::unordered_map<QueryID, Query*> m_queries_ht;
+	bud::unique_ptr<BK_Entry> m_edit_bk = bud::make_unique<BK_Entry>(BK_Entry(&Edistance));
+	bud::unordered_map<bud::string, bud::unordered_set<Query *>> m_words_ht;
+	bud::unordered_map<QueryID, Query *> m_queries_ht;
 	bud::vector<Result> m_res;
+	bool searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries);
 };
-
 #endif // IMPL_H

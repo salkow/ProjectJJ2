@@ -43,12 +43,22 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 	}
 	else if (match_type == MT_EDIT_DIST)
 	{
-		//		for (auto& query_str : query->m_str)
-		//		{
-
-		// if(m_edit_bk->insert(bud::pair(&(query_str), query)) == EC_FAIL){
-		// 	return EC_FAIL;
-		// }
+		for (auto& bucket : (query)->m_str.data())
+		{
+			for (auto &query_str : bucket)
+			{
+				auto returned = m_edit_bk->get(query_str);
+				if(returned != nullptr){
+					returned->second.insert(query);
+				}else{
+					auto tpp = new Entry(query_str, bud::unordered_set<Query *>());
+					tpp->second.insert(query);
+					if(m_edit_bk->insert(tpp) == EC_FAIL){
+						return EC_FAIL;
+					}
+				}
+			}
+		}
 	}
 
 	//}
@@ -76,6 +86,18 @@ ErrorCode implementation::removeQuery(QueryID id)
 			else
 				queries_with_that_word->erase(*query);
 		}
+	}else if((*query)->m_match_type == MT_EDIT_DIST){
+		for (auto &bucket: (*query)->m_str.data()) {
+			for (auto &query_str: bucket) {
+				auto returned = m_edit_bk->get(query_str);
+				if(returned != nullptr) {
+					returned->second.erase((*query));
+					if (returned->second.size() == 0) {
+						m_edit_bk->remove(returned);
+					}
+				}
+			}
+		}
 	}
 
 	if (!m_queries_ht.erase(id))
@@ -84,6 +106,20 @@ ErrorCode implementation::removeQuery(QueryID id)
 	delete *query;
 
 	return EC_SUCCESS;
+}
+
+bool implementation::searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries){
+	bud::vector<bud::pair<Entry *, int>> editCurr= m_edit_bk->search(word, 3);
+	bool t = false;
+	for(auto& temp : editCurr){
+		for(auto& tempQuery : temp.first->second){
+			if(tempQuery->m_tolerance <= unsigned(temp.second)){
+				t = true;
+				queries.insert(tempQuery->m_id);
+			}
+		}
+	}
+	return t;
 }
 
 bool implementation::searchForExactMatchingWord(const string& word,
@@ -108,20 +144,22 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 
 	Result res;
 	res.m_doc_id = doc_id;
-
-	for (const auto& word : words)
+	for (auto& word : words)
 	{
 		bool a = false;
+		// Search with EXACT MATCHING.
 
 		a |= searchForExactMatchingWord(word, res.m_query_ids);
 
-		if (!a)
+		// Search with EDIT DISTANCE.
+		a |= searchFilter(word, res.m_query_ids);
+		if(!a){
 			break;
+		}
 	}
-
+	m_res.emplace_back(std::move(res));
 	return EC_SUCCESS;
 }
-
 ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids)
 {
 	if (m_res.size() == 0)

@@ -34,5 +34,5 @@ run_tests_*
 build
 .cmake/
 /result.txt
-
 .github
+.idea/
