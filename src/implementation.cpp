@@ -43,26 +43,34 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 	}
 	else if (match_type == MT_EDIT_DIST)
 	{
-		for (auto& bucket : (query)->m_str.data())
+		for (const auto& query_str : query->m_str)
 		{
-			for (auto &query_str : bucket)
-			{
-				auto returned = m_edit_bk->get(query_str);
-				if(returned != nullptr){
-					returned->second.insert(query);
-				}else{
-					auto tpp = new Entry(query_str, bud::unordered_set<Query *>());
-					tpp->second.insert(query);
-					if(m_edit_bk->insert(tpp) == EC_FAIL){
-						return EC_FAIL;
-					}
+			auto returned = m_edit_bk->get(query_str);
+			if(returned != nullptr){
+				returned->second.insert(query);
+			}else{
+				auto tpp = new Entry(query_str, bud::unordered_set<Query *>());
+				tpp->second.insert(query);
+				if(m_edit_bk->insert(tpp) == EC_FAIL){
+					return EC_FAIL;
+				}
+			}
+		}
+	}else if (match_type == MT_EXACT_MATCH){
+		for (const auto& query_str : query->m_str)
+		{
+			auto returned = m_hamming_bk[query_str.size()].get(query_str);
+			if(returned != nullptr){
+				returned->second.insert(query);
+			}else{
+				auto tpp = new Entry(query_str, bud::unordered_set<Query *>());
+				tpp->second.insert(query);
+				if(m_hamming_bk[query_str.size()].insert(tpp) == EC_FAIL){
+					return EC_FAIL;
 				}
 			}
 		}
 	}
-
-	//}
-
 	return EC_SUCCESS;
 }
 
@@ -87,14 +95,22 @@ ErrorCode implementation::removeQuery(QueryID id)
 				queries_with_that_word->erase(*query);
 		}
 	}else if((*query)->m_match_type == MT_EDIT_DIST){
-		for (auto &bucket: (*query)->m_str.data()) {
-			for (auto &query_str: bucket) {
-				auto returned = m_edit_bk->get(query_str);
-				if(returned != nullptr) {
-					returned->second.erase((*query));
-					if (returned->second.size() == 0) {
-						m_edit_bk->remove(returned);
-					}
+		for (const auto& query_str : (*query)->m_str){
+			auto returned = m_edit_bk->get(query_str);
+			if(returned != nullptr) {
+				returned->second.erase((*query));
+				if (returned->second.size() == 0) {
+					m_edit_bk->remove(returned);
+				}
+			}
+		}
+	}else if((*query)->m_match_type == MT_EXACT_MATCH){
+		for (const auto& query_str : (*query)->m_str){
+			auto returned = m_hamming_bk[query_str.size()].get(query_str);
+			if(returned != nullptr) {
+				returned->second.erase((*query));
+				if (returned->second.size() == 0) {
+					m_hamming_bk[query_str.size()].remove(returned);
 				}
 			}
 		}
@@ -108,7 +124,7 @@ ErrorCode implementation::removeQuery(QueryID id)
 	return EC_SUCCESS;
 }
 
-bool implementation::searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries){
+bool implementation::EsearchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries){
 	bud::vector<bud::pair<Entry *, int>> editCurr= m_edit_bk->search(word, 3);
 	bool t = false;
 	for(auto& temp : editCurr){
@@ -122,16 +138,27 @@ bool implementation::searchFilter(const bud::string &word, bud::unordered_set<Qu
 	return t;
 }
 
-bool implementation::searchForExactMatchingWord(const string& word,
-												unordered_set<QueryID>& queries) const
+bool implementation::HsearchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries){
+	bud::vector<bud::pair<Entry *, int>> hammingCurr= m_hamming_bk[word.size()].search(word, 3);
+	bool t = false;
+	for(auto& temp : hammingCurr){
+		for(auto& tempQuery : temp.first->second){
+			if(tempQuery->m_tolerance <= unsigned(temp.second)){
+				t = true;
+				queries.insert(tempQuery->m_id);
+			}
+		}
+	}
+	return t;
+}
+
+bool implementation::searchForExactMatchingWord(const string& word, unordered_set<QueryID>& queries) const
 {
 	const unordered_set<Query*>* matching_queries = m_words_ht[word];
 	if (!matching_queries)
 		return false;
-
 	for (const auto& query : *matching_queries)
 		queries.insert(query->m_id);
-
 	return true;
 }
 
@@ -147,13 +174,10 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 	for (auto& word : words)
 	{
 		bool a = false;
-		// Search with EXACT MATCHING.
-
 		a |= searchForExactMatchingWord(word, res.m_query_ids);
-
-		// Search with EDIT DISTANCE.
-		a |= searchFilter(word, res.m_query_ids);
-		if(!a){
+		a |= EsearchFilter(word, res.m_query_ids);
+		a |= HsearchFilter(word, res.m_query_ids);
+		if(!a) {
 			break;
 		}
 	}

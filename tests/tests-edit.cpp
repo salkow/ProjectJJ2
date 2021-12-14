@@ -10,3 +10,12 @@ TEST_CASE("test", "[test]")
 	impl.removeQuery(1);
 	REQUIRE(result == EC_SUCCESS);
 }
+
+TEST_CASE("test1", "[test1]")
+{
+	implementation impl;
+	auto result = impl.addQuery(1, "tesa is a test", MT_EXACT_MATCH, 0);
+	REQUIRE(result == EC_SUCCESS);
+	impl.removeQuery(1);
+	REQUIRE(result == EC_SUCCESS);
+}

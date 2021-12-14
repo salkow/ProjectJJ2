@@ -12,6 +12,9 @@
 #include "entry.h"
 #include "BK_Entry.h"
 #include "appMatching/editDistance.h"
+#include "../src/array.h"
+#include "vector.h"
+#include "appMatching/hammingDistance.h"
 
 struct Result
 {
@@ -30,13 +33,17 @@ public:
 	ErrorCode matchDocument(DocID doc_id, const char* doc_str);
 
 private:
-	bool searchForExactMatchingWord(const bud::string& word,
-									bud::unordered_set<QueryID>& queries) const;
+	bool searchForExactMatchingWord(const bud::string& word, bud::unordered_set<QueryID>& queries) const;
+	bool EsearchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries);
+	bool HsearchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries);
 
 	bud::unordered_map<bud::string, bud::unordered_set<Query*>> m_words_ht;
 	bud::unordered_map<QueryID, Query*> m_queries_ht;
+
 	bud::unique_ptr<BK_Entry> m_edit_bk = bud::make_unique<BK_Entry>(BK_Entry(&Edistance));
+
+	bud::vector<BK_Entry> m_hamming_bk = bud::vector<BK_Entry>(MAX_WORD_LENGTH, BK_Entry(&Hdistance));
+
 	bud::vector<Result> m_res;
-	bool searchFilter(const bud::string &word, bud::unordered_set<QueryID>& queries);
 };
 #endif // IMPL_H
