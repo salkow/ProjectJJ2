@@ -1,5 +1,7 @@
 #include "BK_Entry.h"
 
+#define __BK_ENTRY_MAX_SEARCH_DISTANCE__ 3
+
 BK_Entry::BK_Entry(int (*df)(Entry *,
 							 Entry *, unsigned int)) : BK(df) {}
 
@@ -49,7 +51,7 @@ bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, bud::stri
 	Entry temp(query, bud::unordered_set<Query *>());
 
 	// if the parent node fits our criteria, add to results and explore it's children
-	int distance = distanceFunction(parent->content, &temp, 0);
+	int distance = distanceFunction(parent->content, &temp, __BK_ENTRY_MAX_SEARCH_DISTANCE__);
 	if (distance <= maxDistance && !parent->deleted)
 		results.push_back(bud::pair(parent->content, distance));
 
