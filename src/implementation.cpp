@@ -47,6 +47,9 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 		{
 			auto returned = m_edit_bk->get(query_str);
 			if(returned != nullptr){
+				if(returned->second.size() == 0){
+					m_edit_bk->restore(returned);
+				}
 				returned->second.insert(query);
 			}else{
 				auto tpp = new Entry(query_str, bud::unordered_set<Query *>());
@@ -61,6 +64,9 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 		{
 			auto returned = m_hamming_bk[query_str.size()].get(query_str);
 			if(returned != nullptr){
+				if(returned->second.size() == 0){
+					m_hamming_bk[query_str.size()].restore(returned);
+				}
 				returned->second.insert(query);
 			}else{
 				auto tpp = new Entry(query_str, bud::unordered_set<Query *>());

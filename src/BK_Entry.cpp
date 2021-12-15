@@ -9,7 +9,7 @@ Entry *BK_Entry::get(bud::string q)
 {
 	if (root == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 	bud::vector<Node *> lookList;
 	lookList.push_back(root);
@@ -32,7 +32,7 @@ Entry *BK_Entry::get(bud::string q)
 			}
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 bud::vector<bud::pair<Entry *, int>> BK_Entry::search(bud::string query, int maxDistance) const

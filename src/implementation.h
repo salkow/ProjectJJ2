@@ -42,7 +42,7 @@ private:
 
 	bud::unique_ptr<BK_Entry> m_edit_bk = bud::make_unique<BK_Entry>(BK_Entry(&Edistance));
 
-	bud::vector<BK_Entry> m_hamming_bk = bud::vector<BK_Entry>(MAX_WORD_LENGTH, BK_Entry(&Hdistance));
+	bud::vector<BK_Entry> m_hamming_bk = bud::vector<BK_Entry>(MAX_WORD_LENGTH, BK_Entry(&Hdistance));//TODO: MIN_WORD_LENGTH
 
 	bud::vector<Result> m_res;
 };
