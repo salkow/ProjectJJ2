@@ -1,6 +1,6 @@
 #include "BK_Entry.h"
 
-#define __BK_ENTRY_MAX_SEARCH_DISTANCE__ 3
+#define __BK_ENTRY_MAX_SEARCH_DISTANCE__ 0
 
 BK_Entry::BK_Entry(int (*df)(Entry *,
 							 Entry *, unsigned int)) : BK(df) {}
