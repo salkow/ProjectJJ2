@@ -171,6 +171,14 @@ public:
 		return &(*it);
 	}
 
+	void clear()
+	{
+		for (auto& bucket: m_buckets)
+			bucket.clear();
+
+		m_size = 0;
+	}
+
 	pair<pointer, bool> insert(const_reference key) { return x_insert(key); }
 	pair<pointer, bool> insert(Key&& key) { return x_insert(std::move(key)); }
 

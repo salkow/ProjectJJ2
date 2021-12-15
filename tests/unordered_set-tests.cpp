@@ -289,3 +289,29 @@ TEST_CASE("Unordered_set merge", "[unordered_set_merge]")
 	REQUIRE(bud::find(first_set.begin(), first_set.end(), 8) != first_set.end());
 	REQUIRE(bud::find(first_set.begin(), first_set.end(), 9) != first_set.end());
 }
+
+TEST_CASE("Clear unordered_set", "clear_unordered_set")
+{
+	unordered_set<int> my_set;
+
+	my_set.insert(1);
+	my_set.insert(2);
+	my_set.insert(3);
+	my_set.insert(4);
+	my_set.insert(5);
+	my_set.insert(6);
+
+	my_set.clear();
+
+	REQUIRE(my_set.empty());
+
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 1) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 2) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 3) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 4) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 5) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 6) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 7) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 8) == my_set.end());
+	REQUIRE(bud::find(my_set.begin(), my_set.end(), 9) == my_set.end());
+}
