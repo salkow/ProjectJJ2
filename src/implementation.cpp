@@ -163,7 +163,9 @@ bool implementation::EsearchFilter(const bud::string& word, bud::unordered_set<Q
 	{
 		for (auto& tempQuery : temp.first->second)
 		{
-			if (tempQuery->m_tolerance <= unsigned(temp.second))
+			if (tempQuery->m_tolerance <= unsigned(temp.second) &&
+				++tempQuery->edit_distance_matched_words_counter == tempQuery->m_str.size())
+
 			{
 				t = true;
 				queries.insert(tempQuery->m_id);
@@ -181,7 +183,8 @@ bool implementation::HsearchFilter(const bud::string& word, bud::unordered_set<Q
 	{
 		for (auto& tempQuery : temp.first->second)
 		{
-			if (tempQuery->m_tolerance <= unsigned(temp.second))
+			if (tempQuery->m_tolerance <= unsigned(temp.second) &&
+				++tempQuery->hamming_distance_matched_words_counter == tempQuery->m_str.size())
 			{
 				t = true;
 				queries.insert(tempQuery->m_id);
@@ -210,7 +213,11 @@ bool implementation::searchForExactMatchingWord(const string& word,
 void implementation::exact_matching_reset_matched_counter()
 {
 	for (auto& query : m_queries_ht)
+	{
 		query.second->exact_matching_matched_words_counter = 0;
+		query.second->hamming_distance_matched_words_counter = 0;
+		query.second->edit_distance_matched_words_counter = 0;
+	}
 }
 
 ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
@@ -220,6 +227,11 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 
 	Result res;
 	res.m_doc_id = doc_id;
+
+	if (doc_id == 48)
+	{
+		bool x = true;
+	}
 
 	unordered_set<string> words = string_breaker(doc_str);
 	for (auto& word : words)
@@ -243,6 +255,11 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 }
 ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids)
 {
+	if (*p_doc_id == 48)
+	{
+		bool x = true;
+	}
+
 	if (m_res.size() == 0)
 		return EC_NO_AVAIL_RES;
 
