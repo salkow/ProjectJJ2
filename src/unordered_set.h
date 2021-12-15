@@ -243,6 +243,14 @@ public:
 
 	[[nodiscard]] vector<vector<Key>>& data() { return m_buckets; }
 
+	void clear()
+	{
+		for (auto& bucket: m_buckets)
+			bucket.clear();
+
+		m_size = 0;
+	}
+
 private:
 	template <class KeyType>
 	pair<key_type*, bool> x_insert(KeyType&& key)

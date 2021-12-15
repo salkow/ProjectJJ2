@@ -25,5 +25,7 @@ ErrorCode MatchDocument(DocID doc_id, const char* doc_str)
 
 ErrorCode GetNextAvailRes(DocID* p_doc_id, unsigned int* p_num_res, QueryID** p_query_ids)
 {
-	return impl.getNext(p_doc_id, p_num_res, p_query_ids);
+	impl.getNext(p_doc_id, p_num_res, p_query_ids);
+//	std::cout << *p_doc_id << std::endl;
+	return EC_SUCCESS;
 }

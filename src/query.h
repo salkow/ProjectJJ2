@@ -13,12 +13,12 @@ struct Query
 
 	QueryID m_id;
 	bud::unordered_set<bud::string> m_str;
+	bud::unordered_set<bud::string> m_str_edit_matched;
+	bud::unordered_set<bud::string> m_str_hamming_matched;
 	MatchType m_match_type;
 	unsigned int m_tolerance;
 
 	unsigned int exact_matching_matched_words_counter = 0;
-	unsigned int edit_distance_matched_words_counter = 0;
-	unsigned int hamming_distance_matched_words_counter = 0;
 };
 
 #endif // QUERY_H

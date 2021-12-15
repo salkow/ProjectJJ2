@@ -158,17 +158,21 @@ ErrorCode implementation::removeQuery(QueryID id)
 bool implementation::EsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries)
 {
 	bud::vector<bud::pair<Entry*, int>> editCurr = m_edit_bk->search(word, 3);
+	if(!editCurr.empty()){
+		bool x = true;
+	}
 	bool t = false;
 	for (auto& temp : editCurr)
 	{
 		for (auto& tempQuery : temp.first->second)
 		{
-			if (tempQuery->m_tolerance <= unsigned(temp.second) &&
-				++tempQuery->edit_distance_matched_words_counter == tempQuery->m_str.size())
-
+			if (static_cast<unsigned int>(temp.second) <= tempQuery->m_tolerance)
 			{
-				t = true;
-				queries.insert(tempQuery->m_id);
+				tempQuery->m_str_edit_matched.insert(temp.first->first);
+				if(tempQuery->m_str_edit_matched.size() == tempQuery->m_str.size()){
+					t = true;
+					queries.insert(tempQuery->m_id);
+				}
 			}
 		}
 	}
@@ -183,11 +187,14 @@ bool implementation::HsearchFilter(const bud::string& word, bud::unordered_set<Q
 	{
 		for (auto& tempQuery : temp.first->second)
 		{
-			if (tempQuery->m_tolerance <= unsigned(temp.second) &&
-				++tempQuery->hamming_distance_matched_words_counter == tempQuery->m_str.size())
+			if (static_cast<unsigned int>(temp.second) <= tempQuery->m_tolerance)
 			{
-				t = true;
-				queries.insert(tempQuery->m_id);
+				tempQuery->m_str_hamming_matched.insert(temp.first->first);
+				if(tempQuery->m_str_hamming_matched.size() == tempQuery->m_str.size()){
+					t = true;
+					queries.insert(tempQuery->m_id);
+				}
+
 			}
 		}
 	}
@@ -215,8 +222,8 @@ void implementation::exact_matching_reset_matched_counter()
 	for (auto& query : m_queries_ht)
 	{
 		query.second->exact_matching_matched_words_counter = 0;
-		query.second->hamming_distance_matched_words_counter = 0;
-		query.second->edit_distance_matched_words_counter = 0;
+		query.second->m_str_edit_matched.clear();
+		query.second->m_str_hamming_matched.clear();
 	}
 }
 
@@ -242,10 +249,10 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char* doc_str)
 		found |= EsearchFilter(word, res.m_query_ids);
 		found |= HsearchFilter(word, res.m_query_ids);
 
-		if (!found)
-		{
-			break;
-		}
+//		if (!found)
+//		{
+//			break;
+//		}
 	}
 
 	m_res.emplace_back(std::move(res));
