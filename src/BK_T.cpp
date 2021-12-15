@@ -36,54 +36,28 @@ void BK<T>::recDelete(Node *parent)
 template <typename T>
 typename BK<T>::Node *BK<T>::traverse(T *item)
 {
-	if (__BK_T_TRAVERSE_USE_SEARCH__)
-	{
-		bud::vector<Node *> lookList;
-		lookList.push_back(root);
-		while (lookList.size() != 0)
-		{
-			Node *curr = lookList.back();
-			lookList.pop_back();
-			if (distanceFunction(curr->content, item, 0) == 0)
-			{
-				return curr;
-			}
-			else
-			{
-				for (const auto &edge : curr->_edges)
-				{
-					// in order to have a more efficient search, we use tolerance 1
-					if (abs(edge->parentDistance - 1) <= 1 ||
-						1 <= abs(edge->parentDistance + 1))
-					{
-						lookList.push_back(edge);
-					}
-				}
-			}
-		}
-		return NULL;
-	}
-	else
-	{
-		bud::vector<Node *> lookList;
-		lookList.push_back(root);
+	bud::vector<Node *> lookList;
+	lookList.push_back(root);
 
-		while (!lookList.empty())
+	while (!lookList.empty())
+	{
+		Node *curr = lookList.back();
+		lookList.pop_back();
+		if (curr->content == item)
+			return curr;
+		else
 		{
-			Node *edge = lookList.back();
-			if (edge->content == item)
-				return edge;
-			else
+			for (const auto &edge : curr->_edges)
 			{
-				lookList.pop_back();
-				for (unsigned int i = 0; i < edge->_edges.size(); i++)
+				if (!__BK_T_TRAVERSE_USE_SEARCH__ || abs(edge->parentDistance - 1) <= 1 ||
+					1 <= abs(edge->parentDistance + 1))
 				{
-					lookList.push_back(edge->_edges.at(i));
+					lookList.push_back(edge);
 				}
 			}
 		}
-		return NULL;
 	}
+	return NULL;
 }
 
 template <typename T>
