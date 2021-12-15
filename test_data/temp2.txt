@@ -1,0 +1,500 @@
+s 1 0 0 3 edit gaither anderson
+s 2 1 2 2 diocese pgdma
+s 3 1 2 2 diocese pgdma
+s 4 0 0 5 hasidic rebbe maggid synagogue rabbi
+s 5 0 0 3 gaither anderson edit
+s 6 1 2 2 pgdma diocese
+s 7 0 0 3 edit anderson amiri
+s 8 2 1 3 airport deicing airlines
+s 9 1 2 1 suasa
+s 10 2 1 2 airport airlines
+s 11 0 0 3 gaither edit anderson
+s 12 2 1 2 airlines airport
+s 13 1 2 2 pgdma diocese
+s 14 0 0 3 edit amiri anderson
+s 15 2 1 2 airport airlines
+s 16 0 0 2 anderson edit
+s 17 0 0 3 anderson edit gaither
+s 18 1 2 2 diocese pgdma
+s 19 0 0 3 anderson amiri edit
+s 20 1 2 1 suasa
+s 21 1 1 1 psilopters
+s 22 2 1 2 airlines airport
+s 23 0 0 5 maggid hasidic rabbi synagogue rebbe
+s 24 1 3 1 karsen
+s 25 0 0 1 mpep
+s 26 1 2 2 diocese pgdma
+s 27 0 0 5 hasidic rabbi maggid synagogue rebbe
+s 28 1 2 2 diocese pgdma
+s 29 1 2 2 diocese pgdma
+s 30 0 0 5 maggid hasidic synagogue rebbe rabbi
+s 31 1 2 2 diocese pgdma
+s 32 1 2 2 diocese pgdma
+s 33 1 2 2 diocese pgdma
+s 34 0 0 5 rabbi maggid synagogue hasidic rebbe
+s 35 0 0 1 opma
+s 36 0 0 2 gaither anderson
+s 37 0 0 2 gaither anderson
+s 38 2 1 3 airport airlines deicing
+s 39 1 2 2 pgdma diocese
+s 40 0 0 2 anderson edit
+s 41 0 0 5 hasidic maggid rebbe synagogue rabbi
+s 42 0 0 2 anderson edit
+s 43 0 0 3 anderson edit amiri
+s 44 0 0 5 synagogue rabbi maggid hasidic rebbe
+s 45 2 1 2 airlines airport
+s 46 0 0 3 amiri edit anderson
+s 47 0 0 3 anderson amiri edit
+s 48 1 2 1 suasa
+s 49 2 1 2 airport airlines
+s 50 2 1 3 airlines airport deicing
+s 51 1 2 2 pgdma diocese
+s 52 2 1 1 amiri
+s 53 0 0 2 anderson edit
+s 54 1 2 1 suasa
+s 55 1 2 1 suasa
+s 56 1 2 2 pgdma diocese
+s 57 0 0 5 rabbi rebbe synagogue hasidic maggid
+s 58 0 0 2 edit anderson
+s 59 0 0 1 mpep
+s 60 0 0 5 rabbi rebbe hasidic synagogue maggid
+s 61 0 0 1 mpep
+s 62 1 1 1 psilopters
+s 63 1 2 2 diocese pgdma
+s 64 0 0 2 edit anderson
+s 65 0 0 5 synagogue rebbe rabbi maggid hasidic
+s 66 1 2 2 diocese pgdma
+s 67 0 0 2 gaither anderson
+s 68 1 2 1 suasa
+s 69 2 1 2 airlines airport
+s 70 0 0 3 edit anderson amiri
+s 71 1 2 2 pgdma diocese
+s 72 0 0 5 maggid hasidic synagogue rebbe rabbi
+s 73 2 1 2 airport airlines
+s 74 2 1 2 airport airlines
+s 75 1 2 1 suasa
+s 76 0 0 5 rebbe maggid hasidic synagogue rabbi
+s 77 1 2 2 diocese pgdma
+s 78 0 0 3 anderson edit amiri
+s 79 1 2 2 diocese pgdma
+s 80 1 3 1 karsen
+s 81 2 1 2 airlines airport
+s 82 0 0 2 edit anderson
+s 83 0 0 1 mpep
+s 84 1 3 1 karsen
+s 85 1 2 2 pgdma diocese
+s 86 0 0 3 gaither edit anderson
+s 87 0 0 5 rebbe synagogue maggid hasidic rabbi
+s 88 1 2 2 diocese pgdma
+s 89 1 2 2 pgdma diocese
+s 90 1 2 1 suasa
+s 91 1 2 2 diocese pgdma
+s 92 1 3 1 karsen
+s 93 1 2 2 pgdma diocese
+s 94 1 2 2 diocese pgdma
+s 95 1 2 2 diocese pgdma
+s 96 0 0 5 hasidic rebbe synagogue maggid rabbi
+s 97 0 0 3 amiri edit anderson
+s 98 1 2 2 diocese pgdma
+s 99 1 2 2 diocese pgdma
+s 100 2 1 2 deicing airport
+s 101 1 1 1 psilopters
+s 102 1 2 2 diocese pgdma
+s 103 1 3 1 karsen
+s 104 0 0 1 mpep
+s 105 1 3 1 karsen
+s 106 1 2 2 diocese pgdma
+s 107 1 2 2 pgdma diocese
+s 108 0 0 5 synagogue rebbe maggid rabbi hasidic
+s 109 0 0 2 edit anderson
+s 110 1 1 1 psilopters
+s 111 1 2 2 pgdma diocese
+s 112 0 0 2 edit anderson
+s 113 1 2 1 suasa
+s 114 0 0 2 anderson amiri
+s 115 2 1 3 deicing airlines airport
+s 116 0 0 1 mpep
+s 117 2 1 3 airport airlines deicing
+s 118 0 0 1 mpep
+s 119 0 0 1 mpep
+s 120 1 1 1 psilopters
+s 121 1 3 1 karsen
+s 122 0 0 5 rabbi synagogue rebbe hasidic maggid
+s 123 0 0 3 edit amiri anderson
+s 124 0 0 3 edit amiri anderson
+s 125 0 0 3 amiri edit anderson
+s 126 0 0 3 edit amiri anderson
+s 127 1 2 2 diocese pgdma
+s 128 0 0 1 opma
+s 129 0 0 2 gaither anderson
+s 130 1 3 1 karsen
+s 131 0 0 5 synagogue rebbe maggid hasidic rabbi
+s 132 1 2 1 suasa
+s 133 1 2 2 diocese pgdma
+s 134 0 0 5 rebbe maggid hasidic synagogue rabbi
+s 135 1 2 1 suasa
+s 136 0 0 3 anderson amiri edit
+s 137 0 0 2 anderson edit
+s 138 2 1 2 airlines airport
+s 139 0 0 5 maggid hasidic synagogue rebbe rabbi
+s 140 0 0 5 maggid hasidic synagogue rebbe rabbi
+s 141 1 2 1 suasa
+s 142 0 0 2 anderson edit
+s 143 1 2 2 pgdma diocese
+s 144 0 0 2 anderson gaither
+s 145 0 0 2 anderson edit
+s 146 1 2 2 pgdma diocese
+s 147 2 1 2 airlines airport
+s 148 0 0 5 maggid synagogue rabbi hasidic rebbe
+s 149 1 2 2 diocese pgdma
+s 150 2 1 2 airlines airport
+s 151 1 2 1 suasa
+s 152 2 1 2 airport airlines
+s 153 0 0 2 anderson edit
+s 154 1 3 1 karsen
+s 155 1 2 2 diocese pgdma
+s 156 0 0 1 mpep
+s 157 1 3 1 karsen
+s 158 1 2 2 pgdma diocese
+s 159 0 0 1 mpep
+s 160 0 0 1 mpep
+s 161 0 0 2 anderson gaither
+s 162 1 3 1 karsen
+s 163 1 2 1 suasa
+s 164 1 3 1 karsen
+s 165 1 2 1 suasa
+s 166 0 0 1 mpep
+s 167 1 2 2 pgdma diocese
+s 168 2 1 1 amiri
+s 169 0 0 3 anderson edit amiri
+s 170 1 2 1 suasa
+s 171 0 0 2 edit anderson
+s 172 1 2 2 diocese pgdma
+s 173 0 0 3 edit anderson gaither
+s 174 0 0 2 edit anderson
+s 175 0 0 5 maggid synagogue hasidic rabbi rebbe
+s 176 0 0 1 mpep
+s 177 0 0 2 edit amiri
+s 178 1 2 2 pgdma diocese
+s 179 0 0 5 rebbe maggid hasidic rabbi synagogue
+s 180 0 0 1 mpep
+s 181 0 0 3 edit amiri anderson
+s 182 0 0 2 edit anderson
+s 183 0 0 2 edit anderson
+s 184 0 0 1 mpep
+s 185 1 2 2 pgdma diocese
+s 186 0 0 2 anderson edit
+s 187 0 0 2 edit anderson
+s 188 1 3 1 karsen
+s 189 1 2 1 suasa
+s 190 1 2 2 diocese pgdma
+s 191 1 2 2 diocese pgdma
+s 192 0 0 2 edit anderson
+s 193 1 3 1 karsen
+s 194 0 0 3 anderson edit amiri
+s 195 1 2 2 diocese pgdma
+s 196 0 0 5 synagogue rabbi maggid rebbe hasidic
+s 197 0 0 2 edit anderson
+s 198 1 2 1 suasa
+s 199 1 2 2 diocese pgdma
+s 200 1 2 2 pgdma diocese
+s 201 1 2 2 diocese pgdma
+s 202 1 3 1 karsen
+s 203 0 0 2 edit anderson
+s 204 0 0 5 synagogue rabbi hasidic rebbe maggid
+s 205 0 0 5 hasidic synagogue maggid rabbi rebbe
+s 206 0 0 3 amiri edit anderson
+s 207 1 2 2 diocese pgdma
+s 208 0 0 2 edit anderson
+s 209 0 0 1 mpep
+s 210 1 2 2 diocese pgdma
+s 211 0 0 3 amiri edit anderson
+s 212 0 0 2 edit anderson
+s 213 2 1 2 airport airlines
+s 214 2 1 2 airport airlines
+s 215 1 3 1 karsen
+s 216 1 3 1 karsen
+s 217 1 2 2 diocese pgdma
+s 218 0 0 5 maggid synagogue hasidic rabbi rebbe
+s 219 1 2 2 pgdma diocese
+s 220 0 0 1 mpep
+s 221 1 1 1 psilopters
+s 222 0 0 5 rebbe synagogue rabbi maggid hasidic
+s 223 0 0 5 hasidic rabbi rebbe synagogue maggid
+s 224 0 0 1 mpep
+s 225 0 0 5 rabbi synagogue hasidic maggid rebbe
+s 226 0 0 5 maggid synagogue rebbe hasidic rabbi
+s 227 1 2 1 suasa
+s 228 1 2 2 diocese pgdma
+s 229 0 0 2 anderson edit
+s 230 0 0 2 anderson gaither
+s 231 0 0 5 maggid hasidic rabbi rebbe synagogue
+s 232 2 1 2 airport airlines
+s 233 0 0 1 opma
+s 234 0 0 2 anderson amiri
+s 235 1 2 2 pgdma diocese
+s 236 2 1 3 deicing airport airlines
+s 237 0 0 2 edit anderson
+s 238 0 0 2 edit anderson
+s 239 0 0 1 mpep
+s 240 0 0 5 synagogue rabbi rebbe maggid hasidic
+s 241 1 2 2 diocese pgdma
+s 242 1 2 2 pgdma diocese
+s 243 0 0 2 anderson edit
+s 244 1 2 2 pgdma diocese
+s 245 0 0 3 amiri anderson edit
+s 246 1 2 2 diocese pgdma
+s 247 0 0 3 edit anderson gaither
+s 248 0 0 1 mpep
+s 249 1 2 2 diocese pgdma
+s 250 1 2 1 suasa
+s 251 1 2 1 suasa
+s 252 1 1 1 psilopters
+s 253 0 0 1 mpep
+s 254 0 0 2 amiri anderson
+s 255 1 3 1 karsen
+s 256 2 1 2 airlines airport
+s 257 1 2 1 suasa
+s 258 1 3 1 karsen
+s 259 2 1 2 airport airlines
+s 260 1 2 1 suasa
+s 261 1 2 1 suasa
+s 262 0 0 5 synagogue hasidic rebbe rabbi maggid
+s 263 2 1 2 airport airlines
+s 264 1 2 2 diocese pgdma
+s 265 1 3 1 karsen
+s 266 1 3 1 karsen
+s 267 1 2 2 pgdma diocese
+s 268 1 2 2 diocese pgdma
+s 269 0 0 3 edit amiri anderson
+s 270 0 0 3 amiri anderson edit
+s 271 1 2 2 pgdma diocese
+s 272 2 1 2 airlines airport
+s 273 1 2 2 diocese pgdma
+s 274 1 2 2 pgdma diocese
+s 275 1 2 1 suasa
+s 276 1 1 1 psilopters
+s 277 0 0 1 mpep
+s 278 2 1 1 amiri
+s 279 2 1 2 airport airlines
+s 280 1 2 1 suasa
+s 281 0 0 5 synagogue rebbe hasidic rabbi maggid
+s 282 0 0 4 maggid hasidic rabbi synagogue
+s 283 1 2 1 suasa
+s 284 0 0 2 anderson edit
+s 285 0 0 2 edit anderson
+s 286 1 2 2 pgdma diocese
+s 287 1 2 2 diocese pgdma
+s 288 2 1 2 airlines airport
+s 289 1 2 2 pgdma diocese
+s 290 0 0 1 mpep
+s 291 1 2 2 pgdma diocese
+s 292 1 2 2 pgdma diocese
+s 293 0 0 3 edit gaither anderson
+s 294 0 0 1 mpep
+s 295 2 1 3 airlines airport deicing
+s 296 0 0 1 mpep
+s 297 0 0 2 edit anderson
+s 298 1 2 2 pgdma diocese
+s 299 0 0 2 anderson edit
+s 300 1 2 1 suasa
+s 301 1 2 2 diocese pgdma
+s 302 1 2 2 diocese pgdma
+s 303 0 0 2 edit anderson
+s 304 0 0 5 rabbi hasidic synagogue maggid rebbe
+s 305 2 1 2 airport airlines
+s 306 0 0 1 mpep
+s 307 0 0 1 opma
+s 308 1 2 2 pgdma diocese
+s 309 2 1 3 airport airlines deicing
+s 310 0 0 3 anderson amiri edit
+s 311 0 0 1 mpep
+s 312 2 1 3 airlines deicing airport
+s 313 0 0 5 rebbe hasidic maggid synagogue rabbi
+s 314 1 2 2 pgdma diocese
+s 315 0 0 2 edit anderson
+s 316 1 2 2 diocese pgdma
+s 317 1 1 1 psilopters
+s 318 0 0 1 mpep
+s 319 0 0 2 gaither anderson
+s 320 2 1 2 airlines airport
+s 321 1 2 2 diocese pgdma
+s 322 1 2 2 pgdma diocese
+s 323 2 1 2 airport airlines
+s 324 0 0 1 mpep
+s 325 1 2 2 diocese pgdma
+s 326 1 2 2 diocese pgdma
+s 327 1 2 2 diocese pgdma
+s 328 1 2 2 diocese pgdma
+s 329 0 0 3 amiri anderson edit
+s 330 0 0 2 anderson gaither
+s 331 2 1 2 airlines airport
+s 332 1 3 1 karsen
+s 333 2 1 2 airport airlines
+s 334 1 2 2 pgdma diocese
+s 335 0 0 5 hasidic maggid rabbi synagogue rebbe
+s 336 0 0 2 anderson edit
+s 337 0 0 3 edit anderson amiri
+s 338 0 0 2 anderson edit
+s 339 0 0 3 edit anderson amiri
+s 340 1 3 1 karsen
+s 341 2 1 1 amiri
+s 342 2 1 2 airport airlines
+s 343 2 1 1 amiri
+s 344 1 2 1 suasa
+s 345 0 0 3 anderson edit amiri
+s 346 2 1 1 amiri
+s 347 0 0 2 anderson amiri
+s 348 0 0 5 maggid synagogue rebbe rabbi hasidic
+s 349 0 0 2 anderson edit
+s 350 0 0 3 anderson amiri edit
+s 351 0 0 2 anderson edit
+s 352 0 0 5 hasidic rabbi rebbe synagogue maggid
+s 353 2 1 3 airport airlines deicing
+s 354 0 0 1 mpep
+s 355 0 0 3 anderson edit amiri
+s 356 0 0 3 amiri anderson edit
+s 357 1 2 2 diocese pgdma
+s 358 2 1 2 airport airlines
+s 359 0 0 2 edit anderson
+s 360 0 0 1 mpep
+s 361 2 1 2 airport airlines
+s 362 0 0 1 opma
+s 363 0 0 3 edit anderson amiri
+s 364 1 1 1 psilopters
+s 365 2 1 2 airlines airport
+s 366 1 2 2 pgdma diocese
+s 367 0 0 1 mpep
+s 368 1 3 1 karsen
+s 369 1 2 2 diocese pgdma
+s 370 0 0 2 anderson edit
+s 371 0 0 1 opma
+s 372 0 0 5 maggid hasidic synagogue rabbi rebbe
+s 373 1 2 2 pgdma diocese
+s 374 1 2 2 diocese pgdma
+s 375 0 0 1 mpep
+s 376 2 1 2 airlines airport
+s 377 0 0 2 anderson edit
+s 378 2 1 2 airlines airport
+s 379 1 2 2 pgdma diocese
+s 380 1 2 2 pgdma diocese
+s 381 2 1 1 amiri
+s 382 0 0 2 anderson amiri
+s 383 0 0 1 mpep
+s 384 0 0 1 mpep
+s 385 1 3 1 karsen
+s 386 1 2 1 suasa
+s 387 1 2 2 diocese pgdma
+s 388 1 2 2 diocese pgdma
+s 389 1 2 2 pgdma diocese
+s 390 0 0 5 rebbe hasidic maggid synagogue rabbi
+s 391 0 0 3 amiri edit anderson
+s 392 1 2 2 pgdma diocese
+s 393 1 2 2 diocese pgdma
+s 394 2 1 2 airport airlines
+s 395 1 2 1 suasa
+s 396 0 0 1 mpep
+s 397 0 0 1 mpep
+s 398 1 3 1 karsen
+s 399 0 0 2 anderson edit
+s 400 1 2 2 diocese pgdma
+s 401 0 0 5 hasidic synagogue maggid rebbe rabbi
+s 402 1 3 1 karsen
+s 403 0 0 5 synagogue maggid hasidic rebbe rabbi
+s 404 0 0 2 anderson amiri
+s 405 0 0 3 edit anderson gaither
+s 406 1 2 1 suasa
+s 407 0 0 1 mpep
+s 408 1 2 2 diocese pgdma
+s 409 1 2 1 suasa
+s 410 0 0 2 edit anderson
+s 411 1 2 1 suasa
+s 412 0 0 1 mpep
+s 413 2 1 2 airport airlines
+s 414 1 1 1 psilopters
+s 415 1 2 1 suasa
+s 416 1 3 1 karsen
+s 417 0 0 1 opma
+s 418 0 0 5 maggid rebbe synagogue hasidic rabbi
+s 419 1 2 1 suasa
+s 420 0 0 2 anderson edit
+s 421 0 0 5 rebbe hasidic rabbi synagogue maggid
+s 422 2 1 2 airlines airport
+s 423 1 1 1 psilopters
+s 424 0 0 2 edit amiri
+s 425 0 0 5 rabbi maggid hasidic rebbe synagogue
+s 426 1 2 1 suasa
+s 427 2 1 2 airport airlines
+s 428 1 2 2 pgdma diocese
+s 429 0 0 5 rebbe maggid rabbi hasidic synagogue
+s 430 0 0 2 anderson edit
+s 431 1 3 1 karsen
+s 432 1 2 1 suasa
+s 433 1 2 2 pgdma diocese
+s 434 0 0 1 rowing
+e 298
+s 435 0 0 3 anderson amiri edit
+s 436 1 1 1 psilopters
+s 437 0 0 1 rowing
+e 29
+s 438 0 0 3 edit anderson amiri
+s 439 0 0 1 rowing
+e 39
+s 440 0 0 5 synagogue rabbi maggid hasidic rebbe
+s 441 0 0 1 rowing
+e 102
+s 442 0 0 3 anderson edit gaither
+s 443 0 0 2 anderson amiri
+s 444 0 0 1 mpep
+s 445 0 0 1 rowing
+e 18
+s 446 1 3 1 karsen
+s 447 0 0 3 edit amiri anderson
+s 448 0 0 3 amiri edit anderson
+s 449 0 0 5 rabbi synagogue rebbe hasidic maggid
+s 450 0 0 1 opma
+s 451 0 0 1 rowing
+e 392
+s 452 0 0 1 rowing
+e 93
+s 453 2 1 2 airport airlines
+s 454 1 2 1 suasa
+s 455 0 0 1 rowing
+e 291
+s 456 0 0 1 mpep
+s 457 0 0 2 anderson edit
+s 458 0 0 1 rowing
+e 95
+s 459 1 2 1 suasa
+s 460 0 0 2 edit amiri
+s 461 1 1 1 psilopters
+s 462 0 0 1 rowing
+e 51
+s 463 0 0 1 rowing
+e 286
+s 464 0 0 1 rowing
+e 71
+s 465 0 0 1 rowing
+e 167
+s 466 0 0 5 rebbe rabbi hasidic maggid synagogue
+s 467 0 0 2 edit anderson
+s 468 0 0 1 rowing
+e 185
+s 469 0 0 1 mpep
+s 470 0 0 1 opma
+s 471 0 0 1 rowing
+e 217
+s 472 0 0 2 edit anderson
+s 473 0 0 1 rowing
+e 199
+s 474 1 2 1 suasa
+s 475 0 0 3 gaither edit anderson
+s 476 0 0 1 rowing
+e 327
+s 477 0 0 1 rowing
+e 190
+s 478 0 0 5 maggid rabbi rebbe synagogue hasidic
+s 479 0 0 1 mpep
+s 480 2 1 3 airlines airport deicing
+m 233 211 http dbpedia resource corporation http dbpedia ontology abstract corporation american food processing machinery airpor equipment company corporation incorporated when technologies divested energy businesses corporation based chicago illinois airpoort equipment division manufactures services jetway brand airport passenger loading bridges other ground support equipment such cargo loaders deicers pushback tractors corporation organized business segments foodtech aerotech foodtech provides solutions services food processing companies markets served include freezer solutions freezing chilling meat seafood poultry ready meals fruits vegetables bakery products protein processing solutions that portion coat cook poultry meat seafood vegetable bakery products container processing solutions fruits vegetables soups sauces dairy food products well ready meals wide variety modern packages fruit processing solutions that extract concentrate aseptically process citrus tomato other fruits aerotech markets solutions services airyort authorities airlines airfreight ground handling companies product offerings include ground support equipment cargo loading aircraft deiing aircraft towing gate equipment passenger boarding ground aircraft power cooling airzport services maintenance airpor equipment systems facilities aerotech also supplies united states military with equipment cargo loading aircraft towing aircraft cooling addition corporation automated guided vehicle business that supplies solutions material handling automotive printing food beverage manufacturing warehouse hospital industries corporation created when announced spinoff airport food equipment businesses into separate company named john bean technologies corporation http wikipedia wiki corporation
+r 233 51 8 10 12 15 22 38 45 49 50 69 73 74 81 100 115 117 138 147 150 152 213 214 232 236 256 259 263 272 279 288 295 305 309 312 320 323 331 333 342 353 358 361 365 376 378 394 413 422 427 453 480
