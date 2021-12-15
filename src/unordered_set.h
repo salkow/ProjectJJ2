@@ -173,7 +173,7 @@ public:
 
 	void clear()
 	{
-		for (auto& bucket: m_buckets)
+		for (auto& bucket : m_buckets)
 			bucket.clear();
 
 		m_size = 0;
@@ -250,14 +250,6 @@ public:
 	}
 
 	[[nodiscard]] vector<vector<Key>>& data() { return m_buckets; }
-
-	void clear()
-	{
-		for (auto& bucket: m_buckets)
-			bucket.clear();
-
-		m_size = 0;
-	}
 
 private:
 	template <class KeyType>
