@@ -40,7 +40,7 @@ typename BK<T>::Node *BK<T>::traverse(T *item)
 	while (!lookList.empty())
 	{
 		Node *edge = lookList.back();
-		if(edge->content == item)
+		if (edge->content == item)
 			return edge;
 		else
 		{
@@ -62,6 +62,15 @@ void BK<T>::remove(T *item)
 	assert(n != NULL);
 	n->deleted = true;
 	// if (n == NULL) return;
+}
+
+template <typename T>
+void BK<T>::restore(T *item)
+{
+	Node *n = traverse(item);
+
+	assert(n != NULL);
+	n->deleted = false;
 }
 
 template <typename T>

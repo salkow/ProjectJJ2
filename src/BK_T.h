@@ -20,7 +20,7 @@ protected:
 	int (*distanceFunction)(T *, T *, unsigned int); // calculates the distance between two "T"s
 	Node *root;
 	ErrorCode recInsert(Node *parent, T *item); // inserts a "T" into a tree recusrsively
-	void recDelete(Node *);				   // recursively delete all nodes, used in the destructor
+	void recDelete(Node *);						// recursively delete all nodes, used in the destructor
 	bud::vector<T *> recSearch(Node *parent, T *query,
 							   int maxDistance) const; // recursively searches the tree for words that
 													   // have <= maxDistance to the given query
@@ -36,7 +36,9 @@ public:
 	bud::vector<T *> search(T *query,
 							int maxDistance) const; // searches the tree for words that
 													// have <= maxDistance to the given query
-	void remove(T *);								//removes the given item from the tree
+
+	void remove(T *);  //removes the given item from the tree
+	void restore(T *); //restores the given item to the tree
 };
 
 #include "BK_T.cpp"
