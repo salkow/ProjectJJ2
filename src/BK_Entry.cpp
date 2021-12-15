@@ -1,5 +1,7 @@
 #include "BK_Entry.h"
 
+#define __BK_ENTRY_MAX_SEARCH_DISTANCE__ 3
+
 BK_Entry::BK_Entry(int (*df)(Entry *,
 							 Entry *, unsigned int)) : BK(df) {}
 
@@ -7,22 +9,26 @@ Entry *BK_Entry::get(bud::string q)
 {
 	if (root == nullptr)
 	{
-		return nullptr;
+		return NULL;
 	}
 	bud::vector<Node *> lookList;
 	lookList.push_back(root);
 
 	while (lookList.size() != 0)
 	{
-		Node *edge = lookList.back();
-		if (edge->content->first == q)
-			return edge->content;
+		Node *curr = lookList.back();
+		lookList.pop_back();
+		if (curr->content->first == q)
+			return curr->content;
 		else
 		{
-			lookList.pop_back();
-			for (auto &newEdge : edge->_edges)
+			for (auto &edge : curr->_edges)
 			{
-				lookList.push_back(newEdge);
+				if (!__BK_T_TRAVERSE_USE_SEARCH__ || abs(edge->parentDistance - 1) <= 1 ||
+					1 <= abs(edge->parentDistance + 1))
+				{
+					lookList.push_back(edge);
+				}
 			}
 		}
 	}
@@ -45,7 +51,7 @@ bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, bud::stri
 	Entry temp(query, bud::unordered_set<Query *>());
 
 	// if the parent node fits our criteria, add to results and explore it's children
-	int distance = distanceFunction(parent->content, &temp, 0);
+	int distance = distanceFunction(parent->content, &temp, __BK_ENTRY_MAX_SEARCH_DISTANCE__);
 	if (distance <= maxDistance && !parent->deleted)
 		results.push_back(bud::pair(parent->content, distance));
 

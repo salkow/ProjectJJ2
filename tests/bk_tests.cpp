@@ -5,7 +5,7 @@
 #include "../src/vector.h"
 #include "../src/appMatching/editDistance.h"
 
-static int distance(bud::string* a, bud::string* b, unsigned int tolerance)
+static int distance(bud::string *a, bud::string *b, unsigned int tolerance)
 {
 	REQUIRE(a != NULL);
 	REQUIRE(b != NULL);
@@ -26,15 +26,15 @@ TEST_CASE("Search some words on a BK tree", "[BK_search]")
 {
 	BK<bud::string> tree(&distance);
 	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
-	bud::vector<bud::string*> w;
+	bud::vector<bud::string *> w;
 	for (int i = 0; i < 7; i++)
 	{
-		bud::string* tmp = new bud::string(words[i]);
+		bud::string *tmp = new bud::string(words[i]);
 		w.push_back(tmp);
 		tree.insert(tmp);
 	}
 
-	bud::vector<bud::string*> results;
+	bud::vector<bud::string *> results;
 
 	bud::string query1 = "hell";
 	results = tree.search(&query1, 0);
@@ -49,4 +49,42 @@ TEST_CASE("Search some words on a BK tree", "[BK_search]")
 	bud::string query3 = "el";
 	results = tree.search(&query3, 2);
 	REQUIRE(results.size() == 5);
+}
+
+TEST_CASE("Remove a node", "[BK_remove]")
+{
+	BK<bud::string> tree(&distance);
+	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
+	bud::vector<bud::string *> w;
+	for (int i = 0; i < 7; i++)
+	{
+		bud::string *tmp = new bud::string(words[i]);
+		w.push_back(tmp);
+		tree.insert(tmp);
+	}
+
+	tree.remove(w[1]);
+	bud::string query2 = "hel1";
+	bud::vector<bud::string *> results = tree.search(&query2, 1);
+	REQUIRE(results.size() == 1);
+	REQUIRE(results.at(0) == w[0]);
+}
+
+TEST_CASE("Restore a node", "[BK_restore]")
+{
+	BK<bud::string> tree(&distance);
+	bud::string words[7] = {"hell", "help", "fall", "felt", "fell", "small", "melt"};
+	bud::vector<bud::string *> w;
+	for (int i = 0; i < 7; i++)
+	{
+		bud::string *tmp = new bud::string(words[i]);
+		w.push_back(tmp);
+		tree.insert(tmp);
+	}
+
+	tree.remove(w[1]);
+	tree.restore(w[1]);
+	bud::string query2 = "hel1";
+	bud::vector<bud::string *> results = tree.search(&query2, 1);
+	REQUIRE(results.size() == 2);
 }

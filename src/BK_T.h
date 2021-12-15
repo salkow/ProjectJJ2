@@ -12,31 +12,42 @@ protected:
 	{
 		Node(T *&item, int parentDistance);
 		T *content;
-		int parentDistance; // distance of this node compared to it's parent node, root's distance is 0
+		// distance of this node compared to it's parent node, root's distance is 0
+		int parentDistance;
 		bool deleted;
 		bud::vector<Node *> _edges;
 	};
 
-	int (*distanceFunction)(T *, T *, unsigned int); // calculates the distance between two "T"s
+	// calculates the distance between two "T"s
+	int (*distanceFunction)(T *, T *, unsigned int);
 	Node *root;
-	ErrorCode recInsert(Node *parent, T *item); // inserts a "T" into a tree recusrsively
-	void recDelete(Node *);				   // recursively delete all nodes, used in the destructor
-	bud::vector<T *> recSearch(Node *parent, T *query,
-							   int maxDistance) const; // recursively searches the tree for words that
-													   // have <= maxDistance to the given query
-	Node *traverse(T *);							   // traverses the tree and returns a pointer if the
-													   // given item is found on it, NULL if not.
+	// inserts a "T" into a tree recusrsively
+	ErrorCode recInsert(Node *parent, T *item);
+	// recursively delete all nodes, used in the destructor
+	void recDelete(Node *);
+
+	// recursively searches the tree for words that have <= maxDistance to the given query
+	bud::vector<T *> recSearch(Node *parent, T *query, int maxDistance) const;
+
+	// traverses the tree and returns a pointer if the given item is found on it, NULL if not.
+	Node *traverse(T *);
 
 public:
-	BK(int (*distanceFunction)(T *,
-							   T *, unsigned int)); // the distance function finds the distance between two "T"s
+	// the distance function finds the distance between two "T"s
+	BK(int (*distanceFunction)(T *, T *, unsigned int));
 	~BK();
 
-	ErrorCode insert(T *); // inserts a "T" into the tree
-	bud::vector<T *> search(T *query,
-							int maxDistance) const; // searches the tree for words that
-													// have <= maxDistance to the given query
-	void remove(T *);								//removes the given item from the tree
+	// inserts a "T" into the tree
+	ErrorCode insert(T *);
+
+	// searches the tree for words that have <= maxDistance to the given query
+	bud::vector<T *> search(T *query, int maxDistance) const;
+
+	//removes the given item from the tree
+	void remove(T *);
+
+	//restores the given item to the tree
+	void restore(T *);
 };
 
 #include "BK_T.cpp"

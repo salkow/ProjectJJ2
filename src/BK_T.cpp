@@ -6,6 +6,8 @@
 #include "BK_T.h"
 #include "vector.h"
 
+#define __BK_T_TRAVERSE_USE_SEARCH__ true
+
 template <typename T>
 BK<T>::Node::Node(T *&cont, int parDistance) : content(cont), parentDistance(parDistance), deleted(false) {}
 
@@ -39,15 +41,19 @@ typename BK<T>::Node *BK<T>::traverse(T *item)
 
 	while (!lookList.empty())
 	{
-		Node *edge = lookList.back();
-		if(edge->content == item)
-			return edge;
+		Node *curr = lookList.back();
+		lookList.pop_back();
+		if (curr->content == item)
+			return curr;
 		else
 		{
-			lookList.pop_back();
-			for (unsigned int i = 0; i < edge->_edges.size(); i++)
+			for (const auto &edge : curr->_edges)
 			{
-				lookList.push_back(edge->_edges.at(i));
+				if (!__BK_T_TRAVERSE_USE_SEARCH__ || abs(edge->parentDistance - 1) <= 1 ||
+					1 <= abs(edge->parentDistance + 1))
+				{
+					lookList.push_back(edge);
+				}
 			}
 		}
 	}
@@ -62,6 +68,15 @@ void BK<T>::remove(T *item)
 	assert(n != NULL);
 	n->deleted = true;
 	// if (n == NULL) return;
+}
+
+template <typename T>
+void BK<T>::restore(T *item)
+{
+	Node *n = traverse(item);
+
+	assert(n != NULL);
+	n->deleted = false;
 }
 
 template <typename T>

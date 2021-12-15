@@ -10,17 +10,17 @@
 
 class BK_Entry : public BK<Entry>
 {
-	bud::vector<bud::pair<Entry *, int>> recSearch(Node *parent, bud::string query,
-												   int maxDistance) const; // recursively searches the tree for words that
-																		   // have <= maxDistance to the given query
+	// recursively searches the tree for words that have <= maxDistance to the given query
+	bud::vector<bud::pair<Entry *, int>> recSearch(Node *parent, bud::string query, int maxDistance) const;
 
 public:
-	BK_Entry(int (*distanceFunction)(Entry *,
-									 Entry *, unsigned int)); // the distance function finds the distance between two "T"s
+	// the distance function finds the distance between two "T"s
+	BK_Entry(int (*distanceFunction)(Entry *, Entry *, unsigned int));
 
 	Entry *get(bud::string);
-	bud::vector<bud::pair<Entry *, int>> search(bud::string query, int maxDistance) const; // searches the tree for words that
-																						   // have <= maxDistance to the given query
+
+	// searches the tree for words that have <= maxDistance to the given query
+	bud::vector<bud::pair<Entry *, int>> search(bud::string query, int maxDistance) const;
 };
 
 #endif
