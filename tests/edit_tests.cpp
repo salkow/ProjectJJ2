@@ -5,7 +5,7 @@
 #include "../src/vector.h"
 #include "../src/appMatching/editDistance.h"
 
-static int distance(bud::string *a, bud::string *b, unsigned int tolerance)
+static int distance(bud::string* a, bud::string* b, unsigned int tolerance)
 {
 	REQUIRE(a != NULL);
 	REQUIRE(b != NULL);
