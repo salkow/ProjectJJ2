@@ -59,7 +59,7 @@ ErrorCode implementation::addQuery(QueryID id, const char* str, MatchType match_
 				}
 			}
 		}
-	}else if (match_type == MT_EXACT_MATCH){
+	}else if (match_type == MT_HAMMING_DIST){
 		for (const auto& query_str : query->m_str)
 		{
 			auto returned = m_hamming_bk[query_str.size()].get(query_str);
