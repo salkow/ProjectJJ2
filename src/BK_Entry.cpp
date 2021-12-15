@@ -7,22 +7,26 @@ Entry *BK_Entry::get(bud::string q)
 {
 	if (root == nullptr)
 	{
-		return nullptr;
+		return NULL;
 	}
 	bud::vector<Node *> lookList;
 	lookList.push_back(root);
 
 	while (lookList.size() != 0)
 	{
-		Node *edge = lookList.back();
-		if (edge->content->first == q)
-			return edge->content;
+		Node *curr = lookList.back();
+		lookList.pop_back();
+		if (curr->content->first == q)
+			return curr->content;
 		else
 		{
-			lookList.pop_back();
-			for (auto &newEdge : edge->_edges)
+			for (auto &edge : curr->_edges)
 			{
-				lookList.push_back(newEdge);
+				if (!__BK_T_TRAVERSE_USE_SEARCH__ || abs(edge->parentDistance - 1) <= 1 ||
+					1 <= abs(edge->parentDistance + 1))
+				{
+					lookList.push_back(edge);
+				}
 			}
 		}
 	}
