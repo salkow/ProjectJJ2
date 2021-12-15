@@ -1,4 +1,7 @@
 #include "implementation.h"
+
+#include <cstdlib>
+
 #include "string_breaker.h"
 #include "unordered_set.h"
 
@@ -256,6 +259,15 @@ ErrorCode implementation::getNext(DocID* p_doc_id, unsigned int* p_num_res, Quer
 		(*p_query_ids)[i] = query_id;
 		++i;
 	}
+
+	std::qsort(*p_query_ids, *p_num_res, sizeof(QueryID),
+			   [](const void* first_id, const void* second_id)
+			   {
+				   const QueryID id_1 = *static_cast<const QueryID*>(first_id);
+				   const QueryID id_2 = *static_cast<const QueryID*>(second_id);
+
+				   return static_cast<int>(id_1 - id_2);
+			   });
 
 	m_res.pop_back();
 	return EC_SUCCESS;
