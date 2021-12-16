@@ -92,38 +92,38 @@ ErrorCode BK<T>::insert(T *item)
 	}
 	else
 	{
-		if (recInsert(root, item) == EC_FAIL)
-		{ // recursively traverse the tree to find an empty spot
-			return EC_FAIL;
-		}
-	}
-	return EC_SUCCESS;
-}
+		bud::vector<Node *> lookList;
+		lookList.push_back(root);
 
-template <typename T>
-ErrorCode BK<T>::recInsert(Node *parent, T *item)
-{
-	// calculate distance of node-to-insert vs parent
-	int distance = distanceFunction(parent->content, item, 0);
+		Node *curr;
+		bool found;
 
-	// look for a child node with the same distance
-	bool found = false;
-	for (const auto &edge : parent->_edges)
-	{
-		// child node found, look inside it
-		if (edge->parentDistance == distance)
+		do
 		{
-			recInsert(edge, item);
-			found = true;
-			break;
-		}
-	}
+			curr = lookList.back();
+			lookList.pop_back();
 
-	// child node not found, make a new node
-	if (!found)
-	{
-		Node *newNode = new Node(item, distance);
-		parent->_edges.push_back(newNode);
+			// calculate distance of node-to-insert vs parent
+			int distance = distanceFunction(curr->content, item, 0);
+			found = false;
+			for (const auto &edge : curr->_edges)
+			{
+				// child node found, look inside it
+				if (edge->parentDistance == distance)
+				{
+					lookList.push_back(edge);
+					found = true;
+					break;
+				}
+			}
+
+			// child node not found, make a new node
+			if (!found)
+			{
+				Node *newNode = new Node(item, distance);
+				curr->_edges.push_back(newNode);
+			}
+		} while (!lookList.empty());
 	}
 	return EC_SUCCESS;
 }

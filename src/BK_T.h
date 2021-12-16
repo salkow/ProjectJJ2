@@ -21,8 +21,7 @@ protected:
 	// calculates the distance between two "T"s
 	int (*distanceFunction)(T *, T *, unsigned int);
 	Node *root;
-	// inserts a "T" into a tree recusrsively
-	ErrorCode recInsert(Node *parent, T *item);
+
 	// recursively delete all nodes, used in the destructor
 	void recDelete(Node *);
 
