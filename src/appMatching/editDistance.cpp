@@ -15,17 +15,13 @@ unsigned long getEdit(string& f, string& s, unsigned int tolerance)
 	for (unsigned long i = 0; i < b + 1; i++)
 	{
 		d[i] = new unsigned long[a + 1];
+		d[i][0] = i;
 	}
 
 	for (unsigned long i = 0; i < a + 1; i++)
 	{ // we need to initialize the first row and the first column from 0 to a+1 or b+1 respectively
 		d[0][i] = i;
 	}
-	for (unsigned long i = 0; i < b + 1; i++)
-	{
-		d[i][0] = i;
-	}
-
 	for (unsigned long i = 1; i < b + 1; i++)
 	{
 		for (unsigned long j = 1; j < a + 1; j++)
