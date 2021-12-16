@@ -59,7 +59,6 @@ TEST_CASE("BK Entry search", "[bk_entry_search]")
 
 	REQUIRE(results.size() == 3);
 
-	std::cout << "______" << std::endl;
 	REQUIRE(results.at(0).first == entries.at(0)); //hell
 	REQUIRE(results.at(0).second == 0);
 	REQUIRE(results.at(1).first == entries.at(1)); //help
