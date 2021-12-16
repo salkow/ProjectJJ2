@@ -1,11 +1,11 @@
 #include "BK_Entry.h"
 
-#define __BK_ENTRY_MAX_SEARCH_DISTANCE__ 0
+#define __BK_ENTRY_MAX_SEARCH_DISTANCE__ 4
 
 BK_Entry::BK_Entry(int (*df)(Entry *,
 							 Entry *, unsigned int)) : BK(df) {}
 
-Entry *BK_Entry::get(const bud::string& q)
+Entry *BK_Entry::get(const bud::string &q)
 {
 	if (root == nullptr)
 	{
@@ -35,7 +35,7 @@ Entry *BK_Entry::get(const bud::string& q)
 	return nullptr;
 }
 
-bud::vector<bud::pair<Entry *, int>> BK_Entry::search(const bud::string& query, int maxDistance) const
+bud::vector<bud::pair<Entry *, int>> BK_Entry::search(const bud::string &query, int maxDistance) const
 {
 	// handle null root
 	if (root == NULL)
@@ -44,7 +44,7 @@ bud::vector<bud::pair<Entry *, int>> BK_Entry::search(const bud::string& query, 
 		return recSearch(root, query, maxDistance);
 }
 
-bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, const bud::string& query, int maxDistance) const
+bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, const bud::string &query, int maxDistance) const
 {
 	bud::vector<bud::pair<Entry *, int>> results;
 

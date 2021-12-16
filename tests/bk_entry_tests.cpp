@@ -8,7 +8,14 @@ static int distance(Entry *a, Entry *b, unsigned int max_t)
 {
 	REQUIRE(a != NULL);
 	REQUIRE(b != NULL);
-	return int(getEdit(a->first, b->first, max_t));
+	if (max_t == 0)
+	{
+		return int(getEdit(a->first, b->first, 1000));
+	}
+	else
+	{
+		return int(getEdit(a->first, b->first, max_t));
+	}
 }
 
 TEST_CASE("BK Entry get", "[bk_entry_get]")
@@ -49,6 +56,9 @@ TEST_CASE("BK Entry search", "[bk_entry_search]")
 	REQUIRE(results.at(0).first == entries.at(0));
 
 	results = tree.search("hell", 1);
+
+	std::cout << results[0].first->first << std::endl;
+	std::cout << results[1].first->first << std::endl;
 
 	REQUIRE(results.size() == 3);
 

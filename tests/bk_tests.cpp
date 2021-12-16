@@ -9,7 +9,12 @@ static int distance(bud::string *a, bud::string *b, unsigned int tolerance)
 {
 	REQUIRE(a != NULL);
 	REQUIRE(b != NULL);
-	return int(getEdit(*a, *b, tolerance));
+	if (tolerance == 0)
+	{
+		return int(getEdit(*a, *b, 1000));
+	}
+	else
+		return int(getEdit(*a, *b, tolerance));
 }
 
 TEST_CASE("Insert some words on a BK tree", "[BK_insert]")
