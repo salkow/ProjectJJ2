@@ -66,10 +66,7 @@ bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, const bud
 
 			bud::vector<bud::pair<Entry *, int>> temp_results = recSearch(edge, query, maxDistance);
 			// add it's results to ours
-			for (const auto &result : temp_results)
-			{
-				results.push_back(result);
-			}
+			results.insert(temp_results.begin(), temp_results.end());
 		}
 	}
 	return results;
