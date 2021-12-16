@@ -5,7 +5,7 @@
 BK_Entry::BK_Entry(int (*df)(Entry *,
 							 Entry *, unsigned int)) : BK(df) {}
 
-Entry *BK_Entry::get(bud::string q)
+Entry *BK_Entry::get(bud::string& q)
 {
 	if (root == nullptr)
 	{
@@ -35,7 +35,7 @@ Entry *BK_Entry::get(bud::string q)
 	return nullptr;
 }
 
-bud::vector<bud::pair<Entry *, int>> BK_Entry::search(bud::string query, int maxDistance) const
+bud::vector<bud::pair<Entry *, int>> BK_Entry::search(bud::string& query, int maxDistance) const
 {
 	// handle null root
 	if (root == NULL)
@@ -44,7 +44,7 @@ bud::vector<bud::pair<Entry *, int>> BK_Entry::search(bud::string query, int max
 		return recSearch(root, query, maxDistance);
 }
 
-bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, bud::string query, int maxDistance) const
+bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, bud::string& query, int maxDistance) const
 {
 	bud::vector<bud::pair<Entry *, int>> results;
 

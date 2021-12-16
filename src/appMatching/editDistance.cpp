@@ -6,7 +6,7 @@
 
 using bud::string;
 
-unsigned long getEdit(string f, string s, unsigned int tolerance)
+unsigned long getEdit(string& f, string& s, unsigned int tolerance)
 { // this function uses 1 2d array with b+1 for the x and a+1 for y lengths.
 	unsigned long a = f.size(), b = s.size();
 	// std::cout << a << std::endl << b << std::endl;
