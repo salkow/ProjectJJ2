@@ -8,24 +8,20 @@ bud::unordered_set<bud::string> string_breaker(const char* input)
 
 	bud::unordered_set<bud::string> output;
 
-	unsigned int curs = 0;
 	unsigned int size = 0;
 
-	while (input[curs] != '\0')
+	while (input[size] != '\0')
 	{
-		if (input[curs] == ' ')
+		if (input[size] == ' ')
 		{
 			output.insert(bud::string(input, size));
 
+			input += size + 1;
+
 			size = 0;
-
-			input += curs + 1;
-
-			curs = 0;
 		}
 
 		size++;
-		curs++;
 	}
 
 	// we assume there's at least one word
