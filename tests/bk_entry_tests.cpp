@@ -57,9 +57,6 @@ TEST_CASE("BK Entry search", "[bk_entry_search]")
 
 	results = tree.search("hell", 1);
 
-	std::cout << results[0].first->first << std::endl;
-	std::cout << results[1].first->first << std::endl;
-
 	REQUIRE(results.size() == 3);
 
 	REQUIRE(results.at(0).first == entries.at(0)); //hell
