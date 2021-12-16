@@ -48,7 +48,7 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 	}
 	else if (match_type == MT_EDIT_DIST)
 	{
-		for (const auto &query_str : query->m_str)
+		for (auto &query_str : query->m_str)
 		{
 			auto returned = m_edit_bk->get(query_str);
 			if (returned != nullptr)
@@ -72,7 +72,7 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 	}
 	else if (match_type == MT_HAMMING_DIST)
 	{
-		for (const auto &query_str : query->m_str)
+		for (auto &query_str : query->m_str)
 		{
 			auto returned = m_hamming_bk[query_str.size()].get(query_str);
 			if (returned != nullptr)
@@ -120,7 +120,7 @@ ErrorCode implementation::removeQuery(QueryID id)
 	}
 	else if ((*query)->m_match_type == MT_EDIT_DIST)
 	{
-		for (const auto &query_str : (*query)->m_str)
+		for (auto &query_str : (*query)->m_str)
 		{
 			auto returned = m_edit_bk->get(query_str);
 			if (returned != nullptr)
@@ -135,7 +135,7 @@ ErrorCode implementation::removeQuery(QueryID id)
 	}
 	else if ((*query)->m_match_type == MT_HAMMING_DIST)
 	{
-		for (const auto &query_str : (*query)->m_str)
+		for (auto &query_str : (*query)->m_str)
 		{
 			auto returned = m_hamming_bk[query_str.size()].get(query_str);
 			if (returned != nullptr)
@@ -159,7 +159,7 @@ ErrorCode implementation::removeQuery(QueryID id)
 	return EC_SUCCESS;
 }
 
-bool implementation::EsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries)
+bool implementation::EsearchFilter(bud::string& word, bud::unordered_set<QueryID> &queries)
 {
 	bud::vector<bud::pair<Entry *, int>> editCurr = m_edit_bk->search(word, 3);
 	bool t = false;
@@ -181,7 +181,7 @@ bool implementation::EsearchFilter(const bud::string &word, bud::unordered_set<Q
 	return t;
 }
 
-bool implementation::HsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries)
+bool implementation::HsearchFilter(bud::string& word, bud::unordered_set<QueryID> &queries)
 {
 	bud::vector<bud::pair<Entry *, int>> hammingCurr = m_hamming_bk[word.size()].search(word, 3);
 	bool t = false;

@@ -35,8 +35,8 @@ public:
 private:
 	bool searchForExactMatchingWord(const bud::string& word,
 									bud::unordered_set<QueryID>& queries) const;
-	bool EsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries);
-	bool HsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries);
+	bool EsearchFilter(bud::string& word, bud::unordered_set<QueryID>& queries);
+	bool HsearchFilter(bud::string& word, bud::unordered_set<QueryID>& queries);
 
 	bud::unique_ptr<BK_Entry> m_edit_bk = bud::make_unique<BK_Entry>(BK_Entry(&Edistance));
 
