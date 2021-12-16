@@ -59,6 +59,7 @@ TEST_CASE("BK Entry search", "[bk_entry_search]")
 
 	REQUIRE(results.size() == 3);
 
+	std::cout << "______" << std::endl;
 	REQUIRE(results.at(0).first == entries.at(0)); //hell
 	REQUIRE(results.at(0).second == 0);
 	REQUIRE(results.at(1).first == entries.at(1)); //help
@@ -71,14 +72,14 @@ TEST_CASE("BK Entry search", "[bk_entry_search]")
 	REQUIRE(results.size() == 6);
 	REQUIRE(results.at(0).first == entries.at(0)); //hell
 	REQUIRE(results.at(0).second == 0);
-	REQUIRE(results.at(1).first == entries.at(1)); //help
-	REQUIRE(results.at(1).second == 1);
-	REQUIRE(results.at(2).first == entries.at(4)); //fell
-	REQUIRE(results.at(2).second == 1);
-	REQUIRE(results.at(3).first == entries.at(2)); //fall
+	REQUIRE(results.at(1).first == entries.at(2)); //fall
+	REQUIRE(results.at(1).second == 2);
+	REQUIRE(results.at(2).first == entries.at(6)); //melt
+	REQUIRE(results.at(2).second == 2);
+	REQUIRE(results.at(3).first == entries.at(3)); //felt
 	REQUIRE(results.at(3).second == 2);
-	REQUIRE(results.at(4).first == entries.at(3)); //felt
-	REQUIRE(results.at(4).second == 2);
-	REQUIRE(results.at(5).first == entries.at(6)); //melt
-	REQUIRE(results.at(5).second == 2);
+	REQUIRE(results.at(4).first == entries.at(1)); //help
+	REQUIRE(results.at(4).second == 1);
+	REQUIRE(results.at(5).first == entries.at(4)); //fell
+	REQUIRE(results.at(5).second == 1);
 }
