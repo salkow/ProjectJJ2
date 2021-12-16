@@ -129,34 +129,6 @@ ErrorCode BK<T>::insert(T *item)
 }
 
 template <typename T>
-ErrorCode BK<T>::recInsert(Node *parent, T *item)
-{
-	// calculate distance of node-to-insert vs parent
-	int distance = distanceFunction(parent->content, item, 0);
-
-	// look for a child node with the same distance
-	bool found = false;
-	for (const auto &edge : parent->_edges)
-	{
-		// child node found, look inside it
-		if (edge->parentDistance == distance)
-		{
-			recInsert(edge, item);
-			found = true;
-			break;
-		}
-	}
-
-	// child node not found, make a new node
-	if (!found)
-	{
-		Node *newNode = new Node(item, distance);
-		parent->_edges.push_back(newNode);
-	}
-	return EC_SUCCESS;
-}
-
-template <typename T>
 bud::vector<T *> BK<T>::search(T *query, int maxDistance) const
 {
 	// handle null root

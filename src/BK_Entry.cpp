@@ -68,42 +68,11 @@ bud::vector<bud::pair<Entry *, int>> BK_Entry::search(const bud::string &query, 
 				maxDistance <= edge->parentDistance + maxDistance)
 			{
 				lookList.push_back(edge);
-				// bud::vector<bud::pair<Entry *, int>> temp_results = recSearch(edge, query, maxDistance);
-				// add it's results to ours
-				// results.insert(temp_results.begin(), temp_results.end());
 			}
 		}
 
 	} while (!lookList.empty());
 
 	// handle null root
-	return results;
-}
-
-bud::vector<bud::pair<Entry *, int>> BK_Entry::recSearch(Node *parent, const bud::string &query, int maxDistance) const
-{
-	bud::vector<bud::pair<Entry *, int>> results;
-
-	Entry temp(query, bud::unordered_set<Query *>());
-
-	// if the parent node fits our criteria, add to results and explore it's children
-	int distance = distanceFunction(parent->content, &temp, __BK_ENTRY_MAX_SEARCH_DISTANCE__);
-	if (distance <= maxDistance && !parent->deleted)
-		results.push_back(bud::pair(parent->content, distance));
-
-	// iterate over parent's children, explore only those with
-	// |child->parentDistance - maxDistance| <= maxDistance <= |child->parentDistance + maxDistance|
-	for (const auto &edge : parent->_edges)
-	{
-		// if the child's parentDistance fits our criteria, call recSearch
-		if (abs(edge->parentDistance - maxDistance) <= maxDistance ||
-			maxDistance <= abs(edge->parentDistance + maxDistance))
-		{
-
-			bud::vector<bud::pair<Entry *, int>> temp_results = recSearch(edge, query, maxDistance);
-			// add it's results to ours
-			results.insert(temp_results.begin(), temp_results.end());
-		}
-	}
 	return results;
 }
