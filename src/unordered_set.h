@@ -122,7 +122,7 @@ class unordered_set
 	constexpr static std::size_t DEFAULT_SIZE = 13;
 	constexpr static std::size_t DEFAULT_BUCKET_COUNT_INCREASE_FACTOR = 2;
 	constexpr static std::size_t DEFAULT_ITEMS_PER_BUCKET = 4;
-	constexpr static float DEFAULT_MAX_LOAD_FACTOR = 0.75;
+	constexpr static float DEFAULT_MAX_LOAD_FACTOR = 0.9;
 
 public:
 	using key_type = const Key;
