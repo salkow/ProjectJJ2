@@ -12,10 +12,6 @@ implementation::~implementation()
 {
 	for (auto &query_pair : m_queries_ht)
 	{
-		if (query_pair.second->m_id == 52)
-		{
-			auto x = 12;
-		}
 		delete query_pair.second;
 	}
 }
@@ -197,11 +193,6 @@ bool implementation::HsearchFilter(const bud::string &word, bud::unordered_set<Q
 	{
 		for (auto &tempQuery : temp.first->second)
 		{
-			if (tempQuery->m_id == 446)
-			{
-				auto peen = *(tempQuery->m_str.begin());
-				auto x = 12;
-			}
 			if (static_cast<unsigned int>(temp.second) <= tempQuery->m_tolerance)
 			{
 				tempQuery->m_str_hamming_matched.insert(temp.first->first);
