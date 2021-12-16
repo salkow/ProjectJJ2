@@ -37,6 +37,8 @@ public:
 
 	string(const char* other);
 
+	string(const char* other, size_type count);
+
 	string(std::nullptr_t) = delete;
 
 	string& operator=(string other);

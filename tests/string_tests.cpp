@@ -129,3 +129,12 @@ TEST_CASE("Iterators string", "[iterators_string]")
 	it++;
 	REQUIRE(it == x.end());
 }
+
+TEST_CASE("string from char* and size", "string_from_char_pointer_and_size")
+{
+	char a[] = "1234";
+
+	string a_str(a, strlen(a));
+
+	REQUIRE(a_str == a);
+}

@@ -27,6 +27,12 @@ bud::string::string(const char* other) :
 	std::memcpy(m_elem, other, m_size);
 }
 
+bud::string::string(const char* other, size_type count) :
+	m_size(count), m_elem(create_string(count)), m_capacity(count)
+{
+	std::memcpy(m_elem, other, count);
+}
+
 bud::string& bud::string::operator=(bud::string other)
 {
 	other.swap(*this);
