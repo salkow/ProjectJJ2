@@ -3,33 +3,33 @@
 bud::unordered_set<bud::string> string_breaker(const char* input)
 {
 	// if the input is an empty string return immediately
-	if (strlen(input) == 0)
+	if (input[0] == '\0')
 		return bud::unordered_set<bud::string>();
 
-	// copy string
-	auto orig_len = strlen(input);
-	char* working_string = new char[orig_len + 1];
-	strcpy(working_string, input);
 	bud::unordered_set<bud::string> output;
 
-	unsigned int curs, start = curs = 0;
+	unsigned int curs = 0;
+	unsigned int size = 0;
 
-	// replace all ' ' with '\0' and add to vector
-	while (curs < orig_len)
+	while (input[curs] != '\0')
 	{
-		if (working_string[curs] == ' ')
+		if (input[curs] == ' ')
 		{
-			working_string[curs] = '\0';
-			output.insert(working_string + start);
-			start = curs + 1;
+			output.insert(bud::string(input, size));
+
+			size = 0;
+
+			input += curs + 1;
+
+			curs = 0;
 		}
+
+		size++;
 		curs++;
 	}
 
 	// we assume there's at least one word
-	output.insert(working_string + start);
-
-	delete[] working_string;
+	output.insert(input);
 
 	return output;
 }
