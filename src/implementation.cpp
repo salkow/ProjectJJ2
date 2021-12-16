@@ -162,10 +162,6 @@ ErrorCode implementation::removeQuery(QueryID id)
 bool implementation::EsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries)
 {
 	bud::vector<bud::pair<Entry *, int>> editCurr = m_edit_bk->search(word, 3);
-	if (!editCurr.empty())
-	{
-		bool x = true;
-	}
 	bool t = false;
 	for (auto &temp : editCurr)
 	{
@@ -241,11 +237,6 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char *doc_str)
 	Result res;
 	res.m_doc_id = doc_id;
 
-	if (doc_id == 48)
-	{
-		bool x = true;
-	}
-
 	unordered_set<string> words = string_breaker(doc_str);
 	for (auto &word : words)
 	{
@@ -268,10 +259,6 @@ ErrorCode implementation::matchDocument(DocID doc_id, const char *doc_str)
 }
 ErrorCode implementation::getNext(DocID *p_doc_id, unsigned int *p_num_res, QueryID **p_query_ids)
 {
-	if (*p_doc_id == 48)
-	{
-		bool x = true;
-	}
 
 	if (m_res.size() == 0)
 		return EC_NO_AVAIL_RES;
