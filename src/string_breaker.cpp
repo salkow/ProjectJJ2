@@ -7,9 +7,9 @@ bud::unordered_set<bud::string> string_breaker(const char* input)
 		return bud::unordered_set<bud::string>();
 
 	// copy string
-	char* working_string = new char[strlen(input) + 1];
+	auto orig_len = strlen(input);
+	char* working_string = new char[orig_len + 1];
 	strcpy(working_string, input);
-	size_t orig_len = strlen(working_string);
 	bud::unordered_set<bud::string> output;
 
 	unsigned int curs, start = curs = 0;
