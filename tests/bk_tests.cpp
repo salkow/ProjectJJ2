@@ -11,7 +11,7 @@ static int distance(bud::string *a, bud::string *b, unsigned int tolerance)
 	REQUIRE(b != NULL);
 	if (tolerance == 0)
 	{
-		return int(getEdit(*a, *b, 1000));
+		return int(getEdit(*a, *b, MAX_WORD_LENGTH+1));
 	}
 	else
 		return int(getEdit(*a, *b, tolerance));

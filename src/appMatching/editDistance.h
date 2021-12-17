@@ -10,7 +10,7 @@ static int Edistance(Entry *a, Entry *b, unsigned int tolerance)
 {
 	if (tolerance == 0)
 	{
-		return int(getEdit(a->first, b->first, 1000));
+		return int(getEdit(a->first, b->first, MAX_WORD_LENGTH+1));
 	}
 	else
 		return int(getEdit(a->first, b->first, tolerance));

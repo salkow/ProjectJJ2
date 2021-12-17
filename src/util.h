@@ -45,6 +45,14 @@ constexpr InputIt find_if(InputIt first, InputIt last, UnaryPredicate p)
 	return last;
 }
 
+template <typename First, typename Second, typename... Other>
+constexpr auto min(First &&first, Second &&second, Other &&... other)
+{
+	if constexpr (sizeof...(other) == 0)
+		return first < second ? first : second;
+	else
+		return min(min(first, second), other...);
+}
 } // namespace bud
 
 #endif // UTIL_H
