@@ -31,8 +31,8 @@ run_tests_*
 .clang-tidy
 .clang-format
 .vscode
-build
+build/*
+build-release/*
 .cmake/
-/result.txt
 .github
 .idea/
