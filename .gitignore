@@ -36,3 +36,4 @@ build-release/*
 .cmake/
 .github
 .idea/
+/result.txt
