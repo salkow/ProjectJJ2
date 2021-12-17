@@ -148,7 +148,7 @@ TEST_CASE("Implementation Exact", "[impl_exact]")
 
 	DocID p_doc_id = 0;
 	unsigned int p_num_res = 0;
-	QueryID *p_query_ids = NULL;
+	QueryID *p_query_ids = nullptr;
 	REQUIRE(imp.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
 
 	REQUIRE(p_doc_id == 5);

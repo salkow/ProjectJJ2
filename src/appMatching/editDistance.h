@@ -10,18 +10,10 @@ static int Edistance(Entry *a, Entry *b, unsigned int tolerance)
 {
 	if (tolerance == 0)
 	{
-			return int(getEdit(a->first, b->first, MAX_WORD_LENGTH+1));
-		if(a->first.size() > b->first.size()){
-		}else{
-			return int(getEdit(b->first, a->first, MAX_WORD_LENGTH+1));
-		}
+		return int(getEdit(a->first, b->first, MAX_WORD_LENGTH+1));
 	}
 	else{
-			return int(getEdit(a->first, b->first, tolerance));
-		if(a->first.size() > b->first.size()){
-		}else{
-			return int(getEdit(b->first, a->first, tolerance));
-		}
+		return int(getEdit(a->first, b->first, tolerance));
 	}
 }
 

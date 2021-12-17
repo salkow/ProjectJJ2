@@ -1,38 +1,20 @@
-#include <iostream>
-
 #include "editDistance.h"
 #include <climits>
-
-#include "../my_string.h"
-#include "../util.h"
-#include "../vector.h"
 
 using bud::string;
 using bud::min;
 
  unsigned long getEdit(string &f, string &s, unsigned int tolerance)
  { // this function uses 1 2d array with b+1 for the x and a+1 for y lengths.
-//	 string atemp;
-//	 string btemp;
 	bool has_swapped = false;
 	if(f.size() > s.size()){
 		has_swapped = true;
 		f.swap(s);
 	}
 
-	 unsigned int a = f.size();
-	 unsigned int b = s.size();
-//	 if(s.size() > f.size()){
-//		 atemp = f;
-//		 btemp = s;
-//		 a = atemp.size();
-//		 b = btemp.size();
-//	 }else{
-//		 atemp = s;
-//		 btemp = f;
-//		 a = atemp.size();
-//		 b = btemp.size();
-//	 }
+	unsigned int a = f.size();
+	unsigned int b = s.size();
+
  	unsigned int d[MAX_WORD_LENGTH][MAX_WORD_LENGTH];
 
  	for (unsigned int i = 0; i < a + 1; i++)

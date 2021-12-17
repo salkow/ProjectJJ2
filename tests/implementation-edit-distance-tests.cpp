@@ -31,13 +31,11 @@ TEST_CASE("Match edit distance queries", "[match_edit_distance_queries]")
 {
 	implementation impl;
 
-	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
 
-	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EDIT_DIST, 1) ==
-			EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(0, "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(2, "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(3, "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
 	REQUIRE(impl.matchDocument(0, "this is a query third last") == EC_SUCCESS);
 
@@ -47,10 +45,12 @@ TEST_CASE("Match edit distance queries", "[match_edit_distance_queries]")
 
 	REQUIRE(impl.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
 
+	QueryID* p_query_ids_end = p_query_ids + p_num_res;
+
 	REQUIRE(p_num_res == 2);
 
-	REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 0U) != query_ids.end());
-	REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+	REQUIRE(bud::find(p_query_ids, p_query_ids_end, 0U) != p_query_ids_end);
+	REQUIRE(bud::find(p_query_ids, p_query_ids_end, 2U) != p_query_ids_end);
 
 	free(p_query_ids);
 }
@@ -59,13 +59,12 @@ TEST_CASE("Delete edit distance queries", "[delete_edit_distance_queries]")
 {
 	implementation impl;
 
-	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
 
-	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EDIT_DIST, 1) ==
+	REQUIRE(impl.addQuery(0, "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) ==
 			EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(2, "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(3, "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
 	REQUIRE(impl.removeQuery(0) == EC_SUCCESS);
 
@@ -77,9 +76,11 @@ TEST_CASE("Delete edit distance queries", "[delete_edit_distance_queries]")
 
 	REQUIRE(impl.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
 
+	QueryID* p_query_ids_end = p_query_ids + p_num_res;
+
 	REQUIRE(p_num_res == 1);
 
-	REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+	REQUIRE(bud::find(p_query_ids, p_query_ids_end, 2U) != p_query_ids_end);
 
 	free(p_query_ids);
 }
@@ -88,13 +89,12 @@ TEST_CASE("Match multiple documents edit distance matching", "[match_multiple_do
 {
 	implementation impl;
 
-	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
 
-	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EDIT_DIST, 1) ==
+	REQUIRE(impl.addQuery(0, "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) ==
 			EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(2, "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(3, "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
 	REQUIRE(impl.matchDocument(0, "this is a query third last") == EC_SUCCESS);
 
@@ -114,8 +114,10 @@ TEST_CASE("Match multiple documents edit distance matching", "[match_multiple_do
 		{
 			REQUIRE(p_num_res == 2);
 
-			REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 0U) != query_ids.end());
-			REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+			QueryID* p_query_ids_end = p_query_ids + p_num_res;
+
+			REQUIRE(bud::find(p_query_ids, p_query_ids_end, 2U) != p_query_ids_end);
+			REQUIRE(bud::find(p_query_ids, p_query_ids_end, 2U) != p_query_ids_end);
 
 			free(p_query_ids);
 		}
@@ -123,7 +125,9 @@ TEST_CASE("Match multiple documents edit distance matching", "[match_multiple_do
 		{
 			REQUIRE(p_num_res == 1);
 
-			REQUIRE(bud::find(query_ids.begin(), query_ids.end(), 2U) != query_ids.end());
+			QueryID* p_query_ids_end = p_query_ids + p_num_res;
+
+			REQUIRE(bud::find(p_query_ids, p_query_ids_end, 1U) != p_query_ids_end);
 
 			free(p_query_ids);
 		}
@@ -149,7 +153,7 @@ TEST_CASE("Implementation Edit", "[impl_edit]")
 
 	DocID p_doc_id = 0;
 	unsigned int p_num_res = 0;
-	QueryID *p_query_ids = NULL;
+	QueryID *p_query_ids = nullptr;
 	REQUIRE(imp.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
 
 	REQUIRE(p_doc_id == 5);
