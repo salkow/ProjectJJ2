@@ -1,7 +1,8 @@
 #include "../lib/include/catch2/catch.hpp"
 
 #include <iostream>
-#include "../src/implementation.h"
+#include "../include/core.h"
+#include "../src/query.h"
 
 TEST_CASE("Query constructor", "[query_constructor]")
 {
