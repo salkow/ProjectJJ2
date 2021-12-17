@@ -3,17 +3,16 @@
 #include "../src/implementation.h"
 #include "../src/array.h"
 
-TEST_CASE("No match exact matching queries", "[no_match_exact_matching_queries]")
+TEST_CASE("No match edit distance queries", "[no_match_edit_distance_queries]")
 {
 	implementation impl;
 
 	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
 
-	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
-			EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
 	REQUIRE(impl.matchDocument(0, "the quick fox jumps over the lazy dog") == EC_SUCCESS);
 
@@ -28,17 +27,17 @@ TEST_CASE("No match exact matching queries", "[no_match_exact_matching_queries]"
 	free(p_query_ids);
 }
 
-TEST_CASE("Match exact matching queries", "[match_exact_matching_queries]")
+TEST_CASE("Match edit distance queries", "[match_edit_distance_queries]")
 {
 	implementation impl;
 
 	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
 
-	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EDIT_DIST, 1) ==
 			EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
 	REQUIRE(impl.matchDocument(0, "this is a query third last") == EC_SUCCESS);
 
@@ -56,17 +55,17 @@ TEST_CASE("Match exact matching queries", "[match_exact_matching_queries]")
 	free(p_query_ids);
 }
 
-TEST_CASE("Delete exact matching queries", "[delete_exact_matching_queries]")
+TEST_CASE("Delete edit distance queries", "[delete_edit_distance_queries]")
 {
 	implementation impl;
 
 	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
 
-	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EDIT_DIST, 1) ==
 			EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
 	REQUIRE(impl.removeQuery(0) == EC_SUCCESS);
 
@@ -85,17 +84,17 @@ TEST_CASE("Delete exact matching queries", "[delete_exact_matching_queries]")
 	free(p_query_ids);
 }
 
-TEST_CASE("Match multiple documents exact matching", "[match_multiple_documents_exact_matching]")
+TEST_CASE("Match multiple documents edit distance matching", "[match_multiple_documents_edit_distance_matching]")
 {
 	implementation impl;
 
 	bud::array<QueryID, 4> query_ids = {0, 1, 2, 3};
 
-	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EXACT_MATCH, 1) ==
+	REQUIRE(impl.addQuery(query_ids[0], "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[1], "this is another a query", MT_EDIT_DIST, 1) ==
 			EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EXACT_MATCH, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[2], "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
+	REQUIRE(impl.addQuery(query_ids[3], "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
 	REQUIRE(impl.matchDocument(0, "this is a query third last") == EC_SUCCESS);
 
@@ -120,7 +119,6 @@ TEST_CASE("Match multiple documents exact matching", "[match_multiple_documents_
 
 			free(p_query_ids);
 		}
-
 		else if (p_doc_id == 1)
 		{
 			REQUIRE(p_num_res == 1);
@@ -129,19 +127,18 @@ TEST_CASE("Match multiple documents exact matching", "[match_multiple_documents_
 
 			free(p_query_ids);
 		}
-
 		else
 			REQUIRE(false);
 	}
 }
 
-TEST_CASE("Implementation Exact", "[impl_exact]")
+TEST_CASE("Implementation Edit", "[impl_edit]")
 {
 	implementation imp;
 	const char str[] = "first word then another word";
 	const char str2[] = "asd word then another word";
-	imp.addQuery(1, str, MT_EXACT_MATCH, 3);
-	imp.addQuery(2, str2, MT_EXACT_MATCH, 2);
+	imp.addQuery(1, str, MT_EDIT_DIST, 3);
+	imp.addQuery(2, str2, MT_EDIT_DIST, 2);
 
 	REQUIRE(imp.matchDocument(2, "this first test has asd word and then it also has another") == EC_SUCCESS);
 

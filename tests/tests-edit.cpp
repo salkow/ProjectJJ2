@@ -22,29 +22,3 @@ TEST_CASE("test", "[test]")
 	REQUIRE(p_num_res == 0);
 	free(p_query_ids);
 }
-
-// TEST_CASE("test2", "[test2]")
-// {
-// 	StartQuery(2, "diocese pgdma", MT_HAMMING_DIST, 2);
-// 	auto x = fopen("../test_data/temp.txt", "r");
-// 	char t[100000];
-// 	fgets(t, 100000, x);
-// 	MatchDocument(22, t);
-// 	unsigned int doc_id = 0;
-// 	unsigned int num_res = 0;
-// 	unsigned int *query_ids = 0;
-
-// 	ErrorCode err = GetNextAvailRes(&doc_id, &num_res, &query_ids);
-// 	REQUIRE(err == EC_SUCCESS);
-// 	REQUIRE(num_res == 0);
-// 	free(query_ids);
-// }
-
-TEST_CASE("test1", "[test1]")
-{
-	implementation impl;
-	auto result = impl.addQuery(1, "tesa is a test", MT_EXACT_MATCH, 0);
-	REQUIRE(result == EC_SUCCESS);
-	impl.removeQuery(1);
-	REQUIRE(result == EC_SUCCESS);
-}
