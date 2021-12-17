@@ -139,17 +139,21 @@ TEST_CASE("Implementation Exact", "[impl_exact]")
 	imp.addQuery(1, str, MT_EXACT_MATCH, 3);
 	imp.addQuery(2, str2, MT_EXACT_MATCH, 2);
 
-	REQUIRE(imp.matchDocument(2, "this first test has asd word and then it also has another") == EC_SUCCESS);
+	REQUIRE(imp.matchDocument(2, "this first test has asd word and then it also has another") ==
+			EC_SUCCESS);
 
 	imp.removeQuery(2);
 	imp.removeQuery(1);
 
-	REQUIRE(imp.matchDocument(5, "this first test has asd word and then it also has another") == EC_SUCCESS);
+	REQUIRE(imp.matchDocument(5, "this first test has asd word and then it also has another") ==
+			EC_SUCCESS);
 
 	DocID p_doc_id = 0;
 	unsigned int p_num_res = 0;
-	QueryID *p_query_ids = nullptr;
+	QueryID* p_query_ids = nullptr;
 	REQUIRE(imp.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
+
+	free(p_query_ids);
 
 	REQUIRE(p_doc_id == 5);
 	REQUIRE(p_num_res == 0);
@@ -160,4 +164,6 @@ TEST_CASE("Implementation Exact", "[impl_exact]")
 	REQUIRE(p_num_res == 2);
 	REQUIRE(p_query_ids[0] == 1);
 	REQUIRE(p_query_ids[1] == 2);
+
+	free(p_query_ids);
 }

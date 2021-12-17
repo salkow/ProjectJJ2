@@ -31,7 +31,6 @@ TEST_CASE("Match edit distance queries", "[match_edit_distance_queries]")
 {
 	implementation impl;
 
-
 	REQUIRE(impl.addQuery(0, "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 	REQUIRE(impl.addQuery(2, "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
@@ -59,10 +58,8 @@ TEST_CASE("Delete edit distance queries", "[delete_edit_distance_queries]")
 {
 	implementation impl;
 
-
 	REQUIRE(impl.addQuery(0, "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) ==
-			EC_SUCCESS);
+	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 	REQUIRE(impl.addQuery(2, "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 	REQUIRE(impl.addQuery(3, "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
@@ -85,14 +82,13 @@ TEST_CASE("Delete edit distance queries", "[delete_edit_distance_queries]")
 	free(p_query_ids);
 }
 
-TEST_CASE("Match multiple documents edit distance matching", "[match_multiple_documents_edit_distance_matching]")
+TEST_CASE("Match multiple documents edit distance matching",
+		  "[match_multiple_documents_edit_distance_matching]")
 {
 	implementation impl;
 
-
 	REQUIRE(impl.addQuery(0, "this is a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
-	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) ==
-			EC_SUCCESS);
+	REQUIRE(impl.addQuery(1, "this is another a query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 	REQUIRE(impl.addQuery(2, "this is a third query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 	REQUIRE(impl.addQuery(3, "this is the last query", MT_EDIT_DIST, 1) == EC_SUCCESS);
 
@@ -144,17 +140,21 @@ TEST_CASE("Implementation Edit", "[impl_edit]")
 	imp.addQuery(1, str, MT_EDIT_DIST, 3);
 	imp.addQuery(2, str2, MT_EDIT_DIST, 2);
 
-	REQUIRE(imp.matchDocument(2, "this first test has asd word and then it also has another") == EC_SUCCESS);
+	REQUIRE(imp.matchDocument(2, "this first test has asd word and then it also has another") ==
+			EC_SUCCESS);
 
 	imp.removeQuery(2);
 	imp.removeQuery(1);
 
-	REQUIRE(imp.matchDocument(5, "this first test has asd word and then it also has another") == EC_SUCCESS);
+	REQUIRE(imp.matchDocument(5, "this first test has asd word and then it also has another") ==
+			EC_SUCCESS);
 
 	DocID p_doc_id = 0;
 	unsigned int p_num_res = 0;
-	QueryID *p_query_ids = nullptr;
+	QueryID* p_query_ids = nullptr;
 	REQUIRE(imp.getNext(&p_doc_id, &p_num_res, &p_query_ids) == EC_SUCCESS);
+
+	free(p_query_ids);
 
 	REQUIRE(p_doc_id == 5);
 	REQUIRE(p_num_res == 0);
@@ -165,4 +165,6 @@ TEST_CASE("Implementation Edit", "[impl_edit]")
 	REQUIRE(p_num_res == 2);
 	REQUIRE(p_query_ids[0] == 1);
 	REQUIRE(p_query_ids[1] == 2);
+
+	free(p_query_ids);
 }
