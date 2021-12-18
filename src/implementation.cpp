@@ -50,14 +50,14 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 	{
 		for (auto &query_str : query->m_str)
 		{
-			auto returned = m_edit_bk->get(query_str);
-			if (returned != nullptr)
+			auto returned = m_edit_bk->get(query_str);//check if word already exists
+			if (returned != nullptr)//if yes
 			{
-				if (returned->second.size() == 0)
+				if (returned->second.size() == 0)// check if its deleted
 				{
 					m_edit_bk->restore(returned);
 				}
-				returned->second.insert(query);
+				returned->second.insert(query);//append the new array to the set
 			}
 			else
 			{
@@ -125,10 +125,10 @@ ErrorCode implementation::removeQuery(QueryID id)
 			auto returned = m_edit_bk->get(query_str);
 			if (returned != nullptr)
 			{
-				returned->second.erase((*query));
+				returned->second.erase((*query));//remove the query from the set
 				if (returned->second.size() == 0)
 				{
-					m_edit_bk->remove(returned);
+					m_edit_bk->remove(returned);//and "delete" the word if it belongs to no queries.
 				}
 			}
 		}
@@ -173,7 +173,7 @@ bool implementation::EsearchFilter(bud::string &word, bud::unordered_set<QueryID
 				if (tempQuery->m_str_edit_matched.size() == tempQuery->m_str.size())
 				{
 					t = true;
-					queries.insert(tempQuery->m_id);
+					queries.insert(tempQuery->m_id);//insert it only if every word has been found in the document
 				}
 			}
 		}
