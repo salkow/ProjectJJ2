@@ -14,6 +14,7 @@ namespace bud
 	public:
 		void wait(bud::mutex &mtx);
 		void signal();
+		void broadcast();
 	};
 
 }
