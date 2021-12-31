@@ -18,7 +18,7 @@ public:
 
 private:
 	// We might need to also pass the thread id.
-	[[noreturn]] static void*run_forever(void*t_job_manager){
+	static void*run_forever(void*t_job_manager){
 		JobManager*job_manager = static_cast<JobManager*>(t_job_manager);
 
 		bud::unique_ptr<Job> job;
@@ -33,14 +33,19 @@ private:
 				job_manager->m_jobs.pop_front();
 			}else{
 				job_manager->m_cond_jobs_empty.signal();
+				job_manager->m_mtx_terminated.lock();
+				if(job_manager->terminated){
+					job_manager->m_mtx_jobs.unlock();
+					job_manager->m_mtx_terminated.unlock();
+					return nullptr;
+				}
+				job_manager->m_mtx_terminated.unlock();
 			}
 			job_manager->m_mtx_jobs.unlock();
 			if(job){
 				job->run(); //only run job if it's a fresh one
 			}
 		}
-
-		return 0;
 	}
 
 	// bud::vector_deque<Job> m_jobs;
@@ -48,4 +53,7 @@ private:
 	bud::vector<bud::thread> m_threads;
 	bud::mutex m_mtx_jobs;
 	bud::cond_variable m_cond_jobs_empty;
+
+	bud::mutex m_mtx_terminated;
+	bool terminated = false;
 };
