@@ -15,6 +15,7 @@ public:
 	JobManager();
 	void addJob(Job &&j);
 	void runAllJobs();
+	void waitFinishAllJobs();
 
 private:
 	// We might need to also pass the thread id.
@@ -28,15 +29,18 @@ private:
 		while (true)
 		{
 			// Mutex here.
-			job_manager->m_mtx.lock();
+			job_manager->m_mtx_jobs.lock();
 			if (!job_manager->m_jobs.empty())
 			{
 				*job = job_manager->m_jobs.front();
 				job_manager->m_jobs.pop_front();
+				job->run(); //only run job if it's a fresh one
 			}
-			job_manager->m_mtx.unlock();
-
-			job->run();
+			else
+			{
+				job_manager->m_cond_jobs_empty.signal();
+			}
+			job_manager->m_mtx_jobs.unlock();
 		}
 
 		return 0;
@@ -45,5 +49,6 @@ private:
 	// bud::vector_deque<Job> m_jobs;
 	std::list<Job> m_jobs;
 	bud::vector<bud::thread> m_threads;
-	bud::mutex m_mtx;
+	bud::mutex m_mtx_jobs;
+	bud::cond_variable m_cond_jobs_empty;
 };

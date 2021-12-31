@@ -21,3 +21,9 @@ void JobManager::runAllJobs()
 	for (auto &job : m_jobs)
 		job.run();
 }
+
+void JobManager::waitFinishAllJobs()
+{
+	while (m_jobs.size() != 0)
+		m_cond_jobs_empty.wait(m_mtx_jobs);
+}
