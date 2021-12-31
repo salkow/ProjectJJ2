@@ -6,7 +6,7 @@ namespace bud
 {
 	class mutex
 	{
-		pthread_mutex_t *mtx;
+		pthread_mutex_t m_mtx = PTHREAD_MUTEX_INITIALIZER;
 
 	public:
 		mutex();
