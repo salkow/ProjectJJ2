@@ -8,6 +8,7 @@
 #include "unordered_set.h"
 #include "util.h"
 #include "query.h"
+#include "job_manager.h"
 
 #include "entry.h"
 #include "BK_Entry.h"
@@ -49,5 +50,7 @@ private:
 	bud::unordered_map<QueryID, Query *> m_queries_ht;
 
 	void queries_matched_words_reset();
+
+	JobManager jobManager;
 };
 #endif // IMPL_H

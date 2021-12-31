@@ -20,7 +20,15 @@ add_compile_options(
 )
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 add_executable(${TARGET} ${SOURCES})
+
+target_link_libraries(${TARGET} PRIVATE Threads::Threads)
+
+###################################
 
 set(TEST_TARGET "run_tests")
 
