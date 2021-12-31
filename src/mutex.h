@@ -2,17 +2,18 @@
 #define MUTEX_H
 
 #include <pthread.h>
-
-class mutex
+namespace bud
 {
-	pthread_mutex_t *mtx;
+	class mutex
+	{
+		pthread_mutex_t *mtx;
 
-public:
-	mutex();
-	~mutex();
+	public:
+		mutex();
+		~mutex();
 
-	void lock();
-	void unlock();
-};
-
+		void lock();
+		void unlock();
+	};
+}
 #endif

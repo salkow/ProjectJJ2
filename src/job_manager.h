@@ -5,6 +5,7 @@
 #include "vector.h"
 #include "semaphore.h"
 #include "unique_ptr.h"
+#include "mutex.h"
 
 constexpr int NUM_OF_THREADS = 4;
 
@@ -27,12 +28,13 @@ private:
 		while (true)
 		{
 			// Mutex here.
+			job_manager->m_mtx.lock();
 			if (!job_manager->m_jobs.empty())
 			{
 				*job = job_manager->m_jobs.front();
 				job_manager->m_jobs.pop_front();
 			}
-			//
+			job_manager->m_mtx.unlock();
 
 			job->run();
 		}
@@ -43,4 +45,5 @@ private:
 	// bud::vector_deque<Job> m_jobs;
 	std::list<Job> m_jobs;
 	bud::vector<bud::thread> m_threads;
+	bud::mutex m_mtx;
 };
