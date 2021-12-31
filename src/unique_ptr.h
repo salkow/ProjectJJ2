@@ -27,7 +27,7 @@ public:
 
 	unique_ptr& operator=(unique_ptr&& r) noexcept
 	{
-		r.swap(*this);
+		reset(r.release());
 		return *this;
 	}
 
