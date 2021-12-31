@@ -18,6 +18,7 @@ public:
 	void join();
 
 	pthread_t nativeHandle;
+	void terminate();
 
 private:
 	int m_id;

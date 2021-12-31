@@ -32,10 +32,12 @@ bud::thread& bud::thread::operator=(thread&& other) noexcept
 	return *this;
 }
 
-void bud::thread::join()
-{
+void bud::thread::join(){
 	m_joinable = false;
 
 	pthread_join(nativeHandle, NULL);
 }
-	
+
+void bud::thread::terminate(){
+	pthread_cancel(nativeHandle); //TODO make sure this is ok
+}
