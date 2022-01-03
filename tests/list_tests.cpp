@@ -303,3 +303,12 @@ TEST_CASE("Erase list last item", "erase_list_last_item")
 
 	// REQUIRE(my_list.begin() == my_list.end());
 }
+
+TEST_CASE("TIEO", "[teoeitjeoi]"){
+//	bud::unique_ptr<int> t;
+	int*t;
+	list<int> p;
+	p.emplace_front(1);
+	t = new int(p.front());
+	t = new int(3);
+}
