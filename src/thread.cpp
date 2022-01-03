@@ -39,5 +39,5 @@ void bud::thread::join(){
 }
 
 void bud::thread::terminate(){
-	pthread_cancel(nativeHandle); //TODO make sure this is ok
+//	pthread_cancel(nativeHandle); //TODO make sure this is ok
 }

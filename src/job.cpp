@@ -3,6 +3,7 @@
 Job::Job(std::function<void()> func)
 	: m_func(func)
 {
+
 }
 
 bool Job::finished() const

@@ -7,7 +7,7 @@
 #include "unique_ptr.h"
 #include "mutex.h"
 
-constexpr int NUM_OF_THREADS = 4;
+constexpr int NUM_OF_THREADS = 1;
 
 class JobManager
 {
@@ -18,35 +18,7 @@ public:
 
 private:
 	// We might need to also pass the thread id.
-	static void*run_forever(void*t_job_manager){
-		JobManager*job_manager = static_cast<JobManager*>(t_job_manager);
-
-		bud::unique_ptr<Job> job;
-
-		// Instead of true, use a variable to stop the thread at the end.
-		while(true){
-			// Mutex here.
-			job = nullptr;
-			job_manager->m_mtx_jobs.lock();
-			if(!job_manager->m_jobs.empty()){
-				*job = job_manager->m_jobs.front();
-				job_manager->m_jobs.pop_front();
-			}else{
-				job_manager->m_cond_jobs_empty.signal();
-				job_manager->m_mtx_terminated.lock();
-				if(job_manager->terminated){
-					job_manager->m_mtx_jobs.unlock();
-					job_manager->m_mtx_terminated.unlock();
-					return nullptr;
-				}
-				job_manager->m_mtx_terminated.unlock();
-			}
-			job_manager->m_mtx_jobs.unlock();
-			if(job){
-				job->run(); //only run job if it's a fresh one
-			}
-		}
-	}
+	static void*run_forever(void*t_job_manager);
 
 	// bud::vector_deque<Job> m_jobs;
 	std::list<Job> m_jobs;

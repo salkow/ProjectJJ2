@@ -24,7 +24,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(${TARGET} ${SOURCES})
+add_executable(${TARGET} ${SOURCES} src/main.cpp)
 
 target_link_libraries(${TARGET} PRIVATE Threads::Threads)
 
