@@ -64,6 +64,8 @@ void *JobManager::run_forever(void *t_job_manager)
 		else
 		{
 			job_manager->m_cond_jobs_empty.signal();
+			//check if we have to terminate, if not wait for a job
+			//each time we unblock, check again if we have to terminate
 			bool terminated = should_terminate(job_manager);
 			while (!terminated && job_manager->m_jobs.empty())
 			{
@@ -83,9 +85,11 @@ void *JobManager::run_forever(void *t_job_manager)
 			job_manager->m_mtx_running_jobs.lock();
 			job_manager->m_num_of_running_jobs++;
 			job_manager->m_mtx_running_jobs.unlock();
+
 			job->run(); //only run job if it's a fresh one
 			job_manager->m_mtx_running_jobs.lock();
 			job_manager->m_num_of_running_jobs--;
+
 			if (job_manager->m_num_of_running_jobs == 0)
 			{
 				job_manager->m_cond_running_jobs.signal();
@@ -100,5 +104,5 @@ void JobManager::terminate()
 	m_mtx_terminated.lock();
 	terminated = true;
 	m_mtx_terminated.unlock();
-	m_cond_jobs_not_empty.signal(); //unblock threads
+	m_cond_jobs_not_empty.broadcast(); //unblock threads
 }
