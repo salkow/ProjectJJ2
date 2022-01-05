@@ -3,7 +3,7 @@
 bud::thread::thread(void* (*start_routine) (void*), void* arg)
 {
 	m_id = ++m_idCounter;
-	pthread_create(&nativeHandle, NULL, start_routine, arg);
+//	pthread_create(&nativeHandle, NULL, start_routine, arg);
 }
 
 bud::thread::~thread(){

@@ -1,12 +1,10 @@
-#include "cond_variable.h"
+#include "mutex.h"
 
-void bud::cond_variable::signal()
-{
+void bud::cond_variable::signal(){
 	pthread_cond_signal(&m_cond);
 }
 
-void bud::cond_variable::broadcast()
-{
+void bud::cond_variable::broadcast(){
 	pthread_cond_broadcast(&m_cond);
 }
 

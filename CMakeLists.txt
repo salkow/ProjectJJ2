@@ -44,8 +44,9 @@ target_link_libraries(${TEST_TARGET} PRIVATE Catch2::Catch2)
 #target_compile_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
 #target_link_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
 
-target_compile_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
-target_link_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
+#target_compile_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
+#target_link_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
+#target_link_libraries(${TEST_TARGET} PRIVATE Threads::Threads)
 
 include(CTest)
 include(Catch)

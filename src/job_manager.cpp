@@ -11,33 +11,28 @@ JobManager::JobManager()
 	}
 }
 
-void JobManager::addJob(Job &&j)
-{
+void JobManager::addJob(Job&& j){
 	m_mtx_jobs.lock();
 	m_jobs.emplace_back(new Job(j));
 	m_mtx_jobs.unlock();
 	m_cond_jobs_not_empty.signal();
 }
 
-void JobManager::waitFinishAllJobs()
-{
+void JobManager::waitFinishAllJobs(){
 	m_mtx_jobs.lock();
-	while (m_jobs.size() != 0)
-	{
+	while(m_jobs.size() != 0){
 		m_cond_jobs_empty.wait(m_mtx_jobs);
 	}
 	m_mtx_jobs.unlock();
 
 	m_mtx_running_jobs.lock();
-	while (m_num_of_running_jobs != 0)
-	{
+	while(m_num_of_running_jobs != 0){
 		m_cond_jobs_empty.wait(m_mtx_running_jobs);
 	}
 	m_mtx_running_jobs.unlock();
 }
 
-bool JobManager::should_terminate(JobManager *t_job_manager)
-{
+bool JobManager::should_terminate(JobManager*t_job_manager){
 	t_job_manager->m_mtx_terminated.lock();
 	bool retval = t_job_manager->terminated;
 	t_job_manager->m_mtx_terminated.unlock();
@@ -90,8 +85,7 @@ void *JobManager::run_forever(void *t_job_manager)
 			job_manager->m_mtx_running_jobs.lock();
 			job_manager->m_num_of_running_jobs--;
 
-			if (job_manager->m_num_of_running_jobs == 0)
-			{
+			if(job_manager->m_num_of_running_jobs == 0){
 				job_manager->m_cond_running_jobs.signal();
 			}
 			job_manager->m_mtx_running_jobs.unlock();
