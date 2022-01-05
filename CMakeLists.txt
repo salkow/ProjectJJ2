@@ -24,7 +24,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(${TARGET} ${SOURCES} src/main.cpp)
+add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET} PRIVATE Threads::Threads)
 
@@ -34,7 +34,7 @@ set(TEST_TARGET "run_tests")
 
 file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
 file(GLOB_RECURSE NO_MAIN_SOURCES src/*.cpp)
-list(REMOVE_ITEM NO_MAIN_SOURCES ${CMAKE_SOURCE_DIR}/src/main.cpp)
+list(REMOVE_ITEM NO_MAIN_SOURCES ${CMAKE_SOURCE_DIR}/src/test_through.cpp)
 
 find_package(Catch2 REQUIRED PATHS "${PROJECT_SOURCE_DIR}/lib")
 

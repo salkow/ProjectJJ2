@@ -51,6 +51,6 @@ private:
 
 	void queries_matched_words_reset();
 
-//	JobManager jobManager;
+	JobManager jobManager;
 };
 #endif // IMPL_H
