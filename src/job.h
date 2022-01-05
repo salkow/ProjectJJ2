@@ -1,15 +1,16 @@
 #include <functional>
 #include <iostream>
 
-class Job 
+class Job
 {
 public:
     Job(std::function<void()> func);
     bool finished() const;
-	void run();
+    void run();
 
 private:
     int m_id;
     std::function<void()> m_func;
-	bool m_finished = false;
+    bool m_finished = false;
+    static inline int m_idCounter = 0;
 };
