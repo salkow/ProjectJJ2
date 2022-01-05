@@ -24,7 +24,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(${TARGET} ${SOURCES} src/main_test.cpp)
+add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET} PRIVATE Threads::Threads)
 
@@ -35,17 +35,20 @@ set(TEST_TARGET "run_tests")
 file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
 file(GLOB_RECURSE NO_MAIN_SOURCES src/*.cpp)
 list(REMOVE_ITEM NO_MAIN_SOURCES ${CMAKE_SOURCE_DIR}/src/test_through.cpp)
+list(REMOVE_ITEM NO_MAIN_SOURCES ${CMAKE_SOURCE_DIR}/src/core.cpp)
 
 find_package(Catch2 REQUIRED PATHS "${PROJECT_SOURCE_DIR}/lib")
 
 add_executable(${TEST_TARGET} ${NO_MAIN_SOURCES} ${TEST_SOURCES})
 target_link_libraries(${TEST_TARGET} PRIVATE Catch2::Catch2)
+target_link_libraries(${TEST_TARGET} PRIVATE Threads::Threads)
 
 #target_compile_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
 #target_link_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
 
-target_compile_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
-target_link_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
+#target_compile_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
+#target_link_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
+#target_link_libraries(${TEST_TARGET} PRIVATE Threads::Threads)
 
 include(CTest)
 include(Catch)

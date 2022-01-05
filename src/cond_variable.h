@@ -1,5 +1,5 @@
-#ifndef CONDVARIABLE_H
-#define CONDVARIABLE_H
+#ifndef COND_VARIABLE_H
+#define COND_VARIABLE_H
 
 #include <pthread.h>
 
@@ -13,11 +13,13 @@ namespace bud
 
 	public:
 		void wait(bud::mutex &mtx);
+
 		void signal();
+
 		void broadcast();
 	};
 
 }
-
 #include "mutex.h"
-#endif
+
+#endif //COND_VARIABLE_H
