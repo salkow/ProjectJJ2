@@ -1,22 +1,25 @@
 #include "string_breaker.h"
+#include "vector.h"
 
-bud::unordered_set<bud::string> string_breaker(const char* input)
-{
+bud::vector<bud::string> string_breaker(const char*input){
 	// if the input is an empty string return immediately
-	if (input[0] == '\0')
-		return bud::unordered_set<bud::string>();
+	if(input[0] == '\0')
+		return bud::vector<bud::string>();
 
-	bud::unordered_set<bud::string> output;
+	bud::unordered_set<bud::string> output_set;
+	bud::vector<bud::string> output_vec;
 
 	unsigned int size = 0;
 
-	while (input[size] != '\0')
-	{
-		if (input[size] == ' ')
-		{
-			output.insert(bud::string(input, size));
+	while(input[size] != '\0'){
+		if(input[size] == ' '){
+			bud::string temp(input, size);
+			if(!output_set[temp]){
+				output_set.insert(temp);
+				output_vec.emplace_back(std::move(temp));
+			}
 
-			input += size + 1;
+			input += size+1;
 
 			size = 0;
 		}
@@ -25,7 +28,10 @@ bud::unordered_set<bud::string> string_breaker(const char* input)
 	}
 
 	// we assume there's at least one word
-	output.insert(input);
+	bud::string temp(input, size);
+	if(!output_set[temp]){
+		output_vec.emplace_back(std::move(temp));
+	}
 
-	return output;
+	return output_vec;
 }

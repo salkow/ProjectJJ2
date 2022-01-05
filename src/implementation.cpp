@@ -8,46 +8,53 @@
 using bud::string;
 using bud::unordered_set;
 
-implementation::~implementation()
-{
-	for (auto &query_pair : m_queries_ht)
-	{
+implementation::implementation(){
+	sem_init(&m_exact_add_sem, 0, 1);
+	sem_init(&m_edit_add_sem, 0, 1);
+	sem_init(&m_hamming_add_sem, 0, 1);
+	sem_init(&m_queries_ht_sem, 0, 1);
+}
+
+implementation::~implementation(){
+	sem_destroy(&m_exact_add_sem);
+	sem_destroy(&m_edit_add_sem);
+	sem_destroy(&m_hamming_add_sem);
+	sem_destroy(&m_queries_ht_sem);
+	for(auto& query_pair : m_queries_ht){
 		delete query_pair.second;
 	}
 }
 
-ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_type,
-								   unsigned int tolerance)
-{
-	auto *query = new Query(id, str, match_type, tolerance);
+ErrorCode implementation::addQuery(QueryID id, const char*str, MatchType match_type,
+								   unsigned int tolerance){
+	auto*query = new Query(id, str, match_type, tolerance);
 
+	sem_wait(&m_queries_ht_sem);
 	auto result = m_queries_ht.try_emplace(id, query);
-	if (!result.second)
+	sem_post(&m_queries_ht_sem);
+	if(!result.second)
 		return EC_FAIL;
 
-	if (match_type == MT_EXACT_MATCH)
-	{
-		for (const auto &query_str : query->m_str)
-		{
-			unordered_set<Query *> *matching_queries = m_words_ht[query_str];
-
-			if (!matching_queries)
-			{
-				unordered_set<Query *> new_queries;
+	if(match_type == MT_EXACT_MATCH){
+		sem_wait(&m_exact_add_sem);
+		for(const auto& query_str : query->m_str){
+			unordered_set<Query*>*matching_queries = m_words_ht[query_str];
+			if(!matching_queries){
+				unordered_set<Query*> new_queries;
 				new_queries.insert(query);
 
 				auto other_result = m_words_ht.try_emplace(query_str, std::move(new_queries));
 
-				if (!other_result.second)
+				if(!other_result.second)
 					return EC_FAIL;
-			}
-
-			else
+			}else
 				matching_queries->insert(query);
 		}
+		sem_post(&m_exact_add_sem);
 	}
 	else if (match_type == MT_EDIT_DIST)
 	{
+		sem_wait(&m_edit_add_sem);
 		for (auto &query_str : query->m_str)
 		{
 			auto returned = m_edit_bk->get(query_str);//check if word already exists
@@ -69,9 +76,11 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 				}
 			}
 		}
+		sem_post(&m_edit_add_sem);
 	}
 	else if (match_type == MT_HAMMING_DIST)
 	{
+		sem_wait(&m_hamming_add_sem);
 		for (auto &query_str : query->m_str)
 		{
 			auto returned = m_hamming_bk[query_str.size()].get(query_str);
@@ -93,6 +102,7 @@ ErrorCode implementation::addQuery(QueryID id, const char *str, MatchType match_
 				}
 			}
 		}
+		sem_post(&m_hamming_add_sem);
 	}
 	return EC_SUCCESS;
 }
@@ -159,21 +169,20 @@ ErrorCode implementation::removeQuery(QueryID id)
 	return EC_SUCCESS;
 }
 
-bool implementation::EsearchFilter(bud::string &word, bud::unordered_set<QueryID> &queries)
-{
-	bud::vector<bud::pair<Entry *, int>> editCurr = m_edit_bk->search(word, 3);
+bool implementation::EsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries){
+	bud::vector<bud::pair<Entry*, int>> editCurr = m_edit_bk->search(word, 3);
 	bool t = false;
-	for (auto &temp : editCurr)
-	{
-		for (auto &tempQuery : temp.first->second)
-		{
-			if (static_cast<unsigned int>(temp.second) <= tempQuery->m_tolerance)
-			{
+	for(auto& temp : editCurr){
+		for(auto& tempQuery : temp.first->second){
+			if(static_cast<unsigned int>(temp.second) <= tempQuery->m_tolerance){
+				tempQuery->m_mtx.lock();
 				tempQuery->m_str_edit_matched.insert(temp.first->first);
-				if (tempQuery->m_str_edit_matched.size() == tempQuery->m_str.size())
-				{
+				if(tempQuery->m_str_edit_matched.size() == tempQuery->m_str.size()){
+					tempQuery->m_mtx.unlock();
 					t = true;
 					queries.insert(tempQuery->m_id);//insert it only if every word has been found in the document
+				}else{
+					tempQuery->m_mtx.unlock();
 				}
 			}
 		}
@@ -181,21 +190,20 @@ bool implementation::EsearchFilter(bud::string &word, bud::unordered_set<QueryID
 	return t;
 }
 
-bool implementation::HsearchFilter(bud::string &word, bud::unordered_set<QueryID> &queries)
-{
-	bud::vector<bud::pair<Entry *, int>> hammingCurr = m_hamming_bk[word.size()].search(word, 3);
+bool implementation::HsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries){
+	bud::vector<bud::pair<Entry*, int>> hammingCurr = m_hamming_bk[word.size()].search(word, 3);
 	bool t = false;
-	for (auto &temp : hammingCurr)
-	{
-		for (auto &tempQuery : temp.first->second)
-		{
-			if (static_cast<unsigned int>(temp.second) <= tempQuery->m_tolerance)
-			{
+	for(auto& temp : hammingCurr){
+		for(auto& tempQuery : temp.first->second){
+			if(static_cast<unsigned int>(temp.second) <= tempQuery->m_tolerance){
+				tempQuery->m_mtx.lock();
 				tempQuery->m_str_hamming_matched.insert(temp.first->first);
-				if (tempQuery->m_str_hamming_matched.size() == tempQuery->m_str.size())
-				{
+				if(tempQuery->m_str_hamming_matched.size() == tempQuery->m_str.size()){
+					tempQuery->m_mtx.unlock();
 					t = true;
 					queries.insert(tempQuery->m_id);
+				}else{
+					tempQuery->m_mtx.unlock();
 				}
 			}
 		}
@@ -203,17 +211,20 @@ bool implementation::HsearchFilter(bud::string &word, bud::unordered_set<QueryID
 	return t;
 }
 
-bool implementation::searchForExactMatchingWord(const string &word,
-												unordered_set<QueryID> &queries) const
-{
-	const unordered_set<Query *> *matching_queries = m_words_ht[word];
-	if (!matching_queries)
+bool implementation::searchForExactMatchingWord(const string& word,
+												unordered_set<QueryID>& queries) const{
+	const unordered_set<Query*>*matching_queries = m_words_ht[word];
+	if(!matching_queries)
 		return false;
 
-	for (auto &query : *matching_queries)
-	{
-		if (++query->exact_matching_matched_words_counter == query->m_str.size())
+	for(auto& query : *matching_queries){
+		query->m_mtx.lock();
+		if(++query->exact_matching_matched_words_counter == query->m_str.size()){
+			query->m_mtx.unlock();
 			queries.insert(query->m_id);
+		}else{
+			query->m_mtx.unlock();
+		}
 	}
 
 	return true;
@@ -229,31 +240,19 @@ void implementation::queries_matched_words_reset()
 	}
 }
 
-ErrorCode implementation::matchDocument(DocID doc_id, const char *doc_str)
-{
-	if (!doc_str)
-		return EC_FAIL;
-
-	Result res;
-	res.m_doc_id = doc_id;
-
-	unordered_set<string> words = string_breaker(doc_str);
-	for (auto &word : words)
-	{
+ErrorCode implementation::matchDocument(const bud::vector<string>& words, size_t start, size_t end,
+										Result& res){
+	for(size_t i = start;i <= end;i++){
 		bool found = false;
 
-		found |= searchForExactMatchingWord(word, res.m_query_ids);
-		found |= EsearchFilter(word, res.m_query_ids);
-		found |= HsearchFilter(word, res.m_query_ids);
+		found |= searchForExactMatchingWord(words[i], res.m_query_ids);
+		found |= EsearchFilter(words[i], res.m_query_ids);
+		found |= HsearchFilter(words[i], res.m_query_ids);
 	}
-
-	m_res.emplace_back(std::move(res));
-	queries_matched_words_reset();
-
 	return EC_SUCCESS;
 }
-ErrorCode implementation::getNext(DocID *p_doc_id, unsigned int *p_num_res, QueryID **p_query_ids)
-{
+
+ErrorCode implementation::getNext(DocID*p_doc_id, unsigned int*p_num_res, QueryID**p_query_ids){
 
 	if (m_res.size() == 0)
 		return EC_NO_AVAIL_RES;

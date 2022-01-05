@@ -3,6 +3,7 @@
 
 #include "util.h"
 #include "unordered_set.h"
+#include "mutex.h"
 
 struct Query
 {
@@ -13,7 +14,7 @@ struct Query
 	bool operator!=(const Query& rhs) const{ return m_id != rhs.m_id; }
 
 	QueryID m_id;
-	bud::unordered_set<bud::string> m_str;
+	bud::vector<bud::string> m_str;
 
 	bud::unordered_set<bud::string> m_str_edit_matched;
 	bud::unordered_set<bud::string> m_str_hamming_matched;
@@ -22,6 +23,7 @@ struct Query
 	MatchType m_match_type;
 	unsigned int m_tolerance;
 
+	bud::mutex m_mtx;
 };
 
 #endif // QUERY_H
