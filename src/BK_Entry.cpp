@@ -38,25 +38,25 @@ Entry *BK_Entry::get(const bud::string &q)
 bud::vector<bud::pair<Entry *, int>> BK_Entry::search(const bud::string &query, int maxDistance) const
 {
 
-	bud::vector<bud::pair<Entry *, int>> results;
+	bud::vector<bud::pair<Entry*, int>> results;
 
-	if (root == NULL)
+	if(root == NULL)
 		return results;
 
-	Entry temp(query, bud::unordered_set<Query *>());
+	Entry temp(query, bud::unordered_set<Query*>());
 
-	bud::vector<Node *> lookList;
+	bud::vector<Node*> lookList;
+//	assert(root->content->first == "edit");
 	lookList.push_back(root);
 
-	Node *curr;
-	do
-	{
+	Node*curr;
+	do{
 		curr = lookList.back();
 		lookList.pop_back();
 
 		// if the parent node fits our criteria, add to results and explore it's children
 		int distance = distanceFunction(curr->content, &temp, __BK_ENTRY_MAX_SEARCH_DISTANCE__);
-		if (distance <= maxDistance && !curr->deleted)
+		if(distance <= maxDistance && !curr->deleted)
 			results.push_back(bud::pair(curr->content, distance));
 
 		// iterate over parent's children, explore only those with

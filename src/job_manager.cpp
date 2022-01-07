@@ -1,14 +1,20 @@
 #include "job_manager.h"
+#include "unistd.h"
 
-JobManager::JobManager()
-{
+JobManager::JobManager(){
 	// m_jobs.reserve(NUM_OF_THREADS);
 	m_threads.reserve(NUM_OF_THREADS);
 
-	for (int i = 0; i < NUM_OF_THREADS; i++)
-	{
+	for(int i = 0;i < NUM_OF_THREADS;i++){
 		m_threads.emplace_back(bud::thread(&JobManager::run_forever, this));
 	}
+}
+
+JobManager::~JobManager(){
+	m_mtx_terminated.lock();
+	terminated = true;
+	m_mtx_terminated.unlock();
+	m_cond_jobs_not_empty.broadcast(); //unblock threads
 }
 
 void JobManager::addJob(Job&& j){
@@ -93,10 +99,3 @@ void *JobManager::run_forever(void *t_job_manager)
 	}
 }
 
-void JobManager::terminate()
-{
-	m_mtx_terminated.lock();
-	terminated = true;
-	m_mtx_terminated.unlock();
-	m_cond_jobs_not_empty.broadcast(); //unblock threads
-}

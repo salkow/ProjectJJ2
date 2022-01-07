@@ -37,7 +37,7 @@ public:
 	~BK();
 
 	// inserts a "T" into the tree
-	ErrorCode insert(T *);
+	ErrorCode insert(T*);
 
 	// searches the tree for words that have <= maxDistance to the given query
 	bud::vector<T *> search(T *query, int maxDistance) const;

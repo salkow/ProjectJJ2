@@ -18,7 +18,7 @@
 #include "appMatching/hammingDistance.h"
 #include "unistd.h"
 #include "semaphore.h"
-
+#include "memory"
 struct Result
 {
 	DocID m_doc_id;
@@ -38,7 +38,7 @@ public:
 
 	ErrorCode getNext(DocID *p_doc_id, unsigned int *p_num_res, QueryID **p_query_ids);
 
-	ErrorCode matchDocument(const bud::vector<bud::string> &words, size_t start, size_t end, Result &res);
+	ErrorCode matchDocument(const bud::vector<bud::string>& words, size_t start, size_t end, Result& res) const;
 
 	void queries_matched_words_reset();
 
@@ -48,11 +48,11 @@ private:
 	bool searchForExactMatchingWord(const bud::string &word,
 									bud::unordered_set<QueryID> &queries) const;
 
-	bool EsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries);
+	bool EsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries) const;
 
-	bool HsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries);
+	bool HsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries) const;
 
-	bud::unique_ptr<BK_Entry> m_edit_bk = bud::make_unique<BK_Entry>(BK_Entry(&Edistance));
+	BK_Entry m_edit_bk = BK_Entry(&Edistance);
 
 	bud::vector<BK_Entry> m_hamming_bk =
 		bud::vector<BK_Entry>(MAX_WORD_LENGTH, BK_Entry(&Hdistance)); // TODO: MIN_WORD_LENGTH

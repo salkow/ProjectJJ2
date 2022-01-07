@@ -13,12 +13,17 @@ class JobManager{
 public:
 	JobManager();
 
+	~JobManager();
+
 
 	void addJob(Job&& j);
 
 	void waitFinishAllJobs();
 
-	void terminate();
+
+	size_t num_of_jobs() const{
+		return m_jobs.size();
+	}
 
 private:
 	// We might need to also pass the thread id.

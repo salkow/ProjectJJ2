@@ -80,37 +80,30 @@ void BK<T>::restore(T *item)
 }
 
 template <typename T>
-ErrorCode BK<T>::insert(T *item)
-{
+ErrorCode BK<T>::insert(T*item){
 	// item must not be a null pointer
-	if (item == NULL)
+	if(item == NULL)
 		return EC_FAIL;
 	// set root if not existent
-	if (root == NULL)
-	{
+	if(root == NULL){
 		root = new Node(item, 0); // root's parentDistance is 0 since there's no parent
-	}
-	else
-	{
-		bud::vector<Node *> lookList;
+	}else{
+		bud::vector<Node*> lookList;
 		lookList.push_back(root);
 
-		Node *curr;
+		Node*curr;
 		bool found;
 
-		do
-		{
+		do{
 			curr = lookList.back();
 			lookList.pop_back();
 
 			// calculate distance of node-to-insert vs parent
 			int distance = distanceFunction(curr->content, item, 0);
 			found = false;
-			for (const auto &edge : curr->_edges)
-			{
+			for(const auto& edge : curr->_edges){
 				// child node found, look inside it
-				if (edge->parentDistance == distance)
-				{
+				if(edge->parentDistance == distance){
 					lookList.push_back(edge);
 					found = true;
 					break;
