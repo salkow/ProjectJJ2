@@ -32,7 +32,7 @@ public:
 
 	~implementation();
 
-	ErrorCode addQuery(QueryID id, const char *str, MatchType match_type, unsigned int tolerance);
+	ErrorCode addQuery(QueryID id, bud::vector<bud::string>&& str, MatchType match_type, unsigned int tolerance);
 
 	ErrorCode removeQuery(QueryID id);
 

@@ -355,7 +355,7 @@ int main(int argc, char*argv[]){
 				return 0;
 			}
 		}
-//		while(1)
+//		for(int j = 0;j >= 0;j++)
 		TestSigmod(argv[1], time_limit_seconds, out_file);
 	}
 #ifdef TEST_MACHINE

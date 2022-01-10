@@ -7,7 +7,7 @@
 
 struct Query
 {
-	Query(QueryID id, const char*str, MatchType match_type, unsigned int tolerance);
+	Query(QueryID id, bud::vector<bud::string>&& str, MatchType match_type, unsigned int tolerance);
 
 	bool operator==(const Query& rhs) const{ return m_id == rhs.m_id; }
 

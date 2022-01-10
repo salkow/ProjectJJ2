@@ -12,8 +12,10 @@ JobManager::JobManager(){
 
 JobManager::~JobManager(){
 	m_mtx_terminated.lock();
-	terminated = true;
+	m_terminated = true;
 	m_mtx_terminated.unlock();
+//	waitFinishAllJobs();
+
 	m_cond_jobs_not_empty.broadcast(); //unblock threads
 }
 
@@ -40,7 +42,7 @@ void JobManager::waitFinishAllJobs(){
 
 bool JobManager::should_terminate(JobManager*t_job_manager){
 	t_job_manager->m_mtx_terminated.lock();
-	bool retval = t_job_manager->terminated;
+	bool retval = t_job_manager->m_terminated;
 	t_job_manager->m_mtx_terminated.unlock();
 	return retval;
 }

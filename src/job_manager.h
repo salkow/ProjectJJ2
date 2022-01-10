@@ -7,7 +7,7 @@
 #include "mutex.h"
 #include "list.h"
 
-constexpr int NUM_OF_THREADS = 2;
+constexpr int NUM_OF_THREADS = 1;
 
 class JobManager{
 public:
@@ -39,7 +39,7 @@ private:
 	bud::cond_variable m_cond_jobs_not_empty; //there are jobs in the m_jobs list
 
 	bud::mutex m_mtx_terminated;
-	bool terminated = false;
+	bool m_terminated = false;
 	int m_num_of_running_jobs = 0;
 	bud::mutex m_mtx_running_jobs;
 	bud::cond_variable m_cond_running_jobs; //no running jobs

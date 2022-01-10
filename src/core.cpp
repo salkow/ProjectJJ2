@@ -16,11 +16,11 @@ ErrorCode DestroyIndex(){ return EC_SUCCESS; }
 ErrorCode StartQuery(QueryID query_id, const char*query_str, MatchType match_type,
 					 unsigned int match_dist){
 	ErrorCode err = EC_SUCCESS;
+	bud::vector<string> words = string_breaker(query_str);
 
-	Job jb([&](){
-		impl.addQuery(query_id, query_str, match_type, match_dist);
-	});
-	impl.m_jm.addJob(std::move(jb));
+	impl.m_jm.addJob(Job([&, query_id, match_type, match_dist, words = std::move(words)]()mutable{
+		impl.addQuery(query_id, std::move(words), match_type, match_dist);
+	}));
 	return err;
 }
 
@@ -47,7 +47,7 @@ ErrorCode MatchDocument(DocID doc_id, const char*doc_str){
 
 	size_t i;
 	for(i = 0;i < NUM_OF_THREADS-1;i++){
-		impl.m_jm.addJob(Job([&, start, end](){
+		impl.m_jm.addJob(Job([&, start, end](){//words
 			err[i] = impl.matchDocument(words, start, end, res[i]);
 		}));
 		start += split+1;

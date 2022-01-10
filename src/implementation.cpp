@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 
-#include "string_breaker.h"
 #include "unordered_set.h"
 
 using bud::string;
@@ -16,6 +15,7 @@ implementation::implementation(){
 }
 
 implementation::~implementation(){
+	m_jm.waitFinishAllJobs();
 	sem_destroy(&m_exact_add_sem);
 	sem_destroy(&m_edit_add_sem);
 	sem_destroy(&m_hamming_add_sem);
@@ -25,9 +25,9 @@ implementation::~implementation(){
 	}
 }
 
-ErrorCode implementation::addQuery(QueryID id, const char*str, MatchType match_type,
+ErrorCode implementation::addQuery(QueryID id, bud::vector<string>&& str, MatchType match_type,
 								   unsigned int tolerance){
-	auto*query = new Query(id, str, match_type, tolerance);
+	auto*query = new Query(id, std::move(str), match_type, tolerance);
 
 	sem_wait(&m_queries_ht_sem);
 	auto result = m_queries_ht.try_emplace(id, query);
