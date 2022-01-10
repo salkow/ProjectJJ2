@@ -32,32 +32,32 @@ public:
 
 	~implementation();
 
-	ErrorCode addQuery(QueryID id, bud::vector<bud::string>&& str, MatchType match_type, unsigned int tolerance);
+	ErrorCode addQuery(QueryID id, bud::vector<bud::string> &&str, MatchType match_type, unsigned int tolerance);
 
 	ErrorCode removeQuery(QueryID id);
 
 	ErrorCode getNext(DocID *p_doc_id, unsigned int *p_num_res, QueryID **p_query_ids);
 
-	ErrorCode matchDocument(const bud::vector<bud::string>& words, size_t start, size_t end, Result& res) const;
+	ErrorCode matchDocument(const bud::vector<bud::string> &words, size_t start, size_t end, Result &res) const;
 
 	void queries_matched_words_reset();
 
 	JobManager m_jm;
 
+	bud::vector<Result> m_res;
+
 private:
 	bool searchForExactMatchingWord(const bud::string &word,
 									bud::unordered_set<QueryID> &queries) const;
 
-	bool EsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries) const;
+	bool EsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries) const;
 
-	bool HsearchFilter(const bud::string& word, bud::unordered_set<QueryID>& queries) const;
+	bool HsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries) const;
 
 	BK_Entry m_edit_bk = BK_Entry(&Edistance);
 
 	bud::vector<BK_Entry> m_hamming_bk =
 		bud::vector<BK_Entry>(MAX_WORD_LENGTH, BK_Entry(&Hdistance)); // TODO: MIN_WORD_LENGTH
-
-	bud::vector<Result> m_res;
 
 	bud::unordered_map<bud::string, bud::unordered_set<Query *>> m_words_ht;
 	bud::unordered_map<QueryID, Query *> m_queries_ht;
