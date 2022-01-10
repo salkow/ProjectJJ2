@@ -26,6 +26,9 @@ find_package(Threads REQUIRED)
 
 add_executable(${TARGET} ${SOURCES})
 
+target_compile_options(${TARGET} PUBLIC -fsanitize=thread)
+target_link_options(${TARGET} PUBLIC -fsanitize=thread)
+
 target_link_libraries(${TARGET} PRIVATE Threads::Threads)
 
 ###################################
@@ -43,12 +46,8 @@ add_executable(${TEST_TARGET} ${NO_MAIN_SOURCES} ${TEST_SOURCES})
 target_link_libraries(${TEST_TARGET} PRIVATE Catch2::Catch2)
 target_link_libraries(${TEST_TARGET} PRIVATE Threads::Threads)
 
-#target_compile_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
-#target_link_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
-
-#target_compile_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
-#target_link_options(${TEST_TARGET} PUBLIC -fsanitize=thread)
-#target_link_libraries(${TEST_TARGET} PRIVATE Threads::Threads)
+target_compile_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
+target_link_options(${TEST_TARGET} PUBLIC -fno-omit-frame-pointer -fsanitize=address,leak,undefined)
 
 include(CTest)
 include(Catch)
