@@ -6,7 +6,7 @@
 
 class Job{
 public:
-	Job(std::function<void()> func);
+	explicit Job(std::function<void()> func);
 
 	bool finished() const;
 
