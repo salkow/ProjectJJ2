@@ -7,7 +7,7 @@
 #include "mutex.h"
 #include "list.h"
 
-constexpr int NUM_OF_THREADS = 50;
+constexpr int NUM_OF_THREADS = 7;
 
 class JobManager
 {

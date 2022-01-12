@@ -26,8 +26,8 @@ find_package(Threads REQUIRED)
 
 add_executable(${TARGET} ${SOURCES})
 
-target_compile_options(${TARGET} PUBLIC -fsanitize=thread)
-target_link_options(${TARGET} PUBLIC -fsanitize=thread)
+#target_compile_options(${TARGET} PUBLIC -fsanitize=thread)
+#target_link_options(${TARGET} PUBLIC -fsanitize=thread)
 
 target_link_libraries(${TARGET} PRIVATE Threads::Threads)
 

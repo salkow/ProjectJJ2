@@ -19,9 +19,10 @@ ErrorCode StartQuery(QueryID query_id, const char *query_str, MatchType match_ty
 	ErrorCode err = EC_SUCCESS;
 	bud::vector<string> words = string_breaker(query_str);
 
-	impl.m_jm.addJob(Job([&, query_id, match_type, match_dist, words = std::move(words)]() mutable
-						 { impl.addQuery(query_id, std::move(words), match_type, match_dist); }));
-	impl.m_jm.waitFinishAllJobs();
+	impl.m_jm.addJob(Job([&, query_id, match_type, match_dist, words = std::move(words)]() mutable{
+		impl.addQuery(query_id, std::move(words), match_type, match_dist);
+	}));
+	impl.m_jm.waitFinishAllJobs();//TODO
 	return err;
 }
 
@@ -53,35 +54,31 @@ ErrorCode MatchDocument(DocID doc_id, const char *doc_str)
 	assert(impl.m_jm.num_of_jobs() == 0);
 
 	size_t i;
-	for (i = 0; i < real_num_of_threads - 1; i++)
-	{
-		impl.m_jm.addJob(Job([&, start, end, i]() { //words
+	for(i = 0;i < real_num_of_threads-1;i++){
+		impl.m_jm.addJob(Job([&, start, end, i](){ //TODO words
 			err[i] = impl.matchDocument(words, start, end, res[i]);
 		}));
 
-		start = end + 1;
+		start = end+1;
 		end += split;
 	}
 
-	impl.m_jm.addJob(Job([&, start, real_num_of_threads]()
-						 {
-							 //		assert(words.size() == 1066);
-							 //		assert(words.size()-1 == end);
-							 err[real_num_of_threads - 1] = impl.matchDocument(words, start, words.size() - 1, res[real_num_of_threads - 1]);
-						 }));
+	impl.m_jm.addJob(Job([&, start, real_num_of_threads](){
+		//		assert(words.size() == 1066);
+		//		assert(words.size()-1 == end);
+		err[real_num_of_threads-1] = impl.matchDocument(words, start, words.size()-1, res[real_num_of_threads-1]);
+	}));
 
 	//	assert(impl.m_jm.num_of_jobs() != 0);
 	impl.m_jm.waitFinishAllJobs();
 
 	assert(impl.m_jm.num_of_jobs() == 0);
-	assert(impl.m_jm.get_num_of_running_jobs() == 0);
+//	assert(impl.m_jm.get_num_of_running_jobs() == 0);
 	Result fin_res;
 	fin_res.m_doc_id = doc_id;
-	for (size_t i2 = 0; i2 < real_num_of_threads; i2++)
-	{
-		const auto &item = res[i2];
-		for (const auto &x : item.m_query_ids)
-		{
+	for(size_t i2 = 0;i2 < real_num_of_threads;i2++){
+		const auto& item = res[i2];
+		for(const auto& x : item.m_query_ids){
 			fin_res.m_query_ids.insert(x);
 		}
 	}

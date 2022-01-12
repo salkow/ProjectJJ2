@@ -274,14 +274,13 @@ ErrorCode implementation::matchDocument(const bud::vector<string> &words, size_t
 										Result &res) const
 {
 
-	if (!(end < words.size()) || !(start <= end))
-	{
-		auto x = true;
-	}
+//	if (!(end < words.size()) || !(start <= end))
+//	{
+//		auto x = true;
+//	}
 	assert(start <= end);
-	assert(end < words.size());
-	for (size_t i = start; i <= end; i++)
-	{
+//	assert(end < words.size());
+	for(size_t i = start;i <= end;i++){
 		searchForExactMatchingWord(words[i], res.m_query_ids);
 		EsearchFilter(words[i], res.m_query_ids);
 		HsearchFilter(words[i], res.m_query_ids);

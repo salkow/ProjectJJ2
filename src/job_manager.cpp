@@ -73,6 +73,9 @@ void *JobManager::run_forever(void *t_job_manager)
 		{
 			job = std::move(job_manager->m_jobs.front());
 			job_manager->m_jobs.pop_front();
+			job_manager->m_mtx_running_jobs.lock();
+			job_manager->m_num_of_running_jobs++;
+			job_manager->m_mtx_running_jobs.unlock();
 		}
 		else
 		{
@@ -95,10 +98,6 @@ void *JobManager::run_forever(void *t_job_manager)
 		job_manager->m_mtx_jobs.unlock();
 		if (job)
 		{
-			job_manager->m_mtx_running_jobs.lock();
-			job_manager->m_num_of_running_jobs++;
-			job_manager->m_mtx_running_jobs.unlock();
-
 			job->run(); //only run job if it's a fresh one
 			job_manager->m_mtx_running_jobs.lock();
 			job_manager->m_num_of_running_jobs--;
