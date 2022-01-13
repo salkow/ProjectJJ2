@@ -28,18 +28,12 @@ ErrorCode StartQuery(QueryID query_id, const char *query_str, MatchType match_ty
 ErrorCode EndQuery(QueryID query_id)
 {
 	impl.m_jm.waitFinishAllJobs();
-	// assert(impl.m_jm.num_of_jobs() == 0);
 	return impl.removeQuery(query_id);
 }
 
 ErrorCode MatchDocument(DocID doc_id, const char *doc_str)
 {
 	const bud::vector<string> words = string_breaker(doc_str);
-	if (words.size() == 75)
-	{
-		auto x = true;
-	}
-	//	assert(words.size() == 1066);
 
 	const size_t real_num_of_threads = bud::min(static_cast<size_t>(NUM_OF_THREADS), words.size() - 1);
 	size_t split = words.size() / real_num_of_threads;
@@ -50,7 +44,6 @@ ErrorCode MatchDocument(DocID doc_id, const char *doc_str)
 	bud::array<ErrorCode, NUM_OF_THREADS> err;
 
 	impl.m_jm.waitFinishAllJobs();
-	assert(impl.m_jm.num_of_jobs() == 0);
 
 	size_t i;
 	for (i = 0; i < real_num_of_threads - 1; i++)
@@ -65,16 +58,10 @@ ErrorCode MatchDocument(DocID doc_id, const char *doc_str)
 
 	impl.m_jm.addJob(Job([&, start, real_num_of_threads]()
 						 {
-							 //		assert(words.size() == 1066);
-							 //		assert(words.size()-1 == end);
 							 err[real_num_of_threads - 1] = impl.matchDocument(words, start, words.size() - 1, res[real_num_of_threads - 1]);
 						 }));
 
-	//	assert(impl.m_jm.num_of_jobs() != 0);
 	impl.m_jm.waitFinishAllJobs();
-
-	assert(impl.m_jm.num_of_jobs() == 0);
-	//	assert(impl.m_jm.get_num_of_running_jobs() == 0);
 	Result fin_res;
 	fin_res.m_doc_id = doc_id;
 	for (size_t i2 = 0; i2 < real_num_of_threads; i2++)
@@ -89,14 +76,6 @@ ErrorCode MatchDocument(DocID doc_id, const char *doc_str)
 	impl.m_res.emplace_back(std::move(fin_res));
 
 	impl.queries_matched_words_reset();
-
-	// for (auto item : err)
-	// {
-	// 	if (item == EC_FAIL)
-	// 	{
-	// 		return EC_FAIL;
-	// 	}
-	// }
 	return EC_SUCCESS;
 }
 

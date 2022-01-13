@@ -180,9 +180,6 @@ ErrorCode implementation::removeQuery(QueryID id)
 bool implementation::EsearchFilter(const bud::string &word, bud::unordered_set<QueryID> &queries) const
 {
 	const bud::vector<bud::pair<Entry *, int>> editCurr = m_edit_bk.search(word, 3);
-	//	auto tpp = new Entry("query_str", bud::unordered_set<Query*>());
-	//	m_edit_bk.insert(tpp);
-
 	bool t = false;
 	for (const auto &temp : editCurr)
 	{
@@ -273,13 +270,6 @@ void implementation::queries_matched_words_reset()
 ErrorCode implementation::matchDocument(const bud::vector<string> &words, size_t start, size_t end,
 										Result &res) const
 {
-
-//	if (!(end < words.size()) || !(start <= end))
-//	{
-//		auto x = true;
-//	}
-	assert(start <= end);
-//	assert(end < words.size());
 	for(size_t i = start;i <= end;i++){
 		searchForExactMatchingWord(words[i], res.m_query_ids);
 		EsearchFilter(words[i], res.m_query_ids);
