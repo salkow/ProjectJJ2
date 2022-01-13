@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<script src="https://d3js.org/d3.v6.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+
+
+	</head>
+
+	<body>
+
+		<div id='chart'>
+			<canvas width=300 height="500" id='can'></canvas>
+		</div>
+		<script>
+
+
+			let data2 = [
+				{ time: 1.389, cores: 2 },
+				{ time: 1.15, cores: 3 },
+				{ time: 1.162, cores: 4 },
+				{ time: 0.973, cores: 5 },
+				{ time: 0.832, cores: 6 },
+				{ time: 0.783, cores: 7 },
+				{ time: 0.757, cores: 8 },
+				{ time: 0.709, cores: 9 },
+				{ time: 0.647, cores: 10 },
+				{ time: 0.665, cores: 11 },
+				{ time: 0.606, cores: 12 },
+				{ time: 0.583, cores: 13 },
+				{ time: 0.576, cores: 14 },
+				{ time: 0.563, cores: 15 },
+				{ time: 0.554, cores: 16 },
+			];
+
+			// set the dimensions and margins of the graph
+			const margin = { top: 30, right: 50, bottom: 30, left: 60 },
+				width = 1000 - margin.left - margin.right,
+				height = 700 - margin.top - margin.bottom;
+
+			// append the svg object to the body of the page
+			const svg = d3.select("#chart")
+				.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", `translate(${margin.left},${margin.top})`);
+
+
+			// Add Y axis
+			const x = d3.scalePow().exponent(-2.5)
+				.domain(d3.extent(data2.map(a => a.time)))
+				.range([0, width])
+			svg.append("g")
+				.call(d3.axisBottom(x).tickValues(data2.map(a => a.time)).tickFormat((d) => d.toFixed(3)))
+				.attr("transform", `translate(0, ${height})`)
+
+			const y = d3.scaleLinear()
+				.domain(d3.extent(data2.map(d => d.cores)))
+				.range([0, height]);
+
+			svg.append("g")
+				.call(d3.axisLeft(y));
+			// Add the line
+
+			svg.append("path")
+				.datum(data2)
+				.attr("fill", "none")
+				.attr("stroke", "steelblue")
+				.attr("stroke-width", 1.5)
+				.attr("d", d3.line()
+					.x((d) => x(d.time))
+					.y((d) => y(d.cores))
+				)
+
+			svg.selectAll("myCircles")
+				.data(data2)
+				.enter()
+				.append("circle")
+				.attr("fill", "steelblue")
+				.attr("stroke", "none")
+				.attr("cx", function (d) { return x(d.time) })
+				.attr("cy", function (d) { return y(d.cores) })
+				.attr("r", 3)
+
+			svg.selectAll("myText")
+				.data(data2)
+				.enter()
+				.append("text")
+				.attr("fill", "blue")
+				.attr("stroke", "none")
+				.attr("class", "myText")
+				.attr("transform", (d) => `translate(${x(d.time) - 15}, ${y(d.cores) - 5})`).text((a) => a.time.toFixed(3))
+
+
+		</script>
+
+
+		<style>
+			#chart>svg>g>g:nth-child(1)>.tick>text {
+				transform: translate(-10px, 10px) rotate(-35deg)
+			}
+
+			#chart>svg>g>g:nth-child(1)>g:nth-child(3)>text {
+				transform: translate(-20px, 10px) rotate(-35deg)
+			}
+
+			#chart>svg>g>g:nth-child(1)>g:nth-child(4)>text {
+				transform: translate(0px, 10px) rotate(-35deg)
+			}
+
+			.myText {
+				font: 12px sans-serif
+			}
+		</style>
+
+	</body>
+
+</html>
