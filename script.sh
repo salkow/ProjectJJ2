@@ -1,9 +1,14 @@
 #!/bin/bash
 
 rm all_results.txt
-rm -rf cmake-build-release/*
 
-for i in {1..16}
+rm -rf cmake-build-release
+mkdir cmake-build-release
+
+max_num_of_threads=16
+num_of_iterations=10
+
+for i in {1..$max_num_of_threads}
 do
 
   	cd cmake-build-release	 
@@ -16,10 +21,10 @@ do
 
 	mo=0
 
-	for i in {1..5}
+	for i in {1..$num_of_iterations}
 	do
 
-		cmake-build-release/inverted_google
+		cmake-build-release/inverted_google test_data/small_tests.txt 60
 
 		time_taken=$(cat result.txt | rg -o "Time = \d+ " | cut -d "=" -f2 | tr -d "[:space:]")
 
@@ -27,7 +32,7 @@ do
 
 	done
 
-	mo=$(($mo/5))
+	mo=$(($mo/num_of_iterations))
 
 	echo $mo >> all_results.txt
 
