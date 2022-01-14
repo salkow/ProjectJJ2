@@ -1,9 +1,42 @@
 import * as d3 from 'd3';
 import dataSrc from './data';
 
+const allData = [
+	...dataSrc.gcc.map((v) => ({ ...v, compiler: 'gcc' })),
+	...dataSrc.gccLto.map((v) => ({ ...v, compiler: 'gccLto' })),
+	...dataSrc.llvm.map((v) => ({ ...v, compiler: 'llvm' })),
+	...dataSrc.llvmLto.map((v) => ({ ...v, compiler: 'llvmLto' })),
+];
+
+let counters = {
+	gcc: [0, 0, 0, 0],
+	gccLto: [0, 0, 0, 0],
+	llvm: [0, 0, 0, 0],
+	llvmLto: [0, 0, 0, 0],
+};
+
+for (const { cores } of dataSrc.gcc) {
+	let tmp = allData.filter((v) => v.cores == cores);
+	tmp.sort((a, b) => a.time - b.time);
+	for (const idx in tmp) {
+		// console.log(idx);
+		counters[tmp[idx].compiler][idx]++;
+	}
+}
+console.table(counters);
+
+let gcc = [];
+let gccLto = [];
+let llvm = [];
+let llvmLto = [];
+
+// const bestData = [];
+// for (const i = 0; i < dataSrc.gcc.length; i++) {}
+
 export default function makeLineCharts() {
 	const primaryColor = 'steelblue';
 	const secondaryColor = 'blueviolet';
+
 	const data = dataSrc.gccLto;
 	const data2 = dataSrc.llvmLto;
 
