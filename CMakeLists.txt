@@ -1,8 +1,12 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.22)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+
 set(TARGET "inverted_google")
+
+SET (CMAKE_CXX_COMPILER             "/usr/bin/clang++")
 
 project(${TARGET})
 
@@ -26,8 +30,12 @@ find_package(Threads REQUIRED)
 
 add_executable(${TARGET} ${SOURCES})
 
-#target_compile_options(${TARGET} PUBLIC -fsanitize=thread)
-#target_link_options(${TARGET} PUBLIC -fsanitize=thread)
+#target_compile_definitions(${TARGET} PRIVATE -DNUM_OF_THREADS=3)
+
+add_compile_definitions(NUM_OF_THREADS=${NUM})
+
+#target_compile_options(${TARGET} PUBLIC -flto -fno-fat-lto-objects)
+#target_link_options(${TARGET} PUBLIC -flto -fno-fat-lto-objects)
 
 target_link_libraries(${TARGET} PRIVATE Threads::Threads)
 
