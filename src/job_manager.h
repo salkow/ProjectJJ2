@@ -37,7 +37,6 @@ private:
 
 	static bool should_terminate(JobManager *t_job_manager);
 
-	// bud::vector_deque<Job> m_jobs;
 	bud::list<bud::unique_ptr<Job>> m_jobs;
 	bud::vector<bud::thread> m_threads;
 	bud::mutex m_mtx_jobs;
