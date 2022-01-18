@@ -2,12 +2,16 @@
 
 JobManager::JobManager()
 {
-	m_threads.reserve(NUM_OF_THREADS);
-
-	for (int i = 0; i < NUM_OF_THREADS; i++)
+	#ifndef SINGLE_THREAD
 	{
-		m_threads.emplace_back(bud::thread(&JobManager::run_forever, this));
+		m_threads.reserve(NUM_OF_THREADS);
+
+		for (int i = 0; i < NUM_OF_THREADS; i++)
+		{
+			m_threads.emplace_back(bud::thread(&JobManager::run_forever, this));
+		}
 	}
+	#endif
 }
 
 JobManager::~JobManager()
@@ -29,19 +33,34 @@ void JobManager::addJob(Job &&j)
 
 void JobManager::waitFinishAllJobs()
 {
-	m_mtx_jobs.lock();
-	while (m_jobs.size() != 0)
+	#ifdef SINGLE_THREAD
 	{
-		m_cond_jobs_empty.wait(m_mtx_jobs);
+		bud::unique_ptr<Job> job;
+		while (m_jobs.size() > 0)
+		{
+			job = std::move(m_jobs.front());
+			m_jobs.pop_front();
+			job->run();
+		}
 	}
-	m_mtx_jobs.unlock();
+	#endif
+	#ifndef SINGLE_THREAD
+	{
+		m_mtx_jobs.lock();
+		while (m_jobs.size() != 0)
+		{
+			m_cond_jobs_empty.wait(m_mtx_jobs);
+		}
+		m_mtx_jobs.unlock();
 
-	m_mtx_running_jobs.lock();
-	while (m_num_of_running_jobs != 0)
-	{
-		m_cond_jobs_empty.wait(m_mtx_running_jobs);
+		m_mtx_running_jobs.lock();
+		while (m_num_of_running_jobs != 0)
+		{
+			m_cond_jobs_empty.wait(m_mtx_running_jobs);
+		}
+		m_mtx_running_jobs.unlock();
 	}
-	m_mtx_running_jobs.unlock();
+	#endif
 }
 
 bool JobManager::should_terminate(JobManager *t_job_manager)

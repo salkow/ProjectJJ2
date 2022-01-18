@@ -10,6 +10,8 @@
 //constexpr int NUM_OF_THREADS = 15;
 //#define NUM_OF_THREADS 15
 
+// #define SINGLE_THREAD
+
 class JobManager
 {
 public:
