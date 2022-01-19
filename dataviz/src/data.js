@@ -18,4 +18,9 @@ let llvmLto = [
 	496,
 ].map((v, idx) => ({ time: v, cores: idx + 2 }));
 
-export default { gcc, llvm, llvmLto, gccLto };
+let noAddsLlvmLto = [
+	1044, 998, 787, 697, 676, 608, 565, 553, 537, 525, 505, 495, 483, 476, 475,
+	468,
+].map((v, idx) => ({ time: v, cores: idx + 2 }));
+
+export default { gcc, llvm, llvmLto, gccLto, noAddsLlvmLto };

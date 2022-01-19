@@ -4,8 +4,8 @@ import dataSrc from './data';
 export default function makeCompareCharts() {
 	const primaryColor = 'steelblue';
 	const secondaryColor = 'blueviolet';
-	const data = dataSrc.gccLto;
-	const data2 = dataSrc.llvmLto;
+	const data = dataSrc.llvmLto;
+	const data2 = dataSrc.noAddsLlvmLto;
 
 	// set the dimensions and margins of the graph
 	const margin = { top: 30, right: 50, bottom: 30, left: 60 },
