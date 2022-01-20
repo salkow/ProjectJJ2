@@ -29,6 +29,8 @@ do
 
 		time_taken=$(cat result.txt | rg -o "Time = \d+ " | cut -d "=" -f2 | tr -d "[:space:]")
 
+		echo $time_taken
+
 		mo=$((mo+time_taken))
 
 	done

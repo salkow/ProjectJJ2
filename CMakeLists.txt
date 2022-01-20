@@ -1,12 +1,12 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+# set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
 
 set(TARGET "inverted_google")
 
-#SET (CMAKE_CXX_COMPILER             "/usr/bin/clang++")
+# SET (CMAKE_CXX_COMPILER             "/usr/bin/clang++")
 
 project(${TARGET})
 
@@ -29,8 +29,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 add_executable(${TARGET} ${SOURCES})
-
-#target_compile_definitions(${TARGET} PRIVATE -DNUM_OF_THREADS=3)
 
 add_compile_definitions(NUM_OF_THREADS=${NUM})
 
