@@ -30,7 +30,7 @@ find_package(Threads REQUIRED)
 
 add_executable(${TARGET} ${SOURCES})
 
-add_compile_definitions(NUM_OF_THREADS=${NUM})
+target_compile_definitions(${TARGET} PUBLIC NUM_OF_THREADS=${NUM})
 
 #target_compile_options(${TARGET} PUBLIC -flto -fno-fat-lto-objects)
 #target_link_options(${TARGET} PUBLIC -flto -fno-fat-lto-objects)
